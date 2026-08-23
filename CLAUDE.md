@@ -119,6 +119,21 @@ Every muted-on-ground pair was solved for ≥4.5:1 before the palette was applie
 after. If you change a token, re-run the contrast check — `--ink-mute` on `--paper-3`
 is the tight one (4.7:1).
 
+### Two directions, one source
+
+Both are drawn from the same photographs, read two different ways — which is the
+argument to make in the room, not "here are two palettes".
+
+| | A — Daylight | B — After hours |
+|---|---|---|
+| Sampled from | the walls, in daylight | the room, under tungsten |
+| Ground | `#E8E9E7` cool screed | `#14120F` warm near-black |
+| Accent | `#12504F` petrol, from the marbled wall | `#C79A63` brass, from their fittings (`#D8A878` sampled) |
+| Display | Archivo `wdth 125`, uppercase | Newsreader 200, lowercase |
+| Labels | Archivo tracked caps | Courier Prime, spec-sheet annotation |
+| Thesis | the surface is the product | you judge a finish by taking a light to it |
+| Signature | the photographic arch | the raking light pass |
+
 ## Layout
 
 ```
@@ -128,7 +143,13 @@ helpers.py           Claude client + streaming generation + save/preview helpers
 generate.py          CLI entry point: python generate.py "<brief>"
 html_outputs/        timestamped generated pages (gitignored except .gitkeep)
 samples/             pages we've kept and are willing to show
-  venetian-company/index.html   the current pitch page
+  venetian-company/index.html    Direction A — "Daylight": cool screed, Archivo
+                                 expanded caps, petrol accent. This is the one
+                                 deployed to gh-pages.
+  venetian-company-b/index.html  Direction B — "After hours": warm near-black,
+                                 lowercase Newsreader, brass accent, raking-light
+                                 signature. Comparison option, not deployed.
+                                 Its assets/ is a symlink to Direction A's.
   venetian-company/assets/       the client's own photography and film (see CREDITS.md)
   venetian-company/build-artifact.py  strips the wrapper, inlines media, for Artifacts
   venetian-company/build-site.py      builds dist/ — a clean standalone site for hosting

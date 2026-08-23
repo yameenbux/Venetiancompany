@@ -76,12 +76,26 @@
 
   /* Architectural, not decorative: expanded grotesque caps for anything that
      names something, a serif only where there is prose to read. */
-  --display: 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --ui: 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --read: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+  --display: 'Archivo', 'Archivo-fallback', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --ui: 'Archivo', 'Archivo-fallback', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --read: 'Newsreader', 'Newsreader-fallback', 'Iowan Old Style', Georgia, serif;
 
   --gutter: clamp(1.25rem, 5vw, 5.5rem);
   --ease: cubic-bezier(.22,1,.36,1);
+}
+
+/* Metric-matched fallbacks. Headings render Archivo at font-stretch:125%; no
+   system face stretches, so the swap reflowed every heading and moved line
+   breaks. Flagged by the ui-ux-pro-max typography rule "reserve space with a
+   similar fallback". size-adjust cannot match a width axis exactly — this
+   narrows the shift rather than eliminating it. */
+@font-face{
+  font-family:'Archivo-fallback'; src:local('Helvetica Neue'), local('Arial'), local('Liberation Sans');
+  size-adjust:110%; ascent-override:88%; descent-override:22%; line-gap-override:0%;
+}
+@font-face{
+  font-family:'Newsreader-fallback'; src:local('Georgia'), local('Times New Roman');
+  size-adjust:104%; ascent-override:92%; descent-override:24%; line-gap-override:0%;
 }
 
 *,*::before,*::after{ box-sizing:border-box; }

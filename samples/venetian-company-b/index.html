@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<!--
+  THE VENETIAN COMPANY — Direction B, "After hours".
+  Second speculative direction, to be shown alongside Direction A (samples/venetian-company).
+  Same real content, same client photography, deliberately opposite treatment.
+  Thesis: you judge a plaster finish by taking a light to it at a shallow angle.
+-->
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Venetian Company — Direction B</title>
+<meta name="description" content="Venetian plaster and microcement, nationwide. A team of finishing specialists covering all aspects.">
+<meta name="robots" content="noindex, nofollow"><!-- comparison sample, not the deployed page -->
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Newsreader:ital,opsz,wght@0,6..72,200..500;1,6..72,200..400&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────────────────────────
+   DIRECTION B — "After hours"
+   Direction A samples the walls in daylight: cool screed, grotesque caps.
+   B samples the same photographs after dark — the warm near-black of a room
+   under tungsten, and the brass of their own fittings (#D8A878, sampled).
+   Type is lowercase serif throughout, the opposite of A's uppercase grotesque.
+   ───────────────────────────────────────────────────────────── */
+
+:root{
+  --night:   #14120F;   /* warm near-black: plaster under tungsten, not neutral black */
+  --night-2: #1D1A16;
+  --night-3: #2A2621;
+  --lime:    #EDE9E1;   /* 15.4:1 on --night */
+  --mute:    #A9A296;   /* 7.4:1 on --night, 5.9:1 on --night-3 */
+  --brass:   #C79A63;   /* 7.3:1 on --night — from their own fittings */
+  --hair: rgba(237,233,225,.14);
+
+  --serif: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+  --mono: 'Courier Prime', 'Courier New', Courier, monospace;
+
+  --gutter: clamp(1.25rem, 5vw, 6rem);
+  --ease: cubic-bezier(.22,1,.36,1);
+}
+
+/* Fallback metrics matched to Newsreader so the font swap does not reflow the
+   page — the ui-ux-pro-max typography rule this direction was checked against. */
+@font-face{
+  font-family:'Newsreader-fallback'; src:local('Georgia'), local('Times New Roman');
+  size-adjust:104%; ascent-override:92%; descent-override:24%; line-gap-override:0%;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+body{
+  margin:0; background:var(--night); color:var(--lime);
+  font-family:var(--serif),'Newsreader-fallback',Georgia,serif;
+  font-weight:300; font-size:clamp(1.02rem,.96rem + .3vw,1.18rem); line-height:1.65;
+  overflow-x:hidden;
+}
+img{ max-width:100%; display:block; }
+figure,blockquote{ margin:0; }
+a{ color:inherit; }
+:focus-visible{ outline:2px solid var(--brass); outline-offset:3px; }
+
+.wrap{ max-width:1280px; margin:0 auto; }
+.section{ padding:clamp(4.5rem,10vw,9rem) var(--gutter); position:relative; }
+
+/* ── the spec label: a decorator annotates a sample board in pencil caps ── */
+.spec{
+  font-family:var(--mono); font-size:.68rem; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--mute); display:flex; align-items:baseline; gap:.7rem;
+}
+.spec::before{ content:''; width:16px; height:1px; background:var(--brass); flex:0 0 auto; position:relative; top:-.3em; }
+.spec--plain::before{ display:none; }
+
+h1,h2,h3{ font-family:var(--serif); font-weight:200; margin:0; line-height:1.02; letter-spacing:-.02em; }
+h2{ font-size:clamp(2rem,5.4vw,4rem); text-wrap:balance; }
+h3{ font-size:clamp(1.3rem,2.6vw,1.8rem); font-weight:300; }
+.lede{ font-size:clamp(1.05rem,1rem + .5vw,1.35rem); color:var(--mute); max-width:46ch; }
+
+/* ── THE SIGNATURE ───────────────────────────────────────────
+   A raking light. You judge plaster by taking a lamp to it at a shallow
+   angle — the same pass runs across every surface on this page as it
+   enters view. It is the one flourish; everything else stays still. */
+.surface{ position:relative; overflow:hidden; background:var(--night-2); }
+.surface > img{ width:100%; height:100%; object-fit:cover; }
+.surface::after{
+  content:''; position:absolute; inset:-40% -60%; pointer-events:none;
+  background:linear-gradient(74deg,
+    rgba(255,244,224,0) 38%, rgba(255,244,224,.30) 47%,
+    rgba(255,246,230,.42) 50%, rgba(255,244,224,.30) 53%, rgba(255,244,224,0) 62%);
+  transform:translateX(-115%); opacity:0;
+}
+.surface.lit::after{ animation:rake 2.3s cubic-bezier(.5,0,.5,1) .12s both; }
+/* Symmetric ease, not the page's ease-out: a lamp moved across a wall by hand
+   accelerates and decelerates. An ease-out whips it across and then crawls. */
+@keyframes rake{
+  0%{ transform:translateX(-115%); opacity:0; }
+  18%{ opacity:1; }
+  82%{ opacity:1; }
+  100%{ transform:translateX(115%); opacity:0; }
+}
+
+/* ── Top bar ─────────────────────────────────────────────────── */
+.topbar{
+  position:fixed; top:0; left:0; right:0; z-index:60;
+  display:flex; align-items:center; justify-content:space-between; gap:1rem;
+  padding:1rem var(--gutter);
+  background:linear-gradient(to bottom, rgba(20,18,15,.9), rgba(20,18,15,0));
+  backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px);
+}
+.mark{ font-family:var(--mono); font-size:.72rem; letter-spacing:.3em; text-transform:uppercase; text-decoration:none; }
+.mark b{ color:var(--brass); font-weight:400; }
+.topbar .calls{ display:flex; gap:.6rem; align-items:center; }
+.ghost{
+  font-family:var(--mono); font-size:.68rem; letter-spacing:.14em; text-transform:uppercase;
+  text-decoration:none; border:1px solid var(--hair); border-radius:2px; padding:.55rem 1rem;
+  white-space:nowrap; transition:border-color .35s var(--ease), color .35s var(--ease);
+  min-height:44px; display:inline-flex; align-items:center;
+}
+.ghost:hover{ border-color:var(--brass); color:var(--brass); }
+
+/* ── Hero ────────────────────────────────────────────────────── */
+.hero{ position:relative; min-height:100svh; display:flex; align-items:flex-end; overflow:hidden; }
+.hero .shot{ position:absolute; inset:0; }
+.hero .shot img{ width:100%; height:100%; object-fit:cover; object-position:64% 42%; }
+.hero .shot::before{
+  content:''; position:absolute; inset:0; z-index:1;
+  background:
+    linear-gradient(6deg, rgba(20,18,15,.96) 6%, rgba(20,18,15,.55) 42%, rgba(20,18,15,.30) 78%),
+    linear-gradient(90deg, rgba(20,18,15,.85) 0%, rgba(20,18,15,.15) 55%, rgba(20,18,15,.55) 100%);
+}
+.hero .inner{ position:relative; z-index:2; width:100%; padding:0 var(--gutter) clamp(3rem,8vw,6rem); }
+.hero h1{
+  font-size:clamp(2.6rem,9.4vw,7.4rem); font-weight:200; text-transform:lowercase;
+  letter-spacing:-.035em; margin:1.4rem 0 0; max-width:14ch;
+}
+.hero h1 em{ font-style:italic; color:var(--brass); }
+.hero .lede{ margin:1.6rem 0 0; }
+.hero .acts{ margin-top:clamp(2rem,5vw,3rem); display:flex; flex-wrap:wrap; gap:.8rem; }
+
+.btn{
+  font-family:var(--mono); font-size:.7rem; letter-spacing:.16em; text-transform:uppercase;
+  text-decoration:none; display:inline-flex; align-items:center; gap:.7rem;
+  min-height:48px; padding:.9rem 1.5rem; border-radius:2px; border:1px solid var(--brass);
+  color:var(--night); background:var(--brass);
+  transition:background .35s var(--ease), color .35s var(--ease);
+}
+.btn:hover{ background:transparent; color:var(--brass); }
+.btn--ghost{ background:transparent; color:var(--lime); border-color:var(--hair); }
+.btn--ghost:hover{ background:transparent; color:var(--brass); border-color:var(--brass); }
+
+/* ── Two materials ───────────────────────────────────────────── */
+.pair{ display:grid; gap:clamp(2rem,5vw,4rem); grid-template-columns:1fr; margin-top:clamp(2.5rem,6vw,4rem); }
+@media(min-width:820px){ .pair{ grid-template-columns:repeat(2,1fr); } }
+.pane{ border-top:1px solid var(--hair); padding-top:1.4rem; }
+.pane h3{ margin:.9rem 0 .8rem; }
+.pane p{ color:var(--mute); margin:0 0 1rem; max-width:44ch; }
+.pane ul{ list-style:none; margin:1.4rem 0 0; padding:0; display:grid; gap:.55rem; }
+.pane li{ font-family:var(--mono); font-size:.68rem; letter-spacing:.13em; text-transform:uppercase; color:var(--mute); }
+.pane li::before{ content:'— '; color:var(--brass); }
+
+/* ── Finishes: sample boards on a dark bench ─────────────────── */
+.boards{ display:grid; grid-template-columns:repeat(2,1fr); gap:clamp(.7rem,2vw,1.4rem); margin-top:clamp(2.5rem,6vw,4rem); }
+@media(min-width:760px){ .boards{ grid-template-columns:repeat(3,1fr); } }
+@media(min-width:1120px){ .boards{ grid-template-columns:repeat(6,1fr); } }
+.board .surface{ aspect-ratio:3/4; border-radius:2px; }
+.board figcaption{ margin-top:.75rem; }
+.board .no{ font-family:var(--mono); font-size:.62rem; letter-spacing:.14em; color:var(--brass); display:block; }
+.board .nm{ font-size:.95rem; color:var(--lime); }
+
+/* ── Work ────────────────────────────────────────────────────── */
+.plates{ display:grid; grid-template-columns:1fr; gap:clamp(1.4rem,3.5vw,2.4rem); margin-top:clamp(2.5rem,6vw,4rem); }
+@media(min-width:700px){ .plates{ grid-template-columns:repeat(2,1fr); } }
+.plate .surface{ aspect-ratio:4/5; border-radius:2px; }
+.plate.wide{ grid-column:1/-1; }
+.plate.wide .surface{ aspect-ratio:16/9; }
+.plate video{ width:100%; height:100%; object-fit:cover; display:block; }
+.plate figcaption{ margin-top:.85rem; display:flex; justify-content:space-between; gap:1rem; align-items:baseline; }
+.plate .t{ font-size:1.02rem; }
+.plate .k{ font-family:var(--mono); font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:var(--mute); }
+
+/* ── Process ─────────────────────────────────────────────────── */
+.steps{ display:grid; gap:0; margin-top:clamp(2.5rem,6vw,4rem); }
+.step{ display:grid; gap:.5rem 2rem; grid-template-columns:1fr; padding:1.6rem 0; border-top:1px solid var(--hair); }
+@media(min-width:760px){ .step{ grid-template-columns:6rem 15rem 1fr; align-items:baseline; } }
+.step .n{ font-family:var(--mono); font-size:.7rem; letter-spacing:.14em; color:var(--brass); }
+.step h3{ font-size:1.15rem; font-weight:300; }
+.step p{ margin:0; color:var(--mute); max-width:52ch; }
+
+/* ── Reviews ─────────────────────────────────────────────────── */
+.quotes{ display:grid; gap:clamp(1rem,2.5vw,1.6rem); grid-template-columns:1fr; margin-top:clamp(2.5rem,6vw,4rem); }
+@media(min-width:760px){ .quotes{ grid-template-columns:repeat(3,1fr); } }
+.quote{ border:1px dashed var(--night-3); border-radius:2px; padding:clamp(1.3rem,3vw,1.9rem); background:var(--night-2); }
+.quote p{ font-style:italic; color:var(--mute); margin:0 0 1.2rem; }
+.quote .who{ font-family:var(--mono); font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:var(--mute); }
+.flag{ font-family:var(--mono); font-size:.64rem; letter-spacing:.16em; text-transform:uppercase; color:var(--brass); margin-top:1.6rem; }
+
+/* ── Enquire ─────────────────────────────────────────────────── */
+.four{ display:grid; gap:clamp(1.2rem,3vw,2rem); grid-template-columns:1fr; margin-top:clamp(2.5rem,6vw,4rem); }
+@media(min-width:620px){ .four{ grid-template-columns:repeat(2,1fr); } }
+@media(min-width:1040px){ .four{ grid-template-columns:repeat(4,1fr); } }
+.want{ border-top:1px solid var(--brass); padding-top:1.1rem; }
+.want .n{ font-family:var(--mono); font-size:.62rem; letter-spacing:.14em; color:var(--brass); }
+.want h3{ font-size:1.1rem; font-weight:300; margin:.5rem 0 .5rem; }
+.want p{ margin:0; color:var(--mute); font-size:.96rem; }
+
+.close{ display:grid; gap:2rem; grid-template-columns:1fr; margin-top:clamp(3rem,7vw,5rem); }
+@media(min-width:800px){ .close{ grid-template-columns:1.2fr .8fr; align-items:end; } }
+.bigtel{
+  font-family:var(--serif); font-size:clamp(1.9rem,5.4vw,3.6rem); font-weight:200;
+  letter-spacing:-.02em; color:var(--brass); text-decoration:none; font-variant-numeric:tabular-nums;
+  display:inline-block; border-bottom:1px solid transparent; transition:border-color .4s var(--ease);
+}
+.bigtel:hover{ border-color:var(--brass); }
+.meta{ display:grid; gap:1.2rem; }
+.meta div{ border-top:1px solid var(--hair); padding-top:.8rem; }
+.meta h4{ font-family:var(--mono); font-size:.62rem; letter-spacing:.16em; text-transform:uppercase; color:var(--mute); margin:0 0 .4rem; font-weight:400; }
+.meta a{ text-decoration:none; border-bottom:1px solid var(--hair); }
+.meta a:hover{ border-color:var(--brass); color:var(--brass); }
+
+footer{
+  padding:2.5rem var(--gutter) 3.5rem; border-top:1px solid var(--hair);
+  display:flex; flex-wrap:wrap; gap:.8rem 2rem; justify-content:space-between;
+  font-family:var(--mono); font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:var(--mute);
+}
+footer b{ color:var(--lime); font-weight:400; }
+
+/* ── Entrance ────────────────────────────────────────────────── */
+.rise{ opacity:0; transform:translateY(20px); transition:opacity .8s var(--ease), transform .8s var(--ease); }
+.rise.in{ opacity:1; transform:none; }
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+  .rise{ opacity:1; transform:none; }
+  html{ scroll-behavior:auto; }
+  /* the rake becomes a still highlight rather than a sweep */
+  .surface::after{ transform:none; opacity:.16; inset:0; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="mark" href="#top">The Venetian <b>Company</b></a>
+  <div class="calls">
+    <a class="ghost" href="#enquire">Enquire</a>
+    <a class="ghost" href="tel:+447527180499">07527 180499</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="shot">
+      <img src="assets/stair-marbled.jpg" width="1050" height="1400" fetchpriority="high" decoding="async" alt="">
+    </div>
+    <div class="inner">
+      <p class="spec">Venetian plaster · Microcement · Nationwide</p>
+      <h1>Surfaces that only <em>look</em> right in the light.</h1>
+      <p class="lede">A team of finishing specialists covering all aspects. Lime and cement, laid and burnished by hand, on site.</p>
+      <div class="acts">
+        <a class="btn" href="#enquire">Start an enquiry</a>
+        <a class="btn btn--ghost" href="#work">See the work</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="materials">
+    <div class="wrap rise">
+      <p class="spec">Two materials</p>
+      <h2>Plaster or cement</h2>
+      <div class="pair">
+        <div class="pane">
+          <p class="spec spec--plain" style="color:var(--brass)">Lime · marble dust · pigment</p>
+          <h3>Venetian plaster</h3>
+          <p>Built up in thin coats and burnished back as it cures. The polish comes from the tool, not a topcoat, which is why the depth sits under the surface rather than on it.</p>
+          <ul><li>Walls and ceilings</li><li>Feature and media walls</li><li>Staircases</li></ul>
+        </div>
+        <div class="pane">
+          <p class="spec spec--plain" style="color:var(--brass)">Cement · polymer · fine aggregate</p>
+          <h3>Microcement</h3>
+          <p>A few millimetres thick, straight over what is already there — tile, screed, board — so floors rarely need lifting. One continuous surface, no grout lines, no joints to crack.</p>
+          <ul><li>Floors</li><li>Wet rooms and bathrooms</li><li>Swimming pool areas</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="finishes">
+    <div class="wrap rise">
+      <p class="spec">The range</p>
+      <h2>Six surfaces</h2>
+      <p class="lede" style="margin-top:1.2rem">Photographed on site, not on sample boards. Your finish and colour are agreed with you before anything starts.</p>
+      <div class="boards">
+        <figure class="board"><div class="surface"><img src="assets/finish-venetian.jpg" width="600" height="800" loading="lazy" decoding="async" alt="Plaster in raking light with the trowel strokes standing proud"></div><figcaption><span class="no">01</span><span class="nm">Trowelled</span></figcaption></figure>
+        <figure class="board"><div class="surface"><img src="assets/finish-polished.jpg" width="600" height="800" loading="lazy" decoding="async" alt="Polished plaster with soft cloudy movement"></div><figcaption><span class="no">02</span><span class="nm">Polished</span></figcaption></figure>
+        <figure class="board"><div class="surface"><img src="assets/finish-microcement.jpg" width="600" height="800" loading="lazy" decoding="async" alt="Microcement laid flat and seamless"></div><figcaption><span class="no">03</span><span class="nm">Microcement</span></figcaption></figure>
+        <figure class="board"><div class="surface"><img src="assets/finish-textured.jpg" width="600" height="800" loading="lazy" decoding="async" alt="A coarse sand-grain plaster finish"></div><figcaption><span class="no">04</span><span class="nm">Textured</span></figcaption></figure>
+        <figure class="board"><div class="surface"><img src="assets/finish-pigmented.jpg" width="390" height="520" loading="lazy" decoding="async" alt="Plaster pigmented to a soft blush"></div><figcaption><span class="no">05</span><span class="nm">Pigmented</span></figcaption></figure>
+        <figure class="board"><div class="surface"><img src="assets/finish-marbled.jpg" width="600" height="800" loading="lazy" decoding="async" alt="Deep teal plaster with high-contrast marbled veining"></div><figcaption><span class="no">06</span><span class="nm">Marbled</span></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="work">
+    <div class="wrap rise">
+      <p class="spec">Recent work</p>
+      <h2>On site</h2>
+      <div class="plates">
+        <figure class="plate wide">
+          <div class="surface"><video poster="assets/staircase-poster.jpg" width="720" height="1280" muted loop playsinline preload="none" aria-label="Panning shot of a curved plaster staircase with timber treads"><source src="assets/staircase.mp4" type="video/mp4"></video></div>
+          <figcaption><span class="t">Curved plaster staircase, formed in place</span><span class="k">Film</span></figcaption>
+        </figure>
+        <figure class="plate">
+          <div class="surface"><img src="assets/stairwell.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="Double-height stairwell in polished plaster lit by a skylight"></div>
+          <figcaption><span class="t">Stairwell, full height</span><span class="k">Polished</span></figcaption>
+        </figure>
+        <figure class="plate">
+          <div class="surface"><img src="assets/wet-room.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="Microcement wet room with a recessed shelf and brass rainfall shower"></div>
+          <figcaption><span class="t">Wet room, no seams</span><span class="k">Microcement</span></figcaption>
+        </figure>
+        <figure class="plate">
+          <div class="surface"><img src="assets/fireplace.jpg" width="1136" height="1400" loading="lazy" decoding="async" alt="Chimney breast in plaster with strong movement through the finish"></div>
+          <figcaption><span class="t">Chimney breast</span><span class="k">Worked by hand</span></figcaption>
+        </figure>
+        <figure class="plate">
+          <div class="surface"><video poster="assets/bathroom-blush-poster.jpg" width="720" height="1280" muted loop playsinline preload="none" aria-label="Pan across a bathroom finished in blush-pigmented plaster"><source src="assets/bathroom-blush.mp4" type="video/mp4"></video></div>
+          <figcaption><span class="t">Bathroom, pigmented to colour</span><span class="k">Film</span></figcaption>
+        </figure>
+        <figure class="plate">
+          <div class="surface"><img src="assets/texture-switch.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="Coarse-grained plaster meeting a walnut-framed lighting keypad"></div>
+          <figcaption><span class="t">Coarse grain, walnut plate</span><span class="k">Detail</span></figcaption>
+        </figure>
+      </div>
+      <p class="spec" style="margin-top:2rem">Photography and film by The Venetian Company</p>
+    </div>
+  </section>
+
+  <section class="section" id="process">
+    <div class="wrap rise">
+      <p class="spec">How a project runs</p>
+      <h2>Quoted, agreed, then started</h2>
+      <div class="steps">
+        <div class="step"><span class="n">Step 01</span><h3>Initial discussion</h3><p>Send us the space and what you're after. We can visit the area to discuss before anything goes ahead.</p></div>
+        <div class="step"><span class="n">Step 02</span><h3>Finish, colour, samples</h3><p>Once your finish, colour and other requirements are agreed, samples can be provided as part of your package — up to two included, additional samples £80.</p></div>
+        <div class="step"><span class="n">Step 03</span><h3>Quote agreed</h3><p>Pricing depends on the size of the area and the finish. It is agreed before we commence, and we can suggest alternatives to suit a budget.</p></div>
+        <div class="step"><span class="n">Step 04</span><h3>Date and deposit</h3><p>Once a date is mutually agreed, a 50% deposit secures the booking — it lets us buy the materials for your project, and it is non-refundable. The balance is due on completion.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="reviews">
+    <div class="wrap rise">
+      <p class="spec">What clients say</p>
+      <h2>In their words</h2>
+      <div class="quotes">
+        <!-- TODO: real quotes only. Ask Adam for three, first name + area. -->
+        <div class="quote"><p>Client quote to be supplied.</p><p class="who">Name, area — project type</p></div>
+        <div class="quote"><p>Client quote to be supplied.</p><p class="who">Name, area — project type</p></div>
+        <div class="quote"><p>Client quote to be supplied.</p><p class="who">Name, area — project type</p></div>
+      </div>
+      <p class="flag">Placeholder — real reviews needed before this goes live</p>
+    </div>
+  </section>
+
+  <section class="section" id="enquire">
+    <div class="wrap rise">
+      <p class="spec">Enquiries · Adam Knowles</p>
+      <h2>Send us four things</h2>
+      <p class="lede" style="margin-top:1.2rem">Photographs of the area let us price it on size, so the more you send, the closer the first number is.</p>
+      <div class="four">
+        <div class="want"><span class="n">Required</span><h3>Address of the project</h3><p>Where the work is.</p></div>
+        <div class="want"><span class="n">Required</span><h3>Photographs of the area</h3><p>Wide shots beat close-ups. These are what let us price on size.</p></div>
+        <div class="want"><span class="n">If available</span><h3>Measurements</h3><p>Rough is fine. Don't hold up the enquiry for them.</p></div>
+        <div class="want"><span class="n">Required</span><h3>Desired finish or style</h3><p>In your own words, or send the inspiration photos you've been saving.</p></div>
+      </div>
+      <div class="close">
+        <div>
+          <a class="bigtel" href="tel:+447527180499">07527&nbsp;180499</a>
+          <p class="lede" style="margin-top:1.4rem">Send your inspiration photos over — they help us understand your vision, and we can visit the area to discuss before anything goes ahead.</p>
+          <div class="acts" style="margin-top:1.8rem; display:flex; gap:.8rem; flex-wrap:wrap">
+            <a class="btn" id="wa" href="#" target="_blank" rel="noopener">WhatsApp us</a>
+            <a class="btn btn--ghost" href="tel:+447527180499">Call Adam</a>
+          </div>
+        </div>
+        <div class="meta">
+          <div><h4>Coverage</h4><p style="margin:0">Nationwide</p></div>
+          <div><h4>Instagram</h4><p style="margin:0"><a href="https://www.instagram.com/thevenetiancompany_/" target="_blank" rel="noopener">@thevenetiancompany_</a></p></div>
+          <div><h4>Tiling</h4><p style="margin:0"><a href="https://www.instagram.com/sktiling/" target="_blank" rel="noopener">@sktiling</a></p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>The Venetian Company — Venetian Plaster &amp; Microcement · Nationwide</span>
+  <span>Photography &amp; film: The Venetian Company</span>
+  <span>Designed by <b>YSBDesigns</b> · Direction B concept, not an official site</span>
+</footer>
+
+<script>
+// WhatsApp deep link with the four fields pre-typed, built here so the long
+// encoded string does not sit in the markup.
+document.getElementById('wa').href = 'https://wa.me/447527180499?text=' + encodeURIComponent(
+  "Hi Adam — I'd like to enquire about a project.\n\n" +
+  "Address of project:\nPhotographs of the area: (attached)\n" +
+  "Measurements (if available):\nDesired finish or style:\n");
+
+// Section reveals, and the raking light pass across each surface as it arrives.
+(function () {
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var rises = document.querySelectorAll('.rise');
+  var surfaces = document.querySelectorAll('.surface');
+
+  if (reduce || !('IntersectionObserver' in window)) {
+    rises.forEach(function (e) { e.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
+  rises.forEach(function (e) { io.observe(e); });
+
+  // The light passes once per surface — repeating it would turn a signature
+  // into a tic.
+  var lightIO = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('lit'); lightIO.unobserve(e.target); } });
+  }, { threshold: 0.35 });
+  surfaces.forEach(function (e) { lightIO.observe(e); });
+})();
+
+// Clips run only while on screen.
+(function () {
+  var vids = [].slice.call(document.querySelectorAll('.plate video'));
+  if (!vids.length) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    vids.forEach(function (v) { v.controls = true; v.preload = 'metadata'; }); return;
+  }
+  if (!('IntersectionObserver' in window)) { vids.forEach(function (v) { v.play().catch(function(){}); }); return; }
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { e.isIntersecting ? e.target.play().catch(function(){ e.target.controls = true; }) : e.target.pause(); });
+  }, { threshold: 0.25 });
+  vids.forEach(function (v) { io.observe(v); });
+})();
+</script>
+</body>
+</html>
