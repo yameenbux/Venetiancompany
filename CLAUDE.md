@@ -175,7 +175,25 @@ a lockup keeps its ratio at every size).
 
 `--spacing-section: clamp(6rem, 13.5vw, 12.5rem)` (~194px at 1440) and
 `--spacing-head: clamp(3.25rem, 7.5vw, 6rem)`, taken from the BAMO and Olivia
-Harper references. Reveals run 1.25s on `--ease-slow`
+Harper references.
+
+The outer rhythm is settled — section seams run 258–389px at 1440 and nothing
+there is cramped. What was cramped was **inside** sections: closing notes and
+credits sitting 24–36px under the blocks they belong to. Those were audited by
+measuring the rendered page and doubled. Don't tighten them back:
+
+| where | was | now |
+|---|---|---|
+| index → "and more" note | 36px | 72px |
+| feature figure → plates grid | 56px | 112px |
+| plates grid → photo credit | 24px | 48px |
+| quotes → placeholder flag | 28px | 56px |
+| contact h2 → phone number | 24px | 48px |
+| phone number → CTA | 40px | 80px |
+| CallBand row gap (stacked) | 24px | 48px |
+
+The 20px between an eyebrow and its heading is a **lockup**, not a gap — it
+matches `SectionHead`'s `mb-5` and should stay tight. Reveals run 1.25s on `--ease-slow`
 (`cubic-bezier(.16,1,.3,1)`) with a 34px rise and a .11s stagger step. Calm
 reads as expensive; quick reads as a template. Don't speed these up.
 
