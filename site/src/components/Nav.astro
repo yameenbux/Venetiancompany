@@ -7,8 +7,15 @@ const links = [
   ['#finish', 'The Finish'], ['#process', 'Process'],
 ];
 ---
+<!-- The wash has to cover the CONTENT, not just the top edge. `from-paper/90
+     to-transparent` faded to nothing by the time it reached the links and the
+     phone pill, so over the dark Materials and Finish bands the ink text sat on
+     near-black: the phone number measured 1.44:1 while scrolled to 4017. Ink
+     mute needs alpha .84 to clear 4.5:1 over that ground, so the ramp now holds
+     .96 through the row and does its fade below it. -->
 <header class="fixed inset-x-0 top-0 z-60 flex items-center justify-between gap-4 px-gutter py-4
-               bg-gradient-to-b from-paper/90 to-transparent backdrop-blur-[6px]">
+               bg-[linear-gradient(to_bottom,var(--color-paper)_0%,var(--color-paper)_84%,rgba(232,233,231,.55)_94%,rgba(232,233,231,0)_100%)]
+               backdrop-blur-[6px]">
   <a href="#top" class="block w-[46px] h-[46px] shrink-0 text-ink" aria-label="The Venetian Company, home">
     <Monogram class="block w-full h-full" disc />
   </a>
