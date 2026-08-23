@@ -9,7 +9,7 @@ const { eyebrow, title, lede, id } = Astro.props;
 <div class="grid gap-6 mb-head md:grid-cols-[minmax(21rem,1fr)_minmax(0,26rem)] md:items-end">
   <div>
     {eyebrow && <p class="label mb-5">{eyebrow}</p>}
-    <h2 id={id} class="text-h2 uppercase" set:html={title} />
+    <h2 id={id} class="text-h2" set:html={title} />
   </div>
   {lede && <p class="font-read text-lede text-ink-soft max-w-[42ch] m-0">{lede}</p>}
 </div>

@@ -12,7 +12,7 @@ import { process, terms, bringToCall } from '../data/site';
     <div class="rise grid gap-[clamp(1.6rem,4vw,2.6rem)] sm:grid-cols-2 xl:grid-cols-4">
       {process.map((s) => (
         <div class="border-t border-ink pt-5">
-          <span class="block font-display font-semibold [font-stretch:125%] text-h4 text-accent mb-2">{s.n}</span>
+          <span class="block font-display font-semibold [font-stretch:125%] text-h4 text-slate mb-2">{s.n}</span>
           <h3 class="label font-normal mb-3 [font-stretch:100%] text-ink">{s.title}</h3>
           <p class="font-read text-ink-soft text-body m-0">{s.body}</p>
         </div>
@@ -22,7 +22,7 @@ import { process, terms, bringToCall } from '../data/site';
     <div class="rise mt-[clamp(2.5rem,6vw,4rem)] flex flex-wrap gap-x-8 gap-y-3">
       {terms.map((t) => (
         <span class="label inline-flex items-center gap-3">
-          <span class="w-[5px] h-[5px] rounded-full bg-accent shrink-0" aria-hidden="true"></span>{t}
+          <span class="w-[5px] h-[5px] rounded-full bg-slate shrink-0" aria-hidden="true"></span>{t}
         </span>
       ))}
     </div>
@@ -31,8 +31,8 @@ import { process, terms, bringToCall } from '../data/site';
       <p class="label mb-8">Worth having ready for the call</p>
       <div class="grid gap-[clamp(1.2rem,3vw,2rem)] sm:grid-cols-2 xl:grid-cols-4">
         {bringToCall.map((b) => (
-          <div class="border-t border-accent pt-4">
-            <span class="block label text-accent mb-3">{b.req}</span>
+          <div class="border-t border-slate pt-4">
+            <span class="block label text-slate mb-3">{b.req}</span>
             <!-- 110%, not the display default of 125%. In a 4-up grid at 1440 the
                  track is 286px and "MEASUREMENTS" sets 307px expanded, so it ran
                  into the next column's rule (31px over at 1280). The width axis is
@@ -42,7 +42,7 @@ import { process, terms, bringToCall } from '../data/site';
                  h1-h4 rule pins 'wdth' 125 via font-variation-settings, and that
                  wins over the high-level font-stretch property, so setting
                  font-stretch alone did nothing at all. -->
-            <h3 class="text-h4 uppercase mb-2 [font-variation-settings:'wdth'_110] [font-stretch:110%]">{b.title}</h3>
+            <h3 class="text-h4 mb-2">{b.title}</h3>
             <p class="font-read text-ink-mute text-caption m-0">{b.body}</p>
           </div>
         ))}

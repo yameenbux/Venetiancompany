@@ -13,7 +13,7 @@ const rest = work.slice(1);
     </div>
 
     <figure class="rise group mb-[clamp(4rem,10vw,7rem)]">
-      <div class="relative overflow-hidden rounded-sm bg-paper-3 shadow-[0_20px_40px_-28px_rgba(20,24,26,.45)] aspect-4/5 sm:aspect-16/9">
+      <div class="relative overflow-hidden rounded-sm bg-lime-3 shadow-[0_20px_40px_-28px_rgba(26,24,23,.30)] aspect-4/5 sm:aspect-16/9">
         <!-- lazy, not eager: the hero is a full viewport, so this sits below the fold
              and eager loading only made 286KB compete with the LCP image for
              bandwidth. First load went 454KB -> 168KB. -->
@@ -23,7 +23,7 @@ const rest = work.slice(1);
                     group-hover:scale-[1.02]" />
       </div>
       <figcaption class="mt-4 flex items-baseline gap-3 label">
-        <span class="block w-3.5 h-px bg-accent shrink-0 relative -top-[.28em] transition-all
+        <span class="block w-3.5 h-px bg-slate shrink-0 relative -top-[.28em] transition-all
                          duration-240 ease-motion group-hover:w-7" aria-hidden="true"></span>{feature.caption}
       </figcaption>
     </figure>
@@ -31,8 +31,8 @@ const rest = work.slice(1);
     <div class="rise grid gap-[clamp(1.2rem,3vw,2rem)] sm:grid-cols-2 xl:grid-cols-4">
       {rest.map((w) => (
         <figure class="group">
-          <div class="relative overflow-hidden rounded-sm bg-paper-3 aspect-3/4
-                      shadow-[0_20px_40px_-28px_rgba(20,24,26,.45)]">
+          <div class="relative overflow-hidden rounded-sm bg-lime-3 aspect-3/4
+                      shadow-[0_20px_40px_-28px_rgba(26,24,23,.30)]">
             {w.file.endsWith('.mp4') ? (
               <video poster={asset(`assets/${w.poster}`)} width="720" height="1280" muted loop playsinline
                      preload="none" aria-label={w.alt}
@@ -48,12 +48,12 @@ const rest = work.slice(1);
             )}
           </div>
           <figcaption class="mt-4 flex items-baseline gap-3 label">
-            <span class="block w-3.5 h-px bg-accent shrink-0 relative -top-[.28em] transition-all
+            <span class="block w-3.5 h-px bg-slate shrink-0 relative -top-[.28em] transition-all
                          duration-240 ease-motion group-hover:w-7" aria-hidden="true"></span>{w.caption}
           </figcaption>
         </figure>
       ))}
     </div>
-    <p class="font-read italic text-ink-mute text-caption mt-12">Photography and film by The Venetian Company.</p>
+    <p class="font-display italic text-ink-mute text-caption mt-12">Photography and film by The Venetian Company.</p>
   </div>
 </section>

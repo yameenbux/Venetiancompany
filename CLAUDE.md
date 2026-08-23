@@ -205,28 +205,66 @@ until Adam supplies commercial jobs. Leave a `<!-- TODO -->` and ask.
 
 ## Current design direction
 
-The first pass was warm cream + a Didone display + terracotta — which is on Anthropic's
-own list of clustered AI looks. It was replaced, and the replacement was **sampled from
-the client's own photography** rather than picked: quantising their walls returns
-near-neutral greys (h0–60, s7–8, l41–63), and the only chroma anywhere on their feed is
-the **teal in the marbled staircase (h180)**. So:
+Third pass, and the one that is built. Driven by the bamo.com reference above —
+its structure and restraint, not its palette, which is the distinction that
+section exists to hold.
 
-- Ground `#E8E9E7` cool screed · `#DBDDDB` · `#C7CAC8`, stone `#A8ACAA`
-- Ink `#14181A` blue-black · soft `#333A3D` · muted `#434B4E`
-- Accent `#12504F` petrol on light, `#35948F` on dark — from their own marbled wall
-- Display/UI: **Archivo** variable at `wdth 125` (expanded architectural caps).
-  Prose: **Newsreader**. No Didone, no Jost.
+**What changed and why.**
 
-Every muted-on-ground pair was solved for ≥4.5:1 before the palette was applied, not
-after. **That first pass solved against a flat `--paper-3` and was wrong**: the ground
-is not flat. `.ground::before` lays a `rgba(110,117,115,.10)` radial over it and
-`.grain` multiplies at `.30` on top, and measured against the real composite the
-`.label` colour was landing at **4.20:1** in the materials list, 4.23 in the footer
-and 4.43 on the work captions. `--color-ink-mute` is `#434B4E`, not `#4B5457` — a ~13%
-luminance move that clears 4.5 everywhere with margin (lowest on the page is now
-4.65, the work captions). If you change a token, do not
-compute the pair: render it and sample the pixels, with
-`site/scripts/check-contrast.py` for the hero and the same method for the rest.
+The first pass was warm cream + a Didone display + terracotta, which is on
+Anthropic's own list of clustered AI looks. The second replaced it with a cool
+screed ground and Archivo expanded caps. That was disciplined but cold, and it
+was also **sampled wrong twice**:
+
+- The ground was `#E8E9E7`, a green-leaning grey, taken from photographs read
+  under daylight — which skews blue. Quantising the *plaster itself*
+  (`finish-venetian`, `plaster-detail`) returns **h27–32 at s6–9%**. Lime and
+  marble dust are warm. The ground is warm chalk now.
+- The accent was petrol `#12504F`, documented as "from their marbled wall
+  (h180)". The wall does not read h180. Its most saturated pixels sit at **h206**
+  and its midtones at **h195–198** — a deep blue-teal, not a green one.
+
+| token | value | where it comes from |
+|---|---|---|
+| `--color-lime` | `#EBE8E5` | hsl(32 14% 91%) — the trowelled plaster |
+| `--color-chalk` | `#F6F4F1` | lifted, for insets |
+| `--color-lime-2/-3` | `#DEDAD5` `#C8C2BA` | the ground gradient |
+| `--color-ink` | `#1A1817` | warm near-black, 14.5:1 on the ground |
+| `--color-ink-mute` | `#4A453F` | see below |
+| `--color-slate` | `#1C3C4A` | hsl(198 45% 20%) — the marbled wall |
+| `--color-slate-lt` | `#80B5CB` | for use on the band |
+| `--color-stone` | `#C6C0B8` | muted on the band |
+
+**The type roles are swapped.** Newsreader now displays and Archivo works:
+headings are a serif set roman and **sentence case**, and the grotesque is
+demoted to labels, metadata and body. Two families, four sizes — the discipline
+the reference actually runs on. Archivo keeps the wordmark's spirit through the
+monogram and every tracked cap, because all-caps tracked lettering is the
+client's own vernacular. A text serif at display size stays warm where a Didone
+goes brittle, and brittle-Didone-on-cream is exactly what pass one was.
+
+**Three structural moves taken from the reference.**
+
+1. **The service index lost its 01–09.** Nine things they do is not nine steps;
+   the order carried no information, so the numbers were decoration wearing the
+   costume of structure. What is left is a wall of names with a rule between
+   each — the reference's client list, applied to services.
+2. **The sample board.** The six finishes now run full bleed with a **3px**
+   gutter, edge to edge. The reference runs 34px between 682px columns, about
+   5%, and that density is most of why its grid reads as a portfolio rather than
+   a brochure. It is also what a sample board physically is, and samples are how
+   this trade actually sells — up to two come with the package, £80 after that.
+3. **Counted, not claimed.** "Six of six shown", the way the reference says
+   "9 of 52".
+
+**Contrast was solved against pixels, again, and the same mistake was made
+again first.** `--color-ink-mute` at `#58524B` computes to 6.3:1 against a flat
+`#EBE8E5` — but the ground is not flat, the gradient runs down to
+`--color-lime-3` and `.grain` multiplies over it. Measured against the
+composite it was landing at **3.86:1**. `#4A453F` clears it: the page-wide sweep
+is 0 failures on both viewports, lowest 4.71 mobile and 4.77 desktop. Do not
+compute a pair — render it and sample, with `site/scripts/check-contrast.py`
+for the hero and `site/scripts/check-page-contrast.py` for the rest.
 
 ### Two directions, one source
 
@@ -236,9 +274,9 @@ argument to make in the room, not "here are two palettes".
 | | A — Daylight | B — After hours |
 |---|---|---|
 | Sampled from | the walls, in daylight | the room, under tungsten |
-| Ground | `#E8E9E7` cool screed | `#14120F` warm near-black |
-| Accent | `#12504F` petrol, from the marbled wall | `#C79A63` brass, from their fittings (`#D8A878` sampled) |
-| Display | Archivo `wdth 125`, uppercase | Newsreader 200, lowercase |
+| Ground | `#EBE8E5` warm chalk | `#14120F` warm near-black |
+| Accent | `#1C3C4A` deep blue-teal, from the marbled wall | `#C79A63` brass, from their fittings (`#D8A878` sampled) |
+| Display | Newsreader 300, sentence case | Newsreader 200, lowercase |
 | Labels | Archivo tracked caps | Courier Prime, spec-sheet annotation |
 | Thesis | the surface is the product | you judge a finish by taking a light to it |
 | Signature | the plate — the wordmark set *inside* a full-bleed photograph of the work, not beside it | the raking light pass |
@@ -259,8 +297,9 @@ If a bright hero image ever comes back, the paper wash is the right tool again.
 
 This is not Direction B borrowed. B is lowercase Newsreader, brass and Courier
 labels; none of that is here. The type is the same Archivo caps on the same
-scale, the accent is the same petrol family (the CTA uses `accent-lt`, since
-petrol on near-black is only ~2.2:1 as a shape), and paper-on-near-black is
+scale, the accent is the same blue-teal family (the dark-ground CTA inverts to the
+page's own ground colour, since the band colour on near-black is only ~2.2:1 as
+a shape), and paper-on-near-black is
 already Direction A's own vocabulary — the Materials and Finish bands are built
 from it.
 
@@ -274,6 +313,11 @@ sRGB up to ~240 — so that is the case to solve:
 | wordmark (large text) | `--color-paper` | 3:1 | a ≥ .48 |
 | lede | `--color-paper` at .82 | 4.5:1 | a ≥ .61 |
 | eyebrow, scroll cue | `--color-stone` | 4.5:1 | a ≥ .72 — the tight one |
+
+The wordmark now fills its column rather than sitting on the h1 step, so the copy
+block is taller — it ends between 546px and 676px, not 514 and 558 — and the
+mobile pixel stops were re-solved to match. The scrim is tinted to the band
+colour (`#16303B`) rather than neutral ink.
 
 The eyebrow's `·` separators lost their accent tint in the flip: petrol measured
 1.49:1 on this ground and even `accent-lt` only reaches 3.28, short of 4.5 at

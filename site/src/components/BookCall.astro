@@ -22,12 +22,12 @@ const base =
   'rounded-full px-8 py-[1.15rem] min-h-[48px] transition-colors duration-240 ease-motion ' +
   'ease-out-soft border';
 const styles = {
-  solid: 'bg-accent text-paper border-accent hover:bg-transparent hover:text-accent',
+  solid: 'bg-slate text-lime border-slate hover:bg-transparent hover:text-slate',
   // For dark grounds. Petrol on near-black is only about 2.2:1 as a shape, which
-  // fails non-text contrast even though its label is legible; accent-lt clears it.
-  lit:   'bg-accent-lt text-night border-accent-lt hover:bg-transparent hover:text-accent-lt',
-  ghost: 'bg-transparent text-ink border-ink/20 hover:border-accent hover:text-accent',
-  bare:  'bg-transparent text-accent border-accent hover:bg-accent hover:text-paper',
+  // fails non-text contrast even though its label is legible; slate-lt clears it.
+  lit:   'bg-lime text-slate-2 border-lime hover:bg-transparent hover:text-lime',
+  ghost: 'bg-transparent text-ink border-ink/20 hover:border-slate hover:text-slate',
+  bare:  'bg-transparent text-slate border-slate hover:bg-slate hover:text-lime',
 };
 ---
 <a class={`${base} ${styles[variant]} ${cls}`} href={whatsappCall} target="_blank" rel="noopener"

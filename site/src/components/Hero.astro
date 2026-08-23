@@ -4,15 +4,15 @@ import { asset } from '../lib/asset';
 import { serviceArea } from '../data/site';
 ---
 <!-- The plate: the photograph runs full bleed and the wordmark sits inside it.
-     The scrim is INK, not paper. That reverses the earlier rule, and the reason
+     The scrim is INK, not lime. That reverses the earlier rule, and the reason
      is that the rule's premise changed: it was written for a bright courtyard
      shot, where washing toward the ground colour kept the ink palette. Adam's
      marbled stairwell is a dark photograph — mean luminance .144, median .122 —
-     and washing that toward paper does not read as daylight, it reads as fog.
+     and washing that toward lime does not read as daylight, it reads as fog.
      Dimming a dark photograph is what the photograph already is.
      This is not Direction B borrowed: B is lowercase Newsreader, brass and
      Courier labels. The type here is the same Archivo caps on the same scale,
-     the accent is the same petrol family, and paper-on-near-black is already
+     the slate is the same petrol family, and lime-on-near-black is already
      Direction A's own vocabulary — the Materials and Finish bands are built
      from it. Scrim stops are solved against measured pixels, see .plate-scrim. -->
 <section class="hero-plate relative flex items-start md:items-center min-h-[100svh] overflow-hidden
@@ -32,8 +32,8 @@ import { serviceArea } from '../data/site';
 
   <div class="relative z-2 w-full max-w-[1240px] mx-auto">
     <p class="label text-stone [animation:fadeUp_300ms_var(--ease-motion)_both] [animation-delay:40ms]">
-      <!-- The separators lost their accent tint when the plate went dark: petrol
-           on this ground measured 1.49:1, and accent-lt only reaches 3.28 —
+      <!-- The separators lost their slate tint when the plate went dark: petrol
+           on this ground measured 1.49:1, and slate-lt only reaches 3.28 —
            still short of 4.5 for text this size. They take the label colour. -->
       Venetian Plaster &middot; Microcement &middot; {serviceArea}
     </p>
@@ -41,7 +41,7 @@ import { serviceArea } from '../data/site';
     <!-- "The" is set as a proportion of the wordmark (.26em of h1), not as an
          independent scale step — a lockup has to keep its ratio at every size.
          It is one of two deliberate off-scale values; the other is .endmark. -->
-    <h1 class="wordmark text-h1 uppercase mt-7 text-paper">
+    <h1 class="wordmark text-h1 uppercase mt-7 text-lime">
       {['The', 'Venetian', 'Company'].map((word, i) => (
         <span class="block overflow-hidden">
           <i class={`block not-italic [animation:lift_300ms_var(--ease-motion)_both] ${
@@ -51,7 +51,7 @@ import { serviceArea } from '../data/site';
       ))}
     </h1>
 
-    <p class="font-read text-lede text-paper/[.82] max-w-[26ch] mt-8
+    <p class="font-read text-lede text-lime/[.82] max-w-[26ch] mt-8
               [animation:fadeUp_300ms_var(--ease-motion)_both] [animation-delay:200ms]">
       A team of finishing specialists covering all aspects.
     </p>
@@ -61,7 +61,7 @@ import { serviceArea } from '../data/site';
       <BookCall variant="lit" />
       <div class="flex items-center gap-3 label text-stone">
         <span class="relative block w-14 h-px bg-stone overflow-hidden">
-          <span class="absolute inset-0 bg-accent [animation:cue_3.4s_var(--ease-out-soft)_infinite]"></span>
+          <span class="absolute inset-0 bg-slate [animation:cue_3.4s_var(--ease-out-soft)_infinite]"></span>
         </span>Scroll
       </div>
     </div>
