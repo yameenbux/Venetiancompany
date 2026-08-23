@@ -37,6 +37,34 @@ def ratio(a, b):
     return (hi + 0.05) / (lo + 0.05)
 
 RUNS_JS = """() => {
+  const cv=document.createElement('canvas'); cv.width=cv.height=1;
+  const cx=cv.getContext('2d',{willReadFrequently:true});
+  // Chromium's canvas fillStyle does not accept oklab()/color-mix(), and an
+  // invalid assignment is SILENTLY IGNORED — fillStyle keeps its old value. That
+  // made every Tailwind opacity-modified colour resolve to black, which is why
+  // paper-on-dark copy was reporting 1.00:1. Sentinel-check the assignment and
+  // convert oklab by hand when it fails.
+  const oklab2srgb=(L,A,B,al)=>{
+    const l_=L+0.3963377774*A+0.2158037573*B, m_=L-0.1055613458*A-0.0638541728*B,
+          s_=L-0.0894841775*A-1.2914855480*B;
+    const l=l_**3, m=m_**3, s=s_**3;
+    const lin=[ 4.0767416621*l-3.3077115913*m+0.2309699292*s,
+               -1.2684380046*l+2.6097574011*m-0.3413193965*s,
+               -0.0041960863*l-0.7034186147*m+1.7076147010*s];
+    const g=v=>{v=v<=0.0031308?12.92*v:1.055*Math.pow(Math.max(v,0),1/2.4)-0.055;
+                return Math.max(0,Math.min(255,Math.round(v*255)));};
+    return [g(lin[0]),g(lin[1]),g(lin[2]),al];
+  };
+  const res=c=>{
+    const m=/^oklab\(\s*([-\d.]+)\s+([-\d.]+)\s+([-\d.]+)\s*(?:\/\s*([-\d.]+)\s*)?\)$/.exec(c.trim());
+    if(m) return oklab2srgb(+m[1],+m[2],+m[3], m[4]===undefined?1:+m[4]);
+    cx.fillStyle='#ff00ff'; cx.fillStyle=c;
+    if(cx.fillStyle==='#ff00ff' && c.replace(/\s/g,'').toLowerCase()!=='#ff00ff')
+      throw new Error('cannot resolve colour: '+c);
+    cx.clearRect(0,0,1,1); cx.fillRect(0,0,1,1);
+    const d=cx.getImageData(0,0,1,1).data; return [d[0],d[1],d[2],d[3]/255];
+  };
+
   const sec = document.querySelector('section'), out = [];
   sec.querySelectorAll('p.label, h1 i, p.font-read, div.label').forEach(el => {
     if (![...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())) return;
@@ -45,7 +73,7 @@ RUNS_JS = """() => {
     for (const rect of r.getClientRects()) {
       if (rect.width < 4 || rect.height < 4) continue;
       out.push({ text: el.textContent.trim().replace(/\\s+/g, ' ').slice(0, 28),
-                 color: cs.color, fs: parseFloat(cs.fontSize), fw: cs.fontWeight,
+                 rgba: res(cs.color), fs: parseFloat(cs.fontSize), fw: cs.fontWeight,
                  x: Math.round(rect.left), y: Math.round(rect.top),
                  w: Math.round(rect.width), h: Math.round(rect.height) });
     }
@@ -81,8 +109,7 @@ async def measure(pw, url, fonts, W, H):
     plate = Image.open(io.BytesIO(shot)).convert("RGB")
     results = []
     for run in runs:
-        rgb = tuple(int(v) for v in run["color"].removeprefix("rgb(").rstrip(")").split(",")[:3])
-        text_L = luminance(rgb)
+        cr_, cg_, cb_, ca_ = run["rgba"]
         box = (max(0, run["x"]), max(0, run["y"]),
                min(W, run["x"] + run["w"]), min(H, run["y"] + run["h"]))
         if box[2] <= box[0] or box[3] <= box[1]:
@@ -91,7 +118,14 @@ async def measure(pw, url, fonts, W, H):
         crop = crop.resize((max(1, min(crop.width, 160)), max(1, min(crop.height, 70))))
         # get_flattened_data() is Pillow 12+; getdata() is the older name.
         pixels = crop.get_flattened_data() if hasattr(crop, "get_flattened_data") else crop.getdata()
-        worst = min(ratio(text_L, luminance(px)) for px in pixels)
+        # Translucent text composites over whatever is behind it, so the
+        # foreground has to be resolved per pixel, not once.
+        def worst_for(px):
+            fg = (cr_ * ca_ + px[0] * (1 - ca_),
+                  cg_ * ca_ + px[1] * (1 - ca_),
+                  cb_ * ca_ + px[2] * (1 - ca_))
+            return ratio(luminance(fg), luminance(px))
+        worst = min(worst_for(px) for px in pixels)
         large = run["fs"] >= 24 or (run["fs"] >= 18.66 and int(run["fw"]) >= 700)
         need = LARGE if large else SMALL
         results.append((run["text"], run["fs"], round(worst, 2), need, worst >= need))

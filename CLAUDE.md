@@ -146,44 +146,60 @@ argument to make in the room, not "here are two palettes".
 | Display | Archivo `wdth 125`, uppercase | Newsreader 200, lowercase |
 | Labels | Archivo tracked caps | Courier Prime, spec-sheet annotation |
 | Thesis | the surface is the product | you judge a finish by taking a light to it |
-| Signature | the daylight plate — the wordmark set *inside* a full-bleed photograph, washed toward the ground colour rather than dimmed | the raking light pass |
+| Signature | the plate — the wordmark set *inside* a full-bleed photograph of the work, not beside it | the raking light pass |
 
 #### The hero plate (replaces the arch)
 
-The arch is gone. The hero is now one full-bleed photograph
-(`hero-courtyard.jpg`) with the wordmark sitting in it, and the thing that
-keeps it from being the same hero every agency ships is that **the scrim is
-paper, not black**. Everyone else dims the building and sets white type on it;
-this washes toward `#E8E9E7` and keeps the ink palette, so the hero still
-belongs to Direction A rather than to Direction B.
+The arch is gone. The hero is one full-bleed photograph — the marbled stairwell
+— with the wordmark sitting in it.
 
-**The scrim stops are solved, not eyeballed.** Compositing alpha *a* of paper
-(sRGB .910) over an image pixel *v* gives `a*.910 + (1-a)*v`. The image has
-near-black glazing in it, so the worst case is *v* ≈ 0:
+**The scrim is ink, and that reverses what this file said before.** The earlier
+rule was "the scrim is paper, not black", on the argument that everyone else
+dims the building and this direction should wash toward the ground colour
+instead. That was written for a bright courtyard shot. The photograph is now a
+dark one — mean luminance .144, median .122 — and paper over it does not read as
+daylight, it reads as fog: the marble greys out and the hero looks washed rather
+than lit. **Do not reinstate the paper scrim while the hero photograph is dark.**
+If a bright hero image ever comes back, the paper wash is the right tool again.
 
-| text | colour | needs | over black needs |
+This is not Direction B borrowed. B is lowercase Newsreader, brass and Courier
+labels; none of that is here. The type is the same Archivo caps on the same
+scale, the accent is the same petrol family (the CTA uses `accent-lt`, since
+petrol on near-black is only ~2.2:1 as a shape), and paper-on-near-black is
+already Direction A's own vocabulary — the Materials and Finish bands are built
+from it.
+
+**The scrim stops are solved, not eyeballed.** Compositing alpha *a* of ink
+(`#101416`, sRGB .063) over an image pixel *v* gives `a*.063 + (1-a)*v`. The
+copy sits over the bright end of this frame — the window and the pale room,
+sRGB up to ~240 — so that is the case to solve:
+
+| text | colour | needs | over the bright end needs |
 |---|---|---|---|
-| `.label` eyebrow, scroll cue | `--color-ink-mute` | 4.5:1 | a ≥ .81 |
-| lede | `--color-ink-soft` | 4.5:1 | a ≥ .69 |
-| wordmark (large text) | `--color-ink` | 3:1 | a ≥ .44 |
+| wordmark (large text) | `--color-paper` | 3:1 | a ≥ .48 |
+| lede | `--color-paper` at .82 | 4.5:1 | a ≥ .61 |
+| eyebrow, scroll cue | `--color-stone` | 4.5:1 | a ≥ .72 — the tight one |
 
-So the small copy lives in the dense end of the ramp and the display type runs
-out into the clear end. Verified by rendering the hero, hiding the copy layer,
-and sampling the actual composited pixels under every glyph run: **16 viewport
-sizes from 320×568 to 1920×1080, worst pixel of every string, minimum ratio
-5.07**. Re-run `site/scripts/check-contrast.py` if you touch the stops or the image.
+The eyebrow's `·` separators lost their accent tint in the flip: petrol measured
+1.49:1 on this ground and even `accent-lt` only reaches 3.28, short of 4.5 at
+that size. They take the label colour.
+
+Verified by rendering the hero, hiding the copy layer, and sampling the actual
+composited pixels under every glyph run: **15 viewport sizes from 320×568 to
+1920×1080, worst pixel of every string, minimum ratio 5.28**. Re-run
+`site/scripts/check-contrast.py` if you touch the stops or the image, and
+`site/scripts/check-page-contrast.py` for the page as a whole.
 
 **Mobile stops are in pixels, not percentages.** The copy block is a fixed
 height — it ends between 514px and 558px from the top at every phone width —
 while the hero is `100svh`. A percentage ramp tuned on a 812px screen left the
 scroll cue sitting in open photograph on a 640px one. Pixels track the copy;
 percentages track the window. From `md` the copy becomes a centred left column
-and the wash becomes a radial anchored on it, which opens the right of the
-frame back up.
+and the wash becomes a horizontal ramp, which opens the right of the frame —
+where the marbled wall is — back up.
 
-**The source is only 712×612.** It is upscaled ~2× at 1440 and more on a
-retina screen. The wash hides much of that, and the `.grain` layer hides more,
-but a higher-resolution original is needed before this goes in front of Adam.
+**Resolution is no longer a worry.** The source is 3024×4032, served as three
+widths behind a `<picture>` with a WebP source and a JPEG fallback.
 
 ### Type scale
 

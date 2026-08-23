@@ -178,49 +178,45 @@
   }
 
   /* ── Hero plate ──────────────────────────────────────────────
-     Replaces the arch. The photograph is full bleed and the wordmark sits in
-     it, so the whole hero is one plate rather than a masked cut-out.
+     The photograph runs full bleed and the wordmark sits in it.
 
-     The scrim is PAPER, not black. Washing toward the ground colour keeps the
-     ink palette and the daylight thesis; a dark overlay with white type would
-     be Direction B's hero pasted into this one.
+     The scrim is INK. The earlier version washed toward paper, on the argument
+     that dimming a building is what everyone else does — but that was written
+     for a bright courtyard shot. The client's marbled stairwell is a dark
+     photograph (mean luminance .144, median .122), and paper over it does not
+     read as daylight, it reads as fog: the marble greys out and the hero looks
+     washed rather than lit. Ink over it just deepens what is already there.
 
-     The stops are solved, not eyeballed. Compositing alpha a of paper (#E8E9E7,
-     sRGB .910) over an image pixel v gives a*.910 + (1-a)*v. For 4.5:1 against
-     --color-ink-soft (#333A3D) the composite has to reach sRGB .629, which over
-     a black pixel needs a >= .69; the wordmark is large text, so 3:1 is enough
-     and it can sit as low as a >= .44. Small copy therefore lives in the dense
-     end of the ramp and the display type runs out into the clear end. The
-     measured worst case for every string is recorded in CLAUDE.md.
+     Stops are solved, not eyeballed. Compositing alpha a of ink (#101416,
+     sRGB .063) over an image pixel v gives a*.063 + (1-a)*v. The copy sits over
+     the bright end of this frame — the window and the pale room, sRGB up to
+     ~240 — so that is the case to solve:
 
-     Mobile is a vertical ramp because the copy spans the full width; from md
-     the copy is a left column, so the ramp turns horizontal and the right of
-     the frame stays as good as unwashed. */
+       --color-paper at 4.5:1 needs the composite at or under sRGB .415, so a >= .61
+       --color-stone at 4.5:1 is the tight one
+       the wordmark is large text at 3:1, so a >= .48
+
+     Mobile is a vertical ramp in PIXELS, not percentages: the copy block is a
+     fixed height (it ends between 514 and 558px from the top at every phone
+     width) while the hero is 100svh, so a percentage ramp tuned on an 812px
+     screen leaves the scroll cue in open photograph on a 640px one. From md the
+     copy becomes a centred left column and the ramp turns horizontal, which
+     opens the right of the frame — where the marbled wall is — back up. */
   .plate-img { position:absolute; inset:0; z-index:0; width:100%; height:100%;
-    object-fit:cover; object-position:50% 34%; pointer-events:none;
+    object-fit:cover; object-position:45% 50%; pointer-events:none;
     animation:plateIn 300ms var(--ease-motion) both; }
   .plate-scrim { position:absolute; inset:0; z-index:1; pointer-events:none;
-    /* Mobile stops are in PIXELS, not percentages, on purpose. The copy block
-       is a fixed height in px (it ends between 514 and 558px from the top at
-       every phone width) while the hero is 100svh, so a percentage ramp that
-       cleared the copy on a 812px screen left the scroll cue in open
-       photograph on a 640px one. Pixels track the copy; percentages track the
-       window. */
     background:linear-gradient(180deg,
-      rgba(232,233,231,.95) 0px,   rgba(232,233,231,.94) 390px,
-      rgba(232,233,231,.92) 545px, rgba(232,233,231,.80) 620px,
-      rgba(232,233,231,.34) 715px, rgba(232,233,231,0)   800px); }
+      rgba(16,20,22,.86) 0px,   rgba(16,20,22,.84) 390px,
+      rgba(16,20,22,.80) 545px, rgba(16,20,22,.62) 620px,
+      rgba(16,20,22,.42) 715px, rgba(16,20,22,.34) 800px); }
   @media(min-width:768px){
-    .plate-img { object-position:56% 42%; }
-    /* From md the copy is a left column and vertically centred, so the wash
-       becomes a radial anchored on it: dense over the copy, open at the right
-       and in the corners, which is where the photograph actually reads. */
+    .plate-img { object-position:50% 50%; }
     .plate-scrim { background:
-      radial-gradient(128% 116% at 14% 50%,
-        rgba(232,233,231,.96) 0%,  rgba(232,233,231,.94) 28%,
-        rgba(232,233,231,.86) 40%, rgba(232,233,231,.55) 52%,
-        rgba(232,233,231,.20) 66%, rgba(232,233,231,0)   80%),
-      linear-gradient(180deg, rgba(232,233,231,.34) 0%, rgba(232,233,231,0) 26%); }
+      linear-gradient(96deg,
+        rgba(16,20,22,.91) 0%,  rgba(16,20,22,.89) 40%,
+        rgba(16,20,22,.84) 58%, rgba(16,20,22,.66) 76%,
+        rgba(16,20,22,.48) 100%); }
   }
 
   /* Terminal wordmark. Raw vw with no clamp: it has to fill the width at every
