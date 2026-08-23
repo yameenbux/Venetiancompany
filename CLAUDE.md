@@ -14,15 +14,44 @@ business.
 
 ## Client brief
 
-<!-- Fill these in before generating. The more specific this is, the less generic the output. -->
+Everything below is taken from the client's own public Instagram
+(@thevenetiancompany_ profile and their About Us / Pricing story highlights).
+**Nothing here is inferred — do not add to this list without a source.**
 
-- **Business:** The Venetian Company
-- **Sector:** TBD
-- **Location / market:** TBD
-- **Audience:** TBD
-- **Tone we're pitching:** TBD
-- **Existing brand assets:** none known (no website)
-- **Reference points / mood:** TBD
+- **Business:** The Venetian Company — "The Venetian Company - Venetian Plastering"
+- **Sector:** Venetian plaster & microcement. Listed on IG as "Product/service",
+  bio "VENETIAN PLASTER/MICROCEMENT — A team of finishing specialists covering all
+  aspects"
+- **Contact:** Adam Knowles — 07527180499
+- **Instagram:** [@thevenetiancompany_](https://instagram.com/thevenetiancompany_)
+  (228 posts, ~2.9k followers)
+- **Partner:** tiling via [@sktiling](https://instagram.com/sktiling)
+- **Services (verbatim from their About Us highlight):** full house applications,
+  media walls, bathrooms, swimming pool areas, feature walls, microcement,
+  staircases, wet rooms, floors — "and more"
+- **About (verbatim):** "The Venetian Company are a team of experienced professionals
+  skilled in luxury Venetian plastering. We have experience creating unique and
+  sophisticated designs to suit a variety of homes or commercial spaces." … "We are a
+  friendly, customer-focused business with a passion for bringing your dream home to
+  reality."
+- **Pricing process (verbatim from their Pricing highlight):** pricing depends on the
+  size of the area and desired finish/style; quoted after initial discussions and
+  agreed before commencing; alternative finishes offered to suit a budget; up to 2
+  samples included, additional samples £80; 50% deposit before commencing, balance due
+  on completion.
+- **Audience:** homeowners doing high-end renovations and new builds, plus commercial
+  spaces. Their feed is contemporary architectural — flat-roofed new builds, pool
+  areas, curved plaster staircases, wet rooms.
+- **Tone we're pitching:** material-led and quiet. Luxury trade, not luxury brochure.
+  The finish is the product, so the page should feel like the surface.
+- **Existing brand assets:** circular TVC monogram (stacked T/V/C, thin black rule on
+  white). All-caps tracked typography across their story graphics. No website.
+
+### Unknowns — do NOT invent these
+
+Trading address, service area/radius, years established, company registration, team
+size, accreditations, testimonials, review scores, past client names, project
+locations, prices beyond the £80 sample fee. Leave a `<!-- TODO -->` and ask Adam.
 
 ## Layout
 
