@@ -117,6 +117,10 @@ is available.
   prospect's laptop.
 - **Never overwrite a previous output.** Outputs are timestamped so we can compare
   directions side by side.
+- **Deploying to Pages.** `python samples/venetian-company/build-site.py` rebuilds
+  `dist/`, then push it to the orphan `gh-pages` branch — that branch holds the built
+  site only, one plain commit, no repo furniture. Never merge `gh-pages` into anything
+  or merge anything into it.
 - **Two ways to publish, and they leak different things.** `build-artifact.py` makes
   a private Artifact — no repo, no history, but a claude.ai URL. `build-site.py` makes
   `dist/` for GitHub Pages — a neutral URL, but Pages exposes the repo behind it, and

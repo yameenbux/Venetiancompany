@@ -28,3 +28,11 @@ print(f"dist/ built — {files} files, {total/1e6:.1f} MB")
 for f in sorted(DIST.rglob("*")):
     if f.is_file():
         print(f"  {f.stat().st_size//1024:>5}KB  {f.relative_to(DIST)}")
+
+# Deploy (from the repo root, after this script):
+#   git worktree add --detach /tmp/ghp && cd /tmp/ghp
+#   git checkout gh-pages
+#   find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+#   cp -r ../../dist/. .          # adjust path to wherever dist/ landed
+#   git add -A && git commit -m "Update site" && git push
+#   cd - && git worktree remove --force /tmp/ghp
