@@ -36,18 +36,36 @@ npx wrangler pages deploy dist --project-name venetian-company
 `public/_headers` is the cache policy Pages reads on deploy: hashed `_astro/`
 output immutable, client media a day, HTML always revalidating.
 
+## Deploy — GitHub Pages (currently live)
+
+`gh-pages` holds the built site only: `index.html`, the assets the page actually
+references, and `.nojekyll`. One plain commit, authored as the repo owner, no
+repo furniture. Never merge it into anything or anything into it.
+
+```bash
+cd site
+SITE_URL="https://yameenbux.github.io/Venetiancompany/" \
+BASE_PATH="/Venetiancompany/" npm run build
+```
+
+Then replace the branch contents with `dist/` (minus `*.md` and anything the
+built page does not reference) and commit as `Update site`.
+
+**BASE_PATH is not optional here.** Pages serves this as a project page on a
+subpath and Astro writes root-absolute asset paths, so a root build deployed
+there 404s every image and renders as type on an empty ground.
+
 ## Before the link goes to Adam
 
-1. **Deploy.** Direct upload is the route that leaves no trail back to this
-   repo — `npm run build && npx wrangler pages deploy dist --project-name
-   venetian-company`. Git integration exposes the connected repository, and
-   this one is public.
-2. **Set the real URL.** `astro.config.mjs` still says
-   `https://venetiancompany.pages.dev`. `canonical`, `og:url` and `og:image`
-   are absolute and built from it, so if the deployed URL differs, **rebuild
-   after changing it** — otherwise `og:image` 404s and WhatsApp renders a bare
-   link with no preview card, which is what an unsolicited link looks like when
-   it looks like spam.
+1. **Deploy.** GitHub Pages is live at
+   https://yameenbux.github.io/Venetiancompany/ — see above. Note that Pages
+   exposes the repository behind the URL, and this repo is public. For a URL
+   with nothing to trace, `npx wrangler pages deploy dist --project-name
+   venetian-company` gives a `*.pages.dev` address with no repo attached.
+2. **Match SITE_URL to where it is actually served.** `canonical`, `og:url` and
+   `og:image` are absolute and built from it, so a mismatch means `og:image`
+   404s and WhatsApp renders a bare link with no preview card — which is what
+   an unsolicited link looks like when it looks like spam.
 3. **Check the preview.** Send the link to yourself on WhatsApp first. You
    should get the card: the marbled stair, the wordmark, the phone number.
 4. **Check the CTA on a real phone.** Every button is a `wa.me` deep link to
