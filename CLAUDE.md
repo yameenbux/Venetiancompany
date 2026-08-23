@@ -1,610 +1,248 @@
-# CLAUDE.md
+> **Read `docs/project-brief.md` first.** It holds the client's own words — the
+> verbatim services, pricing, deposit and enquiry copy taken off their Instagram,
+> plus the do-not-invent list. The proxy blocks Instagram, so none of it can be
+> re-fetched. This file used to contain it; it was moved out, not deleted.
+>
+> **One version only.** The "After hours" alternative has been removed. We propose
+> a single design; the customer is not being asked to choose.
 
-Guidance for Claude Code when working in this repository.
+# BAMO — "Our Projects" Page Teardown
 
-## What this repo is
+**URL:** https://bamo.com/our-projects/
+**Studio:** BAMO, Inc. — interior design collective (hospitality, F&B, private residential)
+**Site credit:** SDCO Partners
+**Captured:** 23 August 2026 — three screenshots plus a 28-second screen recording (iPad Safari, 2732×2048 landscape)
 
-A portfolio/pitch workspace. The goal is to generate a **speculative sample website for
-The Venetian Company** — a prospect that currently has no web presence — so we have
-something concrete to show them before reaching out.
+> Source note: the live page blocks automated fetching, so everything below is read off the supplied media. Static structure comes from the screenshots; all motion and interaction notes come from frame-by-frame extraction of the recording. Anything still not observable is flagged as **[unknown]**.
 
-Nothing here is a live client deliverable yet. Treat every generated page as a pitch
-asset: it has to look like it was designed on purpose, by a person, for this specific
-business.
+---
 
-## Client brief
+## 1. Page structure (top to bottom)
 
-Everything below is taken from the client's own public Instagram
-(@thevenetiancompany_ profile and their About Us / Pricing story highlights).
-**Nothing here is inferred — do not add to this list without a source.**
+| # | Section | Background | Purpose |
+|---|---------|-----------|---------|
+| 1 | Sticky header | Transparent over hero | Menu toggle / wordmark / "Work" link |
+| 2 | Hero | Full-bleed photograph | Page title + scroll cue |
+| 3 | Intro statement | Cream (#FAF6EF-ish) | Positioning headline + supporting paragraph |
+| 4 | Project grid | Cream | 3-column card grid, paginated |
+| 5 | Our Clients | Terracotta (#D9503C-ish) | Accordion lists of client names |
+| 6 | CTA band | Full-bleed photo, dark overlay | "Start Your Project" → Contact |
+| 7 | Footer | Cream | Tagline, five office addresses, newsletter, legal |
+| 8 | Oversized wordmark | Cream | Giant "BAMO" as a closing graphic device |
+| — | Filter drawer | Terracotta | Right-anchored overlay panel, five taxonomies (see §5b) |
 
-- **Business:** The Venetian Company — "The Venetian Company - Venetian Plastering"
-- **Sector:** Venetian plaster & microcement. Listed on IG as "Product/service",
-  bio "VENETIAN PLASTER/MICROCEMENT — A team of finishing specialists covering all
-  aspects"
-- **Contact:** Adam Knowles — 07527180499
-- **Instagram:** [@thevenetiancompany_](https://instagram.com/thevenetiancompany_)
-  (228 posts, ~2.9k followers)
-- **Partner:** tiling via [@sktiling](https://instagram.com/sktiling)
-- **Services (verbatim from their About Us highlight):** full house applications,
-  media walls, bathrooms, swimming pool areas, feature walls, microcement,
-  staircases, wet rooms, floors — "and more"
-- **About (verbatim):** "The Venetian Company are a team of experienced professionals
-  skilled in luxury Venetian plastering. We have experience creating unique and
-  sophisticated designs to suit a variety of homes or commercial spaces." … "We are a
-  friendly, customer-focused business with a passion for bringing your dream home to
-  reality."
-- **Pricing process (verbatim from their Pricing highlight):** pricing depends on the
-  size of the area and desired finish/style; quoted after initial discussions and
-  agreed before commencing; alternative finishes offered to suit a budget; up to 2
-  samples included, additional samples £80; 50% deposit before commencing, balance due
-  on completion.
-- **Enquiry channel:** direct message or **WhatsApp** — "please direct message or
-  contact us via the WhatsApp below". WhatsApp is the primary route, not email.
-- **What they ask an enquirer to send (verbatim from their Enquiries highlight):**
-  address of project · photographs of the area · measurements (if available) · your
-  desired finish or style. Plus: "Please feel free to send your inspiration photos to
-  our team to support in understanding your vision. We are experienced specialists who
-  will help in providing guidance for a finish that best suits your requirements."
-  And: "Photographs of the area will also support our team to provide a price based on
-  size."
-- **Site visits (verbatim):** "Once we have agreed your finish, colour and other
-  requirements, samples can be provided as part of your package. We are also able to
-  visit the area to discuss before going ahead." Note *colour* is agreed alongside
-  finish, and a booking date is "mutually agreed" before the deposit is taken.
-- **Deposit T&Cs (verbatim from their Deposits highlight):** "a 50% deposit is required
-  to secure all project bookings before going ahead. This allows our team to purchase
-  the required materials and products for your individual project. This deposit is
-  non-refundable. The remaining balance will be due upon completion of the project."
-- **Audience:** homeowners doing high-end renovations and new builds, plus commercial
-  spaces. Their feed is contemporary architectural — flat-roofed new builds, pool
-  areas, curved plaster staircases, wet rooms.
-- **Tone we're pitching:** material-led and quiet. Luxury trade, not luxury brochure.
-  The finish is the product, so the page should feel like the surface.
-- **Service area:** nationwide (confirmed).
-- **Studio credit:** pages carry "Designed by YSBDesigns" in the footer.
-- **Existing brand assets:** the TVC monogram — a thin black ring with the T, V and
-  C **interlocked down a shared axis**, the T's stem running into the V and the V's
-  point into the C. They are not three stacked letters with gaps; the first pass got
-  that wrong and set them as separate `<text>` baselines. Adam supplied the artwork,
-  and `site/src/components/Monogram.astro` is a **trace of it** (upscaled 4x,
-  thresholded, potrace; 98.7% IoU against the original, 9007 ink pixels to 9008).
-  The outlines are drawn, so there is no font dependency and the mark inherits
-  `currentColor`. Do not tidy the curves — the small asymmetries are in his mark.
-  All-caps tracked typography across their story graphics. No website.
+---
 
-### Written from general knowledge, not from them — needs Adam's sign-off
+## 2. Header
 
-The "Plaster or cement?" band describes how the two materials behave (lime + marble
-dust burnished in coats; cement + polymer laid a few mm thick over existing surfaces,
-seamless, hard-wearing). That is general material fact, **not** taken from anything the
-client has published. It is the one section on the page not sourced from their own
-words, so Adam should read it before the page goes anywhere near a customer — if he
-works differently, it is wrong in his voice.
+- **Left:** hamburger icon (three short stacked rules, unequal widths — not a generic burger). Becomes an **X** when the overlay is open.
+- **Centre:** `BAMO` wordmark, high-contrast serif, wide letterspacing. Renders dark over the light hero — implies either mix-blend-mode or a per-page colour token.
+- **Right:** `WORK` — single uppercase, letterspaced text link. This is the only persistent nav item outside the overlay.
+- Header sits *over* the hero image, no background fill.
 
-### Reference the client's competitor sets
+### Nav overlay (screenshot 1)
 
-[micro-cementuk.co.uk](https://micro-cementuk.co.uk/) — Manchester microcement firm,
-used as a structural reference. Runs Home / About / **What is Microcement** / Our Work /
-**Commercial Projects** / Contact / Order / Pay in 3, and describes work "from
-residential and commercial projects, to retail spaces such as bars, restaurants, and
-more recently gyms". Two ideas taken from it: a materials explainer, and splitting
-residential from commercial. Nothing else — we are not copying their copy or layout.
+- Full-viewport terracotta panel.
+- Background carries large, soft, abstract organic shapes in a slightly darker tint of the same red — very low contrast, almost a watermark. Reads as flowing fabric or a torso/limb abstraction.
+- Nav items laid out **horizontally in a single row**, vertically centred, evenly distributed:
+  `Our Projects` · `Our Process` · `Our Studio` · `News & Press` · `Connect`
+- Type: large display serif (~48–56px equivalent), near-black on terracotta.
+- `WORK` persists top-right; close X top-left in the same position as the burger.
+- **Animation (observed):** the entire panel — background, shapes and nav items together — **cross-fades in at full-viewport scale over roughly 0.5s**. It does not slide, wipe, or expand from the burger. Mid-transition frames show the red at partial opacity with the hero photograph still legible underneath and the nav labels already ghosted in at the same opacity.
+- **No stagger.** All five items resolve simultaneously. A staggered reveal is the obvious thing to reach for here and they deliberately didn't — it keeps the moment quiet rather than showy.
+- In motion the red reads noticeably **hotter and more saturated** than in the static screenshot — closer to a vivid red-orange than the muted terracotta the still suggests. Treat the still as colour-shifted.
+- **[unknown]** hover states on the nav items, phone-width stacking behaviour.
 
-### Reference: bamo.com/our-projects
+---
 
-Sent in as the look to aim at, after the current design was called poor.
-`bamo.com` is blocked by the egress proxy like everything else, so this is read
-off three screenshots — the desktop nav overlay, the full Our Projects page, and
-the same page on a tablet. They are kept in
-`references/bamo/`, because the site cannot be re-fetched to check anything. Every
-number below is measured off those pixels, not remembered.
+## 3. Hero
 
-BAMO is a San Francisco interior-design collective (offices in SF, Providence, Miami,
-New York and Barcelona; 52 projects; site by SDCO Partners). Hotels, restaurants,
-private residential, superyachts.
+**The hero is a slideshow, not a single image** — the screenshots hide this entirely.
 
-**Palette** — three flat grounds and nothing else.
+- **Behaviour:** full-bleed photographs **cross-fade** into one another. Each image holds roughly 5 seconds, with a dissolve of roughly 0.8–1 second. Mid-transition frames show both images superimposed at ~50% — a straight opacity dissolve, no Ken Burns zoom, no slide, no pan.
+- **Images observed in 28 seconds (2 — the loop may be longer):**
+  1. Rooftop terrace at golden hour — timber slatted screen, pergola, parasol, clipped hedging, infinity-edge water, high-rise towers and river beyond. Almost certainly Capella Bangkok.
+  2. Estate at dusk — low timber cabins with lit windows, long reflecting pool, decked terrace with black Adirondack chairs, ornamental grasses, redwoods behind. Reads as one of the Napa projects.
+- **The title does not move or re-render between slides.** "Our Projects" and the arrow sit in a fixed layer above the image stack. Only the photography changes.
+- **Title:** large display serif, white, bottom-left, generous left margin.
+- **Scroll cue:** thin downward arrow to the right of the title, roughly optically centred on the viewport.
+- No overlay scrim; the images' own sky gradients do the contrast work, and both selected images place their darkest area (planting/foreground) exactly where the title sits. That is a photo-selection constraint, not a CSS one — worth noting if you copy this pattern with images you don't control.
+- On scroll the hero moves up out of frame conventionally; no pinning or parallax detected at 1fps sampling. **[unknown]** whether a subtle parallax exists below that threshold.
 
-| | |
-|---|---|
-| Cream ground | `#FDF8EF` — warm near-white, not a deep cream |
-| Vermilion band | `#E44C3A`; the nav overlay reads a touch muted at `#D65744` |
-| Ink | `#181917` on cream |
-| On the red | a deep oxblood, `#4B0200`–`#510000`. **Not white.** |
-| Red as a text colour | `#D35244` for "LOAD MORE" on cream |
+---
 
-**Type** — two families, used with almost no sizes.
+## 4. Intro statement
 
-- Display: a high-contrast transitional/Didone-adjacent serif, light weight, wide, with
-  hairline serifs. Used for the page title over the hero, the intro line, every project
-  name, the section headings, the accordion rows and the giant end wordmark. I am not
-  naming the face — I cannot load the site to check, and guessing one would be inventing
-  a fact.
-- Everything else: a grotesque, only ever small. Tracked caps for category labels
-  (`FOOD & BEVERAGE`, `HOTELS`, `PRIVATE RESIDENTIAL`) and for `WORK`, `NEWSLETTER`,
-  `LOAD MORE`; regular case for the body paragraph, the client names and the addresses.
-- The whole page has roughly four sizes. The contrast between them is enormous — a
-  ~40px nav item and a 12px label, with very little in between. Same hole in the ladder
-  our own scale has.
+- **Headline (2 lines, display serif, dark brown/near-black):** a statement about immersive spaces that stir the senses, invite exploration and spark emotion.
+- **Body paragraph (small sans, ~3 lines, constrained to ~half viewport width):** positions the work as global — spanning time zones, markets and mediums — and lists the range as everything from small pied-à-terres and superyachts through to workplaces and award-winning resorts.
+- Left-aligned, sits in the left ~60% of the column. Large whitespace to the right — deliberate asymmetry, no right-hand column.
 
-**Structure of Our Projects**, top to bottom: full-bleed hero photograph with the page
-title bottom-left and a thin down arrow beside it · cream band with a serif intro line
-and one grotesque paragraph · the project grid · `LOAD MORE` with `9 of 52` under it ·
-full-bleed vermilion band holding `Our Clients` and two accordion rows (`Brands` open
-with a `—`, `Owners & Developers` closed with a `+`) · full-bleed photograph with
-centred white serif and an outlined `CONTACT US` · cream footer, offices in columns,
-newsletter field as a bare underline with an arrow · the wordmark, cropped by the
-bottom edge of the page.
+---
 
-**Grid**, at a 2354px capture: three columns of 682px, **34px gutters**, 86px outer
-margin. The gutter is 5% of a column — the photographs almost touch, and that density
-is a lot of what makes it read as a portfolio rather than a brochure. Tiles are 4:3
-landscape. Under each: the tracked category label, then the project name in the serif.
+## 5. Project grid
 
-**Details worth stealing**
+**Layout:** 3 columns × 3 rows visible = 9 cards. Equal-width columns, consistent gutters, landscape (~4:3) image crops.
 
-- The category label above the project name. Two lines of metadata, no card, no border,
-  no shadow — the photograph is the card.
-- `9 of 52` under the load-more. It says "there is far more of this" without a claim.
-- The client list as a plain wall of names in three columns, inside an accordion. No
-  logos.
-- The end wordmark cropped by the page edge. Our `.endmark` is already this move.
-- Organic blob shapes, barely darker than the ground, drifting behind the nav overlay
-  and the footer. Tonal, never graphic — you notice them only once.
-- The nav overlay: five items on one row, `space-between` across the full width with
-  ~210px between them, sitting just below centre. Not a stacked list.
+**Card anatomy (top to bottom):**
+1. Image
+2. Thin hairline rule
+3. Category eyebrow — uppercase, small, letterspaced, muted grey. Can list multiple categories comma-separated.
+4. Project title — serif, sentence case, dark.
 
-**Two things stop this being a direction we can just take.**
+**The nine visible projects:**
 
-1. **It is the exact look this project deliberately walked away from.** Warm cream,
-   high-contrast serif display, terracotta accent — that is the first pass, and it is on
-   Anthropic's own list of clustered AI looks. BAMO carries it on 52 projects of
-   world-class photography, a wall of Ritz-Carlton and Four Seasons names, and five
-   offices. The palette is not doing the work there; the inventory is. Adam has eight
-   photographs, no reviews yet and one phone number. The same palette over that much
-   less material is where the look collapses back into the default.
-2. **The colour pairings fail our own contrast line.** Measured off the screenshots:
+| Category | Project |
+|----------|---------|
+| Food & Beverage | Beaulieu Vineyard |
+| Hotels | The Bellevue Hotel |
+| Food & Beverage | Robert Mondavi Winery |
+| Branded Residences, Hotels | Napa First Street Hotel & Residences |
+| Private Residential | Kips Bay Show House \| Palm Beach 2026 |
+| Food & Beverage, Hotels | Capella Bangkok |
+| Hotels | Passalacqua |
+| Private Residential | Atherton Residence |
+| Private Residential | Providence Residence |
 
-   | pair | ratio |
-   |---|---|
-   | ink on cream | 16.68:1 |
-   | nav items, ink on the overlay red | 4.46:1 |
-   | oxblood headings on the red band | 4.12:1 |
-   | oxblood client names on the red band | 4.00:1 |
-   | `LOAD MORE`, red on cream | 3.92:1 |
-   | cream on red, for comparison | 3.68:1 |
+**Pagination:** centred `LOAD MORE` link in terracotta, with `9 of 52` beneath it in small grey type. So the full archive is 52 projects, loaded 9 at a time.
 
-   Everything except the cream ground is under 4.5:1 — fine for large display type,
-   short for the small tracked labels they use it on. This page holds ≥4.5:1 on every
-   text run, measured against real composited pixels
-   (`site/scripts/check-page-contrast.py`). Taking the red band literally means either
-   dropping that line or deepening the oxblood until it clears — the second is a couple
-   of steps and keeps the look.
+**Category taxonomy observed on cards:** Hotels · Private Residential · Food & Beverage · Branded Residences.
 
-So: take the **structure, the grid density, the label-over-name pattern, the counted
-load-more, the cropped wordmark, the restraint of four type sizes**. Do not take the
-palette wholesale, and if a coloured band goes in, solve it for contrast first.
+---
 
-### Network: what this environment cannot reach
+## 5b. Filter drawer
 
-The egress proxy returns 403 for both `instagram.com` and `micro-cementuk.co.uk`. So:
+Confirmed by the recording — invisible in all three screenshots.
 
-- **Instagram cannot be scraped from here.** Client media has to be sent into the chat
-  as attachments. That has worked well — keep doing it. Don't promise a scrape.
-- Competitor sites may need `WebSearch` (which works) rather than `WebFetch`.
+- A **terracotta panel anchored to the right edge** of the viewport, sitting below the header (the `WORK` link stays visible above it).
+- **Vertical `FILTER` label** rotated 90° on the panel's left edge, small uppercase letterspaced type.
+- **Five filter taxonomies**, stacked vertically, display serif, sentence case, left-aligned within the panel:
+  1. Market Sector
+  2. Region
+  3. Environment
+  4. Style
+  5. Project Type
+- Beneath them, a small **outlined `CLEAR ALL FILTERS` button** — thin 1px border, uppercase letterspaced micro-type. Its presence implies each taxonomy expands into a multi-select.
+- The panel occupies roughly the right quarter of the viewport width and runs full height below the header.
 
-### Unknowns — do NOT invent these
+**Why this matters:** the card categories are only a *display* of one taxonomy (Market Sector). The real filtering model is five-dimensional — sector, geography, indoor/outdoor environment, aesthetic style, and project type. That's a far more considered content model than the grid lets on, and it's what makes 52 projects navigable rather than a wall.
 
-Trading address, service area/radius, years established, company registration, team
-size, accreditations, testimonials, review scores, past client names, project
-locations, prices beyond the £80 sample fee. **Which commercial sectors they have
-worked in** — the competitor names bars, restaurants and gyms; we have no evidence
-The Venetian Company has done any of those, so the commercial band stays text-only
-until Adam supplies commercial jobs. Leave a `<!-- TODO -->` and ask.
+**[unknown]** the trigger. The drawer was caught mid-animation during a page transition rather than opened deliberately, so I can't tell whether it's a fixed tab on the right edge, a control that appears on scroll, or an item inside the header. The individual values under each taxonomy are also unseen.
 
-## Current design direction
+---
 
-Third pass, and the one that is built. Driven by the bamo.com reference above —
-its structure and restraint, not its palette, which is the distinction that
-section exists to hold.
+## 6. Our Clients
 
-**What changed and why.**
+- Full-width terracotta band — the strongest colour moment on the page, and the same red as the nav overlay. Ties the two together.
+- **Heading:** "Our Clients", centred, display serif, dark.
+- **Accordion, two rows**, each with a hairline rule and a +/− indicator on the right:
+  - `Brands` — **expanded** (− icon)
+  - `Owners & Developers` — **collapsed** (+ icon) — **[unknown]** contents
 
-The first pass was warm cream + a Didone display + terracotta, which is on
-Anthropic's own list of clustered AI looks. The second replaced it with a cool
-screed ground and Archivo expanded caps. That was disciplined but cold, and it
-was also **sampled wrong twice**:
+**Brands list** — 3 columns, alphabetised *across* rows (col1 → col2 → col3, then next row), small type, dark on terracotta:
 
-- The ground was `#E8E9E7`, a green-leaning grey, taken from photographs read
-  under daylight — which skews blue. Quantising the *plaster itself*
-  (`finish-venetian`, `plaster-detail`) returns **h27–32 at s6–9%**. Lime and
-  marble dust are warm. The ground is warm chalk now.
-- The accent was petrol `#12504F`, documented as "from their marbled wall
-  (h180)". The wall does not read h180. Its most saturated pixels sit at **h206**
-  and its midtones at **h195–198** — a deep blue-teal, not a green one.
-
-| token | value | where it comes from |
+| | | |
 |---|---|---|
-| `--color-lime` | `#EBE8E5` | hsl(32 14% 91%) — the trowelled plaster |
-| `--color-chalk` | `#F6F4F1` | lifted, for insets |
-| `--color-lime-2/-3` | `#DEDAD5` `#C8C2BA` | the ground gradient |
-| `--color-ink` | `#1A1817` | warm near-black, 14.5:1 on the ground |
-| `--color-ink-mute` | `#4A453F` | see below |
-| `--color-slate` | `#1C3C4A` | hsl(198 45% 20%) — the marbled wall |
-| `--color-slate-lt` | `#80B5CB` | for use on the band |
-| `--color-stone` | `#C6C0B8` | muted on the band |
+| Auberge Collection | Autograph Collection Hotels | Capella Hotels & Resorts |
+| Conrad Hotels Resorts | Curio Collection by Hilton | Exclusive Resorts |
+| Fairmont Hotels & Resorts | Four Seasons Hotels & Resorts | Halekulani Hotel |
+| JW Marriott Hotels & Resorts | Mandarin Oriental Hotel Group | Park Hyatt Hotels |
+| Ritz-Carlton Hotel Company | Rosewood Hotels & Resorts | Solis Hotels |
+| St. Regis Hotels & Resorts | Taj Hotels | The Peninsula Hotels |
+| The Ritz-Carlton Reserve | Waldorf-Astoria Hotels & Resorts | Westin Hotels & Resorts |
 
-**The type roles are swapped.** Newsreader now displays and Archivo works:
-headings are a serif set roman and **sentence case**, and the grotesque is
-demoted to labels, metadata and body. Two families, four sizes — the discipline
-the reference actually runs on. Archivo keeps the wordmark's spirit through the
-monogram and every tracked cap, because all-caps tracked lettering is the
-client's own vernacular. A text serif at display size stays warm where a Didone
-goes brittle, and brittle-Didone-on-cream is exactly what pass one was.
+21 brands. Plain text, no logos — a deliberate choice: it reads as a credential list rather than a logo wall, and sidesteps the visual mess of mismatched brand marks.
 
-**Three structural moves taken from the reference.**
+---
 
-1. **The service index lost its 01–09.** Nine things they do is not nine steps;
-   the order carried no information, so the numbers were decoration wearing the
-   costume of structure. What is left is a wall of names with a rule between
-   each — the reference's client list, applied to services.
-2. **The sample board.** The six finishes now run full bleed with a **3px**
-   gutter, edge to edge. The reference runs 34px between 682px columns, about
-   5%, and that density is most of why its grid reads as a portfolio rather than
-   a brochure. It is also what a sample board physically is, and samples are how
-   this trade actually sells — up to two come with the package, £80 after that.
-3. **Counted, not claimed.** "Six of six shown", the way the reference says
-   "9 of 52".
+## 7. CTA band
 
-**Contrast was solved against pixels, again, and the same mistake was made
-again first.** `--color-ink-mute` at `#58524B` computes to 6.3:1 against a flat
-`#EBE8E5` — but the ground is not flat, the gradient runs down to
-`--color-lime-3` and `.grain` multiplies over it. Measured against the
-composite it was landing at **3.86:1**. `#4A453F` clears it: the page-wide sweep
-is 0 failures on both viewports, lowest 4.71 mobile and 4.77 desktop. Do not
-compute a pair — render it and sample, with `site/scripts/check-contrast.py`
-for the hero and `site/scripts/check-page-contrast.py` for the rest.
+- Full-bleed photograph of a studio/office interior: floor-to-ceiling windows, desk with lamp and books, materials, a vase of dark red flowers, a large "B" graphic on the far wall.
+- Dark scrim over the image for legibility.
+- **Heading:** "Start Your Project" — display serif, white, centred.
+- **Sub:** two lines about creating something extraordinary together.
+- **Button:** `CONTACT US` — uppercase, letterspaced, small, likely a text link or ghost button.
 
-### Two directions, one source
+---
 
-Both are drawn from the same photographs, read two different ways — which is the
-argument to make in the room, not "here are two palettes".
+## 8. Footer
 
-| | A — Daylight | B — After hours |
+- **Left:** "A collective of interior designers." — two lines, display serif, dark. This is the brand's positioning line, given the most typographic weight in the footer.
+- Beneath it: `© 2026 BAMO, Inc. | Privacy Policy` and `Site by SDCO Partners`.
+- **Office columns** (uppercase city label + address, small sans):
+
+| San Francisco | Providence | Miami | New York City | Barcelona |
+|---|---|---|---|---|
+| 1000 Brannan Street, Suite 300, San Francisco, CA 94103 | 1 Park Row, Suite 401, Providence, RI 02903 | 3350 Virginia Street, 2nd Floor, Miami, FL 33133 | 195 Chrystie Street, 303D, New York, NY 10002 | Premià de Mar, Barcelona, Spain |
+
+- **Connect column:** `info@bamo.com`, `Careers`, plus a row of social icons — Instagram, LinkedIn, YouTube, Facebook, and one more (Vimeo or Behance).
+- **Newsletter:** `NEWSLETTER` label, full-width underline input with placeholder "Email Address", right-aligned arrow submit. Minimal — no box, just a rule.
+- **Closing graphic:** enormous `BAMO` wordmark spanning the full viewport width, cropped at the bottom edge. Faint ghost shapes behind it echo the nav overlay's organic forms.
+
+---
+
+## 9. Design system notes
+
+**Colour**
+- Cream / warm off-white — primary background
+- Terracotta / burnt coral — single accent, used for the clients band, the nav overlay, and the `LOAD MORE` link. Used sparingly and at full strength rather than diluted everywhere.
+- Near-black warm brown — body and display text
+- White — text over imagery only
+
+**Type**
+- One high-contrast display serif for all headings, project titles, nav, and the wordmark. Large sizes, tight-ish leading.
+- One small sans for body copy, eyebrows, addresses, and UI labels — always uppercase and letterspaced when used as a label.
+- Two typefaces total. That restraint is doing most of the work.
+
+**Layout**
+- Wide margins, heavy whitespace, left-aligned asymmetric text blocks.
+- Hairline rules as the only separator device — no cards, no shadows, no borders around images.
+- Full-bleed photography alternating with quiet cream sections; the rhythm is image → quiet → image → colour → image → quiet.
+
+**Motion (observed in the recording)**
+
+| Moment | Behaviour | Approx. duration |
 |---|---|---|
-| Sampled from | the walls, in daylight | the room, under tungsten |
-| Ground | `#EBE8E5` warm chalk | `#14120F` warm near-black |
-| Accent | `#1C3C4A` deep blue-teal, from the marbled wall | `#C79A63` brass, from their fittings (`#D8A878` sampled) |
-| Display | Newsreader 300, sentence case | Newsreader 200, lowercase |
-| Labels | Archivo tracked caps | Courier Prime, spec-sheet annotation |
-| Thesis | the surface is the product | you judge a finish by taking a light to it |
-| Signature | the plate — the wordmark set *inside* a full-bleed photograph of the work, not beside it | the raking light pass |
+| Hero slideshow | Opacity cross-fade between full-bleed photos, fixed title layer | ~5s hold, ~1s dissolve |
+| Nav overlay open | Full-viewport opacity fade of panel + items together, no stagger | ~0.5s |
+| Nav overlay close | Same fade in reverse | ~0.5s |
+| Page navigation | Solid-colour curtain covers the viewport, then lifts to reveal the new page | ~1.5–2s total |
+| Filter drawer | Right-anchored panel translates in/out horizontally | <0.5s |
 
-#### The hero plate (replaces the arch)
+**The page transition is the most distinctive move on the site.** Clicking a nav item does *not* fade the overlay back to the old page and then load the new one. Instead the terracotta overlay cross-fades directly into a **solid warm sand/taupe curtain** — a third colour, roughly `#D9CBB8`, noticeably duller and browner than the cream page background — which fills the entire viewport for around 1.5–2 seconds while the next page assembles behind it. The curtain then clears and the new hero is already in place.
 
-The arch is gone. The hero is one full-bleed photograph — the marbled stairwell
-— with the wordmark sitting in it.
+Three deliberate choices in that:
+- The curtain colour is *not* the page background. Using a distinct tone makes the transition read as an intentional interstitial rather than a page that failed to paint.
+- It runs long enough to fully mask load and layout shift. Nothing ever janks into place on this site because you're never allowed to watch it happen.
+- Red → sand → photograph gives the navigation a three-beat rhythm. It is slow by web standards and that slowness is the point: it borrows the pacing of a printed monograph.
 
-**The scrim is ink, and that reverses what this file said before.** The earlier
-rule was "the scrim is paper, not black", on the argument that everyone else
-dims the building and this direction should wash toward the ground colour
-instead. That was written for a bright courtyard shot. The photograph is now a
-dark one — mean luminance .144, median .122 — and paper over it does not read as
-daylight, it reads as fog: the marble greys out and the hero looks washed rather
-than lit. **Do not reinstate the paper scrim while the hero photograph is dark.**
-If a bright hero image ever comes back, the paper wash is the right tool again.
+**Other interaction**
+- Overlay nav rather than an inline menu — keeps the header to three elements.
+- Progressive loading with an explicit count (`9 of 52`) instead of infinite scroll.
+- Accordion for long client lists; five-taxonomy filter drawer for the archive.
+- **[unknown]** hover treatments on project cards, scroll-reveal animation on the grid.
 
-This is not Direction B borrowed. B is lowercase Newsreader, brass and Courier
-labels; none of that is here. The type is the same Archivo caps on the same
-scale, the accent is the same blue-teal family (the dark-ground CTA inverts to the
-page's own ground colour, since the band colour on near-black is only ~2.2:1 as
-a shape), and paper-on-near-black is
-already Direction A's own vocabulary — the Materials and Finish bands are built
-from it.
+---
 
-**The scrim stops are solved, not eyeballed.** Compositing alpha *a* of ink
-(`#101416`, sRGB .063) over an image pixel *v* gives `a*.063 + (1-a)*v`. The
-copy sits over the bright end of this frame — the window and the pale room,
-sRGB up to ~240 — so that is the case to solve:
+## 10. What's worth stealing
 
-| text | colour | needs | over the bright end needs |
-|---|---|---|---|
-| wordmark (large text) | `--color-paper` | 3:1 | a ≥ .48 |
-| lede | `--color-paper` at .82 | 4.5:1 | a ≥ .61 |
-| eyebrow, scroll cue | `--color-stone` | 4.5:1 | a ≥ .72 — the tight one |
+1. **One accent colour, used loudly.** The terracotta appears in exactly three places and carries the entire brand personality. Most portfolios dilute an accent across a dozen small elements and it stops meaning anything.
+2. **The `9 of 52` counter.** It signals depth of work without forcing the visitor to scroll through all of it. A portfolio with three case studies obviously can't use this — but the underlying move (make your volume of work legible) is worth thinking about.
+3. **Client list as plain text, not logos.** Cheaper to build, easier to maintain, and it avoids the "logo wall of two clients" problem.
+4. **The oversized wordmark footer.** Costs nothing, ends the page with confidence.
+5. **Category eyebrow above project title.** Two lines of metadata do the work of a filter UI you may not need yet.
+6. **The coloured page-transition curtain.** Cheap to implement, and it buys you cover for every load delay and layout shift on the site. This is the single most portable idea here — it works at three projects exactly as well as at fifty-two.
+7. **Restraint in the overlay animation.** No stagger, no slide, no easing theatrics. One opacity fade. Most portfolio sites over-animate their nav because it's the easiest place to show off.
 
-The wordmark now fills its column rather than sitting on the h1 step, so the copy
-block is taller — it ends between 546px and 676px, not 514 and 558 — and the
-mobile pixel stops were re-solved to match. The scrim is tinted to the band
-colour (`#16303B`) rather than neutral ink.
+---
 
-The eyebrow's `·` separators lost their accent tint in the flip: petrol measured
-1.49:1 on this ground and even `accent-lt` only reaches 3.28, short of 4.5 at
-that size. They take the label colour.
+## 11. Gaps in this document
 
-Verified by rendering the hero, hiding the copy layer, and sampling the actual
-composited pixels under every glyph run: **15 viewport sizes from 320×568 to
-1920×1080, worst pixel of every string, minimum ratio 5.28**. Re-run
-`site/scripts/check-contrast.py` if you touch the stops or the image, and
-`site/scripts/check-page-contrast.py` for the page as a whole.
+- Remaining 43 projects (only the first 9 load without interaction)
+- Contents of the "Owners & Developers" accordion
+- The values inside each of the five filter taxonomies, and how the drawer is triggered
+- Hover treatments on project cards; any scroll-reveal on the grid
+- Individual project detail page structure
+- Whether the hero slideshow runs to more than two images
+- Exact hex values, typeface names, and breakpoint behaviour — none of which can be read off a screenshot or a recording
 
-**Mobile stops are in pixels, not percentages.** The copy block is a fixed
-height — it ends between 514px and 558px from the top at every phone width —
-while the hero is `100svh`. A percentage ramp tuned on a 812px screen left the
-scroll cue sitting in open photograph on a 640px one. Pixels track the copy;
-percentages track the window. From `md` the copy becomes a centred left column
-and the wash becomes a horizontal ramp, which opens the right of the frame —
-where the marbled wall is — back up.
-
-**Resolution is no longer a worry.** The source is 3024×4032, served as three
-widths behind a `<picture>` with a WebP source and a JPEG fallback.
-
-### Type scale
-
-Strict modular scale, defined in `site/src/styles/global.css` under `@theme`.
-Ratio **1.25** (major third) from an 18px base at the 1440 anchor, compressed to
-**1.14** from 16px at 360 so display steps still fit a phone. Every clamp is the
-straight line between those two anchors.
-
-| step | name | 360px | 1440px | line-height | tracking |
-|---|---|---|---|---|---|
-| −2 | label | 11.5px | 11.5px | 1.45 | +.22em |
-| −1 | caption | 14.4px | 14.4px | 1.55 | +.005em |
-| 0 | body | 16.0px | 18.0px | 1.70 | 0 |
-| 1 | lede | 18.2px | 22.5px | 1.45 | −.005em |
-| 2 | h4 | 20.8px | 28.1px | 1.25 | −.012em |
-| 3 | h3 | 23.7px | 35.2px | 1.15 | −.016em |
-| 6 | h2 | 35.1px | 68.7px | 1.02 | −.022em |
-| 9 | h1 | 52.0px | 134.1px | 0.94 | −.028em |
-
-**Steps 4, 5, 7 and 8 are deliberately unused.** That hole between h3 and h1 is
-what makes the display read as large rather than merely big. Do not fill it —
-if something seems to need step 4, it wants h3 or h2.
-
-Line-height falls as size rises; tracking runs monotonically from +.22em on the
-label to −.028em on h1. Each token carries **all three** values
-(`--text-h2`, `--text-h2--line-height`, `--text-h2--letter-spacing`), so a
-utility cannot pick up a size without its leading and tracking. Add sizes by
-adding a step, never with an arbitrary `text-[…]`.
-
-**label and caption are fixed, not fluid.** Interpolating them produced a clamp
-whose min exceeded its max — small text wants to be relatively *larger* on a
-phone — and CSS silently resolves that to the min, discarding the max. UI text
-at that size is a constant.
-
-Two justified off-scale values, both documented in place: `.endmark` (a mark
-measured against the viewport, `15.6vw`) and the hero's "The" (`.26em` of h1 —
-a lockup keeps its ratio at every size).
-
-**One cap, which is not a third exception.** `.wordmark` sets
-`font-size: min(var(--text-h1), calc((100vw - 2 * var(--spacing-gutter)) / 6.44))`.
-h1 is still the scale step; the `min()` only stops it exceeding what the column
-can carry. The floor at the 360 anchor (52.03px) stops the type shrinking while
-the column keeps shrinking, so on a phone "COMPANY" ran past the gutter and the
-`overflow:hidden` mask each hero word sits in shaved the last glyph — 5px over
-at 375, 13px at 360, 53px at 320. The divisor is measured: in Archivo `wdth 125`
-at h1 tracking, "COMPANY" sets 6.40× its own font-size, and 6.44 leaves margin.
-Above ~388px the scale is already the smaller of the two, so nothing changes
-there or on desktop (h1 is still exactly 134.1px at 1440). The rule is
-**unlayered on purpose** — `text-h1` is a utility, and Tailwind's utilities
-layer beats `@layer components` regardless of specificity.
-
-### Rhythm and motion
-
-`--spacing-section: clamp(6rem, 13.5vw, 12.5rem)` (~194px at 1440) and
-`--spacing-head: clamp(3.25rem, 7.5vw, 6rem)`, taken from the BAMO and Olivia
-Harper references. Note BAMO's *horizontal* rhythm runs the other way: 34px gutters
-against 682px columns, so its photographs nearly touch. Generous vertically, tight
-horizontally.
-
-The outer rhythm is settled — section seams run 258–389px at 1440 and nothing
-there is cramped. What was cramped was **inside** sections: closing notes and
-credits sitting 24–36px under the blocks they belong to. Those were audited by
-measuring the rendered page and doubled. Don't tighten them back:
-
-| where | was | now |
-|---|---|---|
-| index → "and more" note | 36px | 72px |
-| feature figure → plates grid | 56px | 112px |
-| plates grid → photo credit | 24px | 48px |
-| quotes → placeholder flag | 28px | 56px |
-| contact h2 → phone number | 24px | 48px |
-| phone number → CTA | 40px | 80px |
-| CallBand row gap (stacked) | 24px | 48px |
-
-The 20px between an eyebrow and its heading is a **lockup**, not a gap — it
-matches `SectionHead`'s `mb-5` and should stay tight. **Motion was re-specced** to subtle / 200–300ms / nothing bounces, which
-supersedes the earlier "unhurried, don't speed these up" note taken from the
-references. That older rule is gone — do not reinstate it from the reference
-screenshots.
-
-- One curve for all interaction motion: `--ease-motion: cubic-bezier(.33,1,.68,1)`
-  (easeOutCubic). Both control-point y values are ≤ 1, so it decelerates into
-  place and **cannot overshoot**. Anything with y > 1 — `back.out`, spring
-  curves — bounces and is banned.
-- `--duration-reveal: 280ms`, `--duration-hover: 240ms`. Every transition and
-  entrance sits in the 200–300ms band; verified against the live document.
-- Scroll reveals travel **14px**, not 34px. A long throw at 280ms reads as a
-  jerk — short travel is what makes a fast reveal feel subtle.
-- Stagger step is 40ms, so a nine-child group finishes in ~600ms.
-
-One ambient loop is deliberately outside the band because it is neither a
-reveal nor a hover: the hero scroll `cue` (3.4s). It is a slow drift, not an
-interaction. The arch light `sweep` (22s) was the other one; it went with the
-arch, and its keyframe was deleted rather than left orphaned.
-
-
-## Stack and brief
-
-| | |
-|---|---|
-| Audience | a trader charging upwards of £1,500 a project — the page has to carry that price |
-| The one action | book a call. One CTA, repeated, never a menu of asks |
-| Quality bar | the BAMO and Olivia Harper references: scale, rhythm, motion. bamo.com is documented in full under *Reference: bamo.com/our-projects* — structure and density yes, palette no, and read the contrast table before borrowing a coloured band |
-| Stack | Astro + Tailwind v4, static output, no CMS, Cloudflare Pages |
-| Banned | purple gradients · emoji as icons · Inter as display · stock-photo placeholders · centred-everything |
-
-The ban list was already satisfied when it arrived — fonts are Archivo/Newsreader, every
-image is the client's own, there is no `text-align:center` anywhere, and the only "Inter"
-matches in the source are `IntersectionObserver`. Keep it that way.
-
-**One conflict, reconciled rather than ignored.** Adam's own published intake is
-"direct message or WhatsApp" with address, photographs, measurements and desired finish.
-A call-first CTA cuts across that. So the CTA books a call and opens WhatsApp with the
-request pre-written, and his four items became "worth having ready for the call" —
-step 01 of the process is now the call. Both things stay true.
-
-## Layout
-
-```
-site/                the site — Astro + Tailwind, deploys to Cloudflare Pages
-  src/data/site.ts     every client-supplied fact, one file, no CMS
-  src/components/      BookCall.astro is the one CTA, used six times
-  scripts/             check-contrast.py — samples the real composited pixels
-                       under the hero copy; run it if you touch the plate
-  public/assets/       canonical home for the client's photography and film
-  public/_headers      Cloudflare cache policy
-CLAUDE.md            this file
-references/bamo/     the bamo.com screenshots the reference section is measured
-                     from — the site itself is blocked from here
-prompts.py           DISTILLED_AESTHETICS_PROMPT — the system prompt for generation
-helpers.py           Claude client + streaming generation + save/preview helpers
-generate.py          CLI entry point: python generate.py "<brief>"
-html_outputs/        timestamped generated pages (gitignored except .gitkeep)
-samples/             pages we've kept and are willing to show
-  venetian-company/index.html    Direction A — "Daylight": cool screed, Archivo
-                                 expanded caps, petrol accent. This is the one
-                                 deployed to gh-pages.
-  venetian-company-b/index.html  Direction B — "After hours": warm near-black,
-                                 lowercase Newsreader, brass accent, raking-light
-                                 signature. Comparison option, not deployed.
-                                 Its assets/ is a symlink to Direction A's.
-  venetian-company/assets/       the client's own photography and film (see CREDITS.md)
-  venetian-company/build-artifact.py  strips the wrapper, inlines media, for Artifacts
-  venetian-company/build-site.py      builds dist/ — a clean standalone site for hosting
-dist/                built site, gitignored
-```
-
-## How to generate a page
-
-```bash
-export ANTHROPIC_API_KEY=sk-ant-...
-pip install -r requirements.txt
-python generate.py "A single-page site for The Venetian Company — ..."
-```
-
-Or from a notebook / REPL:
-
-```python
-from helpers import generate_html_with_claude
-from prompts import DISTILLED_AESTHETICS_PROMPT
-
-generate_html_with_claude(DISTILLED_AESTHETICS_PROMPT, "A single-page site for ...")
-```
-
-`generate_html_with_claude` streams the response, extracts the HTML from the fenced code
-block, writes it to `html_outputs/<timestamp>.html`, and opens it in a browser when one
-is available.
-
-## Working rules
-
-- **Always pass `DISTILLED_AESTHETICS_PROMPT` as the system prompt** when generating a
-  page. It exists to keep output off the "AI slop" attractor; skipping it defeats the
-  point of the whole repo.
-- **The site is an Astro app** (`site/`), not a single file. The old one-file rule was
-  superseded by an explicit stack directive — Astro + Tailwind, static, no CMS, deployed
-  to Cloudflare Pages. `samples/` keeps the two single-file directions as archives; they
-  still open by double-click and symlink into `site/public/assets` for media.
-- **One action, repeated.** Every call-to-action on the site is
-  `src/components/BookCall.astro` — same words, same destination. Six instances, one
-  href. Do not add a second competing ask.
-  **Never hide it with a passed class.** `BookCall`'s own `base` sets
-  `inline-flex`, and Tailwind v4 emits `.inline-flex` *after* `.hidden` in the
-  same layer, so `class="hidden md:…"` silently loses — that is how the nav CTA
-  ended up rendering at 375px, wrapping to two lines and pushing the header to
-  104px. Wrap the component in an element that carries the display utility
-  (`<span class="hidden md:contents">`) instead.
-- **Never overwrite a previous output.** Outputs are timestamped so we can compare
-  directions side by side.
-- **Deploying to Pages.** `python samples/venetian-company/build-site.py` rebuilds
-  `dist/`, then push it to the orphan `gh-pages` branch — that branch holds the built
-  site only, one plain commit, no repo furniture. Never merge `gh-pages` into anything
-  or merge anything into it.
-- **Two ways to publish, and they leak different things.** `build-artifact.py` makes
-  a private Artifact — no repo, no history, but a claude.ai URL. `build-site.py` makes
-  `dist/` for GitHub Pages — a neutral URL, but Pages exposes the repo behind it, and
-  **this repo is public and contains CLAUDE.md plus Claude co-author trailers on every
-  commit.** Serving Pages from here hands anyone who reads the URL a route straight to
-  that. For a Pages URL with nothing to trace, push `dist/` to a separate repo with its
-  own clean history. `index.html` stays the source of truth for both.
-- **Reviews must be real.** The page has a review section built and visibly marked
-  `PLACEHOLDER`. Do not fill it in. Three quotes with first name + area have to come
-  from Adam's actual customers.
-- **Client media is the client's.** Anything under `assets/` came off their Instagram
-  and is theirs. Credit it, keep `CREDITS.md` current, and pull it if the pitch dies.
-- **Don't invent facts about the client.** No fake testimonials, fake awards, fake
-  addresses, fake founding dates, fake client logos. Use obviously-placeholder copy
-  (e.g. "Est. —", lorem-adjacent but on-brand) or leave a `<!-- TODO -->`. This is going
-  in front of the actual business owner; fabricated credentials are how a pitch dies.
-- **Vary the direction between runs.** If the last output was a dark serif thing, the
-  next one shouldn't be. Keep genuinely different directions to show as options.
-
-## Installed skills
-
-Two design skills are vendored into `.claude/skills/` so they travel with the repo —
-this environment is ephemeral, so a user-level install at `~/.claude/skills/` would not
-survive the container.
-
-| Skill | Source | Licence |
-|---|---|---|
-| `frontend-design` | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/frontend-design) | see its `LICENSE.txt` |
-| `ui-ux-pro-max` | [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) v2.13.0 | MIT |
-
-`ui-ux-pro-max` ships a searchable local dataset and a CLI:
-
-```bash
-python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<brief>" --domain typography
-# domains: style color chart landing product ux typography icons gsap react web google-fonts
-python3 .claude/skills/ui-ux-pro-max/scripts/design_system.py --help
-```
-
-Its `scripts/tests/` were dropped on install (the skill's own CI, not ours). Scanned
-before installing: no network calls, no `subprocess`/`eval`/`exec`, no writes outside
-its own directory.
-
-**These do not replace `DISTILLED_AESTHETICS_PROMPT`** — that is still the system prompt
-for generation. Treat the skills as reference material during hand-editing.
-
-## The aesthetics system prompt
-
-The canonical copy lives in `prompts.py` as `DISTILLED_AESTHETICS_PROMPT`. Reproduced
-here so it's readable without opening the code:
-
-```text
-<frontend_aesthetics>
-You tend to converge toward generic, "on distribution" outputs. In frontend design, this creates what users call the "AI slop" aesthetic. Avoid this: make creative, distinctive frontends that surprise and delight. Focus on:
-
-Typography: Choose fonts that are beautiful, unique, and interesting. Avoid generic fonts like Arial and Inter; opt instead for distinctive choices that elevate the frontend's aesthetics.
-
-Color & Theme: Commit to a cohesive aesthetic. Use CSS variables for consistency. Dominant colors with sharp accents outperform timid, evenly-distributed palettes. Draw from IDE themes and cultural aesthetics for inspiration.
-
-Motion: Use animations for effects and micro-interactions. Prioritize CSS-only solutions for HTML. Use Motion library for React when available. Focus on high-impact moments: one well-orchestrated page load with staggered reveals (animation-delay) creates more delight than scattered micro-interactions.
-
-Backgrounds: Create atmosphere and depth rather than defaulting to solid colors. Layer CSS gradients, use geometric patterns, or add contextual effects that match the overall aesthetic.
-
-Avoid generic AI-generated aesthetics:
-	- Overused font families (Inter, Roboto, Arial, system fonts)
-	- Clichéd color schemes (particularly purple gradients on white backgrounds)
-	- Predictable layouts and component patterns
-	- Cookie-cutter design that lacks context-specific character
-
-Interpret creatively and make unexpected choices that feel genuinely designed for the context. Vary between light and dark themes, different fonts, different aesthetics. You still tend to converge on common choices (Space Grotesk, for example) across generations. Avoid this: it is critical that you think outside the box!
-</frontend_aesthetics>
-```
-
-## Model
-
-`helpers.py` reads the model from the `ANTHROPIC_MODEL` env var, defaulting to
-`claude-sonnet-4-6`. `claude-opus-5` is the stronger option if the sample pages aren't
-landing.
+> Everything in this last list except the project archive itself is answerable in about ten minutes with DevTools open on the live site. The recording was worth extracting; it is still no substitute for inspecting the thing.

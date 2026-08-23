@@ -1,69 +1,50 @@
 ---
-import BookCall from './BookCall.astro';
 import { asset } from '../lib/asset';
 import { serviceArea } from '../data/site';
+
+/* Three of Adam's own rooms. They cross-fade; the title layer above them does
+   not move or re-render between slides, so only the photography changes.
+
+   Ordered so the first is the darkest — it is the one the title has to sit on
+   while the others are still decoding, and it is the LCP image. */
+const slides = [
+  { base: 'hero-stair', w: [700, 1000, 1400], alt: 'Marbled plaster wall in deep teal behind a floating oak staircase' },
+  { base: 'hero-well',  w: [700, 1050],       alt: 'Double-height stairwell in polished plaster, lit from a skylight' },
+  { base: 'hero-arch',  w: [700, 1050],       alt: 'Bathroom in plaster with a freestanding bath beneath an arched window' },
+];
+const set = (b: string, ws: number[], ext: string) =>
+  ws.map((w) => `${asset(`assets/${b}-${w}.${ext}`)} ${w}w`).join(', ');
 ---
-<!-- The plate: the photograph runs full bleed and the wordmark sits inside it.
-     The scrim is INK, not lime. That reverses the earlier rule, and the reason
-     is that the rule's premise changed: it was written for a bright courtyard
-     shot, where washing toward the ground colour kept the ink palette. Adam's
-     marbled stairwell is a dark photograph — mean luminance .144, median .122 —
-     and washing that toward lime does not read as daylight, it reads as fog.
-     Dimming a dark photograph is what the photograph already is.
-     This is not Direction B borrowed: B is lowercase Newsreader, brass and
-     Courier labels. The type here is the same Archivo caps on the same scale,
-     the slate is the same petrol family, and lime-on-near-black is already
-     Direction A's own vocabulary — the Materials and Finish bands are built
-     from it. Scrim stops are solved against measured pixels, see .plate-scrim. -->
-<section class="hero-plate relative flex items-start md:items-center min-h-[100svh] overflow-hidden
-                px-gutter pt-36 md:pt-28 pb-16">
-  <!-- The LCP image, so it is eager and high priority. Three widths behind a
-       <picture>: WebP saves about a third on a texture this busy (296KB against
-       441KB at 1400w) and the JPEG is there for anything that cannot take it. -->
-  <picture>
-    <source type="image/webp" sizes="100vw"
-            srcset={`${asset("assets/hero-stair-700.webp")} 700w, ${asset("assets/hero-stair-1000.webp")} 1000w, ${asset("assets/hero-stair-1400.webp")} 1400w`} />
-    <img class="plate-img" sizes="100vw"
-         srcset={`${asset("assets/hero-stair-700.jpg")} 700w, ${asset("assets/hero-stair-1000.jpg")} 1000w, ${asset("assets/hero-stair-1400.jpg")} 1400w`}
-         src={asset("assets/hero-stair-1000.jpg")} width="3024" height="4032"
-         fetchpriority="high" decoding="async" alt="" aria-hidden="true" />
-  </picture>
-  <div class="plate-scrim" aria-hidden="true"></div>
+<section class="relative min-h-[100svh] overflow-hidden" id="top">
+  <div class="absolute inset-0" id="slides">
+    {slides.map((s, i) => (
+      <picture>
+        <source type="image/webp" sizes="100vw" srcset={set(s.base, s.w, 'webp')} />
+        <img class="slide" data-on={i === 0 ? 'true' : 'false'} sizes="100vw"
+             srcset={set(s.base, s.w, 'jpg')} src={asset(`assets/${s.base}-${s.w[1]}.jpg`)}
+             width="1400" height="1867" alt={i === 0 ? s.alt : ''} aria-hidden={i !== 0}
+             fetchpriority={i === 0 ? 'high' : 'low'} loading={i === 0 ? 'eager' : 'lazy'}
+             decoding={i === 0 ? 'sync' : 'async'} />
+      </picture>
+    ))}
+    <div class="hero-foot" aria-hidden="true"></div>
+  </div>
 
-  <div class="relative z-2 w-full max-w-[1240px] mx-auto">
-    <p class="label text-stone [animation:fadeUp_300ms_var(--ease-motion)_both] [animation-delay:40ms]">
-      <!-- The separators lost their slate tint when the plate went dark: petrol
-           on this ground measured 1.49:1, and slate-lt only reaches 3.28 —
-           still short of 4.5 for text this size. They take the label colour. -->
-      Venetian Plaster &middot; Microcement &middot; {serviceArea}
-    </p>
-
-    <!-- "The" is set as a proportion of the wordmark (.26em of h1), not as an
-         independent scale step — a lockup has to keep its ratio at every size.
-         It is one of two deliberate off-scale values; the other is .endmark. -->
-    <h1 class="wordmark text-h1 uppercase mt-7 text-lime">
-      {['The', 'Venetian', 'Company'].map((word, i) => (
-        <span class="block overflow-hidden">
-          <i class={`block not-italic [animation:lift_300ms_var(--ease-motion)_both] ${
-            i === 0 ? 'text-[.26em] font-normal tracking-[.42em] pl-[.35em]' : ''}`}
-            style={`animation-delay:${[80, 120, 160][i]}ms`}>{word}</i>
-        </span>
-      ))}
-    </h1>
-
-    <p class="font-read text-lede text-lime/[.82] max-w-[26ch] mt-8
-              [animation:fadeUp_300ms_var(--ease-motion)_both] [animation-delay:200ms]">
-      A team of finishing specialists covering all aspects.
-    </p>
-
-    <div class="flex flex-wrap items-center gap-x-10 gap-y-4 mt-12
-                [animation:fadeUp_300ms_var(--ease-motion)_both] [animation-delay:240ms]">
-      <BookCall variant="lit" />
-      <div class="flex items-center gap-3 label text-stone">
-        <span class="relative block w-14 h-px bg-stone overflow-hidden">
-          <span class="absolute inset-0 bg-slate [animation:cue_3.4s_var(--ease-out-soft)_infinite]"></span>
-        </span>Scroll
-      </div>
+  <!-- Bottom-left, generous left margin, and the scroll cue optically centred
+       to its right — the reference's exact anatomy. The title is a scale step,
+       not a lockup measured against the viewport: the previous pass set the
+       name at 134px and it filled the frame, which is the opposite of the
+       restraint this whole direction is built on. -->
+  <div class="relative z-1 min-h-[100svh] flex flex-col justify-end px-gutter pb-[clamp(2.5rem,7vh,5rem)]">
+    <p class="label text-cream mb-4">Venetian plaster &middot; Microcement &middot; {serviceArea}</p>
+    <div class="flex items-end gap-8 flex-wrap">
+      <h1 class="text-h2 text-cream max-w-[15ch]">The Venetian Company</h1>
+      <a href="#work" class="hidden sm:flex items-center gap-3 no-underline text-cream/80 pb-3
+                             hover:text-cream transition-colors duration-240 ease-motion" aria-label="Scroll to the work">
+        <svg width="13" height="42" viewBox="0 0 13 42" fill="none" aria-hidden="true">
+          <path d="M6.5 0v40M1 34.5 6.5 41 12 34.5" stroke="currentColor" stroke-width="1"/>
+        </svg>
+      </a>
     </div>
   </div>
 </section>

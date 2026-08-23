@@ -1,52 +1,20 @@
 ---
-import SectionHead from './SectionHead.astro';
-import { process, terms, bringToCall } from '../data/site';
+import { process } from '../data/site';
 ---
-<section id="process" class="px-gutter py-section">
+<!-- Numbered, and here the numbers are load-bearing: these four happen in this
+     order and the reader needs to know which comes before the deposit. The
+     service list upstairs is not a sequence and carries no numbers. -->
+<section id="process" class="px-gutter py-[clamp(4rem,8vw,7rem)] border-t border-rule">
   <div class="max-w-[1240px] mx-auto">
-    <div class="rise">
-      <SectionHead title="How a<br>project runs"
-        lede="It starts with a call. Pricing depends on the size of the area and your desired finish, and nothing begins until the quote is agreed." />
-    </div>
-
-    <div class="rise grid gap-[clamp(1.6rem,4vw,2.6rem)] sm:grid-cols-2 xl:grid-cols-4">
+    <h2 class="text-h2 max-w-[14ch] rise">How a job runs.</h2>
+    <ol class="rise list-none p-0 m-0 mt-head grid gap-x-[clamp(1.5rem,4vw,4rem)] gap-y-10 md:grid-cols-2">
       {process.map((s) => (
-        <div class="border-t border-ink pt-5">
-          <span class="block font-display font-semibold [font-stretch:125%] text-h4 text-slate mb-2">{s.n}</span>
-          <h3 class="label font-normal mb-3 [font-stretch:100%] text-ink">{s.title}</h3>
-          <p class="font-read text-ink-soft text-body m-0">{s.body}</p>
-        </div>
+        <li class="border-t border-rule pt-5">
+          <p class="label m-0">{s.n}</p>
+          <h3 class="text-h4 mt-2">{s.title}</h3>
+          <p class="font-read text-body text-ink-soft max-w-[46ch] mt-3">{s.body}</p>
+        </li>
       ))}
-    </div>
-
-    <div class="rise mt-[clamp(2.5rem,6vw,4rem)] flex flex-wrap gap-x-8 gap-y-3">
-      {terms.map((t) => (
-        <span class="label inline-flex items-center gap-3">
-          <span class="w-[5px] h-[5px] rounded-full bg-slate shrink-0" aria-hidden="true"></span>{t}
-        </span>
-      ))}
-    </div>
-
-    <div class="rise mt-[clamp(3.5rem,8vw,6rem)] pt-[clamp(2rem,4vw,3rem)] border-t border-ink/15">
-      <p class="label mb-8">Worth having ready for the call</p>
-      <div class="grid gap-[clamp(1.2rem,3vw,2rem)] sm:grid-cols-2 xl:grid-cols-4">
-        {bringToCall.map((b) => (
-          <div class="border-t border-slate pt-4">
-            <span class="block label text-slate mb-3">{b.req}</span>
-            <!-- 110%, not the display default of 125%. In a 4-up grid at 1440 the
-                 track is 286px and "MEASUREMENTS" sets 307px expanded, so it ran
-                 into the next column's rule (31px over at 1280). The width axis is
-                 the lever that keeps the size on the scale.
-
-                 It has to be font-variation-settings, not font-stretch: the base
-                 h1-h4 rule pins 'wdth' 125 via font-variation-settings, and that
-                 wins over the high-level font-stretch property, so setting
-                 font-stretch alone did nothing at all. -->
-            <h3 class="text-h4 mb-2">{b.title}</h3>
-            <p class="font-read text-ink-mute text-caption m-0">{b.body}</p>
-          </div>
-        ))}
-      </div>
-    </div>
+    </ol>
   </div>
 </section>

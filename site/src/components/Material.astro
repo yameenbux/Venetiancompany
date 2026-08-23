@@ -1,0 +1,59 @@
+---
+import { asset } from '../lib/asset';
+import { materials, finishes } from '../data/site';
+---
+<section id="material" class="px-gutter py-[clamp(4rem,8vw,7rem)] border-t border-rule">
+  <div class="max-w-[1240px] mx-auto">
+    <div class="rise">
+      <h2 class="text-h2 max-w-[16ch]">Two materials, and they are not interchangeable.</h2>
+      <p class="font-read text-body text-ink-soft max-w-[54ch] mt-7">
+        Both are laid, burnished and sealed on site, in passes, by hand. Which one a
+        room wants is the first thing worth working out — it is usually settled in
+        ten minutes on the phone.
+      </p>
+    </div>
+
+    <div class="rise grid gap-x-[clamp(1.5rem,4vw,4rem)] gap-y-12 md:grid-cols-2 mt-head">
+      {materials.map((m) => (
+        <article class="border-t border-rule pt-6">
+          <p class="label m-0">{m.make}</p>
+          <h3 class="text-h3 mt-2">{m.name}</h3>
+          {m.body.map((p) => <p class="font-read text-body text-ink-soft max-w-[46ch] mt-4">{p}</p>)}
+          <ul class="list-none p-0 m-0 mt-6">
+            {m.where.map((w) => (
+              <li class="font-read text-caption text-ink-mute border-t border-rule py-2">{w}</li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- The image beat. Six surfaces laid edge to edge with a 3px gutter, which is
+     what a sample board physically is — and the density is most of why it
+     reads as a portfolio rather than a brochure. -->
+<section class="pb-[clamp(3rem,6vw,5rem)]">
+  <div class="px-gutter max-w-[1240px] mx-auto mb-6 rise">
+    <div class="grid gap-2 md:grid-cols-[minmax(0,13rem)_minmax(0,48ch)] md:items-baseline md:gap-10">
+      <p class="label m-0">The sample board</p>
+      <p class="font-read text-body text-ink-soft m-0">
+        Six finishes from recent work. Up to two samples come with your package, so you
+        hold the surface before anyone starts.
+      </p>
+    </div>
+  </div>
+  <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-[3px]">
+    {finishes.map((f) => (
+      <figure class="relative m-0 aspect-3/4 overflow-hidden bg-cream-2">
+        <img src={asset(`assets/${f.file}`)} width={f.w ?? 600} height={f.h ?? 800}
+             loading="lazy" decoding="async" alt={f.alt} class="w-full h-full object-cover" />
+        <!-- The scrim is tall so the gradient has room to fade. At from-black/45
+             over a 61px band the caption sat at about 22% alpha and white on the
+             pale plasters measured 2.45:1; these stops hold about .60 at the text. -->
+        <figcaption class="absolute inset-x-0 bottom-0 pt-9 px-3 pb-3 label text-white
+                           bg-gradient-to-t from-black/80 via-black/55 to-transparent">{f.name}</figcaption>
+      </figure>
+    ))}
+  </div>
+</section>

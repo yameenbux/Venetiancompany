@@ -1,0 +1,58 @@
+---
+import { asset } from '../lib/asset';
+
+/* Card anatomy, top to bottom: image, hairline rule, category eyebrow, title.
+   Two lines of metadata doing the work of a filter UI we do not need yet —
+   with nine projects a filter row would be decoration wearing the costume of
+   structure. It earns its place when the archive does.
+
+   Categories are the client's own service names, verbatim. Titles describe
+   what is in the photograph; none of these are project or client names,
+   because we have not been given any. */
+const projects = [
+  { file: 'stair-marbled.jpg',  cat: 'Feature walls, Staircases', title: 'Marbled wall behind a floating oak stair', pos: '50% 50%' },
+  { file: 'grid-bathroom.jpg',  cat: 'Bathrooms',                 title: 'Bathroom pigmented to colour',             pos: '50% 42%' },
+  { file: 'stairwell.jpg',      cat: 'Staircases',                title: 'Double-height stairwell, no joins',        pos: '50% 72%' },
+  { file: 'wet-room.jpg',       cat: 'Wet rooms, Microcement',    title: 'Microcement wet room, seamless',           pos: '50% 50%' },
+  { file: 'bathroom-arch.jpg',  cat: 'Bathrooms',                 title: 'Plaster against marble, arched window',    pos: '50% 55%' },
+  { file: 'fireplace.jpg',      cat: 'Feature walls',             title: 'Chimney breast worked by hand',            pos: '50% 46%' },
+  { file: 'grid-staircase.jpg', cat: 'Staircases, Feature walls', title: 'Stair run in polished plaster',            pos: '50% 50%' },
+  { file: 'texture-switch.jpg', cat: 'Full house applications',   title: 'Coarse grain against walnut',              pos: '50% 50%' },
+  { file: 'plaster-detail.jpg', cat: 'Feature walls',             title: 'The trowel, up close',                     pos: '50% 50%' },
+];
+const FIRST = 6;
+---
+<section id="work" class="px-gutter pb-[clamp(4rem,8vw,7rem)]">
+  <div class="max-w-[1240px] mx-auto">
+    <div id="grid" class="grid gap-x-[clamp(1rem,2.4vw,2.1rem)] gap-y-[clamp(2.5rem,4vw,3.5rem)]
+                          sm:grid-cols-2 lg:grid-cols-3 rise">
+      {projects.map((p, i) => (
+        <figure class={`group m-0 ${i >= FIRST ? 'more' : ''}`} hidden={i >= FIRST}>
+          <div class="overflow-hidden aspect-4/3 bg-cream-2">
+            <img src={asset(`assets/${p.file}`)} alt={p.title} loading={i < 3 ? 'eager' : 'lazy'}
+                 decoding="async" width="1050" height="788" style={`object-position:${p.pos}`}
+                 class="w-full h-full object-cover transition-transform duration-500 ease-motion
+                        group-hover:scale-[1.02]" />
+          </div>
+          <!-- Hairline rules are the only separator device on this page. No
+               cards, no shadows, no borders around the images. -->
+          <hr class="border-0 border-t border-rule mt-4 mb-3" />
+          <figcaption>
+            <p class="label m-0">{p.cat}</p>
+            <p class="font-display text-h4 text-ink m-0 mt-1">{p.title}</p>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <!-- Progressive loading with an explicit count, not infinite scroll. Nine
+         is everything we have been given; the counter tells the truth about
+         that rather than implying an archive behind it. -->
+    <div class="text-center mt-[clamp(2.5rem,5vw,4rem)]">
+      <button id="loadmore" type="button"
+              class="label text-clay-ink bg-transparent border-0 cursor-pointer p-2
+                     hover:underline underline-offset-4">Load more</button>
+      <p id="count" class="font-read text-caption text-ink-mute m-0 mt-1">{FIRST} of {projects.length}</p>
+    </div>
+  </div>
+</section>
