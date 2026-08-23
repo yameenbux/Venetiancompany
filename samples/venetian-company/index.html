@@ -145,22 +145,24 @@ h1,h2,h3{ font-family:var(--display); font-weight:400; margin:0; line-height:.98
   min-height:100svh; display:flex; align-items:center;
   padding:7rem var(--gutter) 4rem; position:relative; overflow:hidden;
 }
+/* The arch is now a photograph rather than a gradient: same silhouette, real
+   material inside it. It bleeds off the right edge so the type keeps the left. */
 .arch{
-  position:absolute; z-index:0; pointer-events:none;
-  left:50%; bottom:0; transform:translateX(-50%);
-  width:min(68vw,430px); height:min(70vh,640px);
-  border-radius:min(34vw,215px) min(34vw,215px) 4px 4px;
+  position:absolute; z-index:0; pointer-events:none; overflow:hidden;
+  right:calc(var(--gutter) * -1); bottom:0; width:min(62vw,330px); height:min(54vh,470px);
+  border-radius:min(44vw,280px) min(44vw,280px) 0 0;
+  box-shadow:0 40px 90px -34px rgba(26,22,19,.42);
+}
+.arch img{ width:100%; height:100%; object-fit:cover; object-position:56% 26%; display:block; }  /* favour the lit wall; keeps the site clutter below the crop */
+.arch::before{  /* settle the photograph into the plaster palette */
+  content:''; position:absolute; inset:0; z-index:1;
   background:
-    linear-gradient(200deg, rgba(255,255,255,.85) 0%, rgba(255,255,255,0) 42%),
-    linear-gradient(160deg, var(--plaster) 0%, var(--sand) 58%, var(--clay) 130%);
-  box-shadow:
-    inset 0 0 90px rgba(255,255,255,.55),
-    inset -22px -30px 70px rgba(142,118,87,.35),
-    0 40px 90px -30px rgba(26,22,19,.30);
-  opacity:.92;
+    linear-gradient(200deg, rgba(255,252,246,.34) 0%, rgba(255,252,246,0) 46%),
+    linear-gradient(90deg, var(--chalk) 0%, rgba(242,237,228,.55) 18%, rgba(242,237,228,0) 46%),
+    linear-gradient(0deg, rgba(220,207,187,.5) 0%, rgba(220,207,187,0) 26%);
 }
 .arch::after{ /* slow sun sweep */
-  content:''; position:absolute; inset:0; border-radius:inherit;
+  content:''; position:absolute; inset:0; z-index:2; border-radius:inherit;
   background:linear-gradient(105deg, rgba(255,255,255,0) 30%, rgba(255,255,255,.55) 48%, rgba(255,255,255,0) 66%);
   background-size:280% 100%;
   animation:sweep 22s var(--ease) infinite;
@@ -168,8 +170,17 @@ h1,h2,h3{ font-family:var(--display); font-weight:400; margin:0; line-height:.98
 @keyframes sweep{ 0%,12%{ background-position:130% 0; } 55%,100%{ background-position:-60% 0; } }
 
 @media(min-width:760px){
-  .arch{ width:min(46vw,430px); height:min(78vh,660px);
-         border-radius:min(23vw,215px) min(23vw,215px) 4px 4px; }
+  .arch{ width:min(52vw,620px); height:min(84vh,760px);
+         border-radius:min(26vw,310px) min(26vw,310px) 0 0; }
+}
+/* On phones the arch drops below the headline so the type keeps clean plaster. */
+@media(max-width:759px){
+  .hero{ align-items:flex-start; padding-top:9rem; }
+  .arch::before{
+    background:
+      linear-gradient(180deg, rgba(242,237,228,.66) 0%, rgba(242,237,228,.14) 38%, rgba(242,237,228,0) 100%),
+      linear-gradient(90deg, var(--chalk) 0%, rgba(242,237,228,.35) 26%, rgba(242,237,228,0) 58%);
+  }
 }
 .hero .wrap{ position:relative; z-index:2; width:100%; }
 .hero h1{
@@ -181,7 +192,7 @@ h1,h2,h3{ font-family:var(--display); font-weight:400; margin:0; line-height:.98
 .hero h1 .the{ font-size:.34em; letter-spacing:.42em; padding-left:.3em; }
 .hero .lede{
   font-family:var(--read); font-size:clamp(1.05rem,1rem + .5vw,1.4rem);
-  line-height:1.55; max-width:30ch; margin:2rem 0 0; color:var(--ink-soft);
+  line-height:1.55; max-width:26ch; margin:2rem 0 0; color:var(--ink-soft);
 }
 .hero-foot{
   margin-top:clamp(2.5rem,7vw,4.5rem);
@@ -266,6 +277,36 @@ h1,h2,h3{ font-family:var(--display); font-weight:400; margin:0; line-height:.98
   margin-top:1.6rem; font-size:.78rem; letter-spacing:.06em; color:var(--ink-mute);
   font-family:var(--read); font-style:italic;
 }
+
+/* ── Two-material explainer ──────────────────────────────────── */
+.pair{ display:grid; gap:clamp(2rem,5vw,3.5rem); grid-template-columns:1fr; }
+@media(min-width:820px){ .pair{ grid-template-columns:repeat(2,1fr); } }
+.mat{ border-top:1px solid var(--ink); padding-top:1.4rem; }
+.mat h3{
+  font-family:var(--display); font-size:clamp(1.6rem,4vw,2.4rem); text-transform:uppercase;
+  letter-spacing:.02em; margin:0 0 .3rem;
+}
+.mat .latin{
+  font-family:var(--read); font-style:italic; font-size:.9rem; color:var(--venetian);
+  margin:0 0 1.1rem;
+}
+.mat p{ font-family:var(--read); margin:0 0 1rem; color:var(--ink-soft); }
+.mat ul{ list-style:none; margin:1.2rem 0 0; padding:0; display:grid; gap:.5rem; }
+.mat li{
+  font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-mute);
+  display:flex; gap:.7rem; align-items:baseline;
+}
+.mat li::before{ content:''; width:10px; height:1px; background:var(--venetian); flex:0 0 auto; position:relative; top:-.3em; }
+
+/* ── Commercial band ─────────────────────────────────────────── */
+.sectors{
+  display:grid; gap:clamp(1.5rem,4vw,2.5rem); grid-template-columns:1fr;
+  margin-top:clamp(2rem,5vw,3rem);
+}
+@media(min-width:760px){ .sectors{ grid-template-columns:repeat(2,1fr); } }
+.sector{ border-top:1px solid var(--rule); padding-top:1.2rem; }
+.sector h3{ font-family:var(--ui); font-weight:400; font-size:.72rem; letter-spacing:.24em; text-transform:uppercase; margin:0 0 .8rem; }
+.sector p{ font-family:var(--read); margin:0; color:var(--ink-soft); }
 
 /* ── Dark material section ───────────────────────────────────── */
 .dark{
@@ -469,7 +510,8 @@ footer{
 .hero .eyebrow, .hero .lede, .hero .hero-foot{ animation-name:fade-up; }
 @keyframes fade-up{ from{ opacity:0; transform:translateY(22px); } to{ opacity:1; transform:none; } }
 .arch{ animation:archIn 1.7s var(--ease) both; }
-@keyframes archIn{ from{ opacity:0; transform:translateX(-50%) translateY(9%) scaleY(.94); } to{ opacity:.92; transform:translateX(-50%); } }
+/* No translateX here any more — the arch is anchored right, not centred. */
+@keyframes archIn{ from{ opacity:0; transform:translateY(9%) scaleY(.94); } to{ opacity:1; transform:none; } }
 
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
@@ -494,7 +536,8 @@ footer{
   </a>
   <nav>
     <a href="#work">Work</a>
-    <a href="#material">The Material</a>
+    <a href="#what">Materials</a>
+    <a href="#material">The Finish</a>
     <a href="#process">Process</a>
     <a href="#enquire">Enquire</a>
   </nav>
@@ -505,7 +548,9 @@ footer{
 
   <!-- ── HERO ───────────────────────────────────────────────── -->
   <section class="hero">
-    <div class="arch" aria-hidden="true"></div>
+    <div class="arch" aria-hidden="true">
+      <img src="assets/stairwell.jpg" width="1050" height="1400" fetchpriority="high" decoding="async" alt="">
+    </div>
     <div class="wrap">
       <p class="eyebrow">Venetian Plaster <span class="dot">·</span> Microcement</p>
       <h1>
@@ -540,6 +585,40 @@ footer{
         <a class="row" href="#contact"><span class="num">09</span><span class="name">Floors</span><span class="mark">Enquire</span></a>
       </div>
       <p class="index-note">And more — if you have a surface in mind that isn't listed, ask.</p>
+    </div>
+  </section>
+
+  <!-- ── WHAT THE TWO MATERIALS ARE ─────────────────────────── -->
+  <section class="section" id="what">
+    <div class="wrap">
+      <div class="shead rise">
+        <h2>Plaster or<br>cement?</h2>
+        <p>They get used interchangeably and they aren't the same thing. Which one suits your room depends mostly on what the surface has to put up with.</p>
+      </div>
+      <div class="pair rise">
+        <div class="mat">
+          <h3>Venetian plaster</h3>
+          <p class="latin">Lime, marble dust, pigment</p>
+          <p>Built up in thin coats and burnished back as it cures. The polish comes from the tool, not from a topcoat, which is why the depth appears to sit under the surface rather than on it.</p>
+          <p>Decorative before it is practical — it belongs where it will be seen and lit.</p>
+          <ul>
+            <li>Walls and ceilings</li>
+            <li>Feature walls, media walls</li>
+            <li>Staircases</li>
+          </ul>
+        </div>
+        <div class="mat">
+          <h3>Microcement</h3>
+          <p class="latin">Cement, polymer, fine aggregate</p>
+          <p>Goes on a few millimetres thick, straight over what is already there — tile, screed, board — so floors rarely need lifting. It cures to one continuous surface with no grout lines to discolour and no joints to crack.</p>
+          <p>Harder wearing, and happy with water underfoot.</p>
+          <ul>
+            <li>Floors</li>
+            <li>Wet rooms and bathrooms</li>
+            <li>Swimming pool areas</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -719,6 +798,31 @@ footer{
         </figure>
       </div>
       <p class="gallery-note">Photography and film by The Venetian Company.</p>
+    </div>
+  </section>
+
+  <!-- ── RESIDENTIAL + COMMERCIAL ───────────────────────────── -->
+  <section class="section" id="commercial">
+    <div class="wrap rise">
+        <p class="eyebrow">Who we work for</p>
+        <div class="shead" style="margin-top:1.2rem">
+          <h2>Homes and<br>commercial</h2>
+          <p>“We have experience creating unique and sophisticated designs to suit a variety of homes or commercial spaces.”</p>
+        </div>
+        <div class="sectors">
+          <div class="sector">
+            <h3>Residential</h3>
+            <p>Full house applications through to a single feature wall. Renovations, extensions and new builds, working alongside your trades or on our own.</p>
+          </div>
+          <div class="sector">
+            <h3>Commercial</h3>
+            <p>The same materials and the same process, scaled to the space. If you are specifying for a project rather than a home, send the drawings and we will price from those.</p>
+          </div>
+        </div>
+        <!-- TODO: commercial project photography — none supplied yet. Ask Adam which
+             sectors he has worked in (hospitality? retail? offices?) and for two or
+             three commercial jobs we can name and show. Until then this band stays
+             text-only rather than showing residential work under a commercial heading. -->
     </div>
   </section>
 

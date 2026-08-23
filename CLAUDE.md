@@ -64,11 +64,40 @@ Everything below is taken from the client's own public Instagram
 - **Existing brand assets:** circular TVC monogram (stacked T/V/C, thin black rule on
   white). All-caps tracked typography across their story graphics. No website.
 
+### Written from general knowledge, not from them — needs Adam's sign-off
+
+The "Plaster or cement?" band describes how the two materials behave (lime + marble
+dust burnished in coats; cement + polymer laid a few mm thick over existing surfaces,
+seamless, hard-wearing). That is general material fact, **not** taken from anything the
+client has published. It is the one section on the page not sourced from their own
+words, so Adam should read it before the page goes anywhere near a customer — if he
+works differently, it is wrong in his voice.
+
+### Reference the client's competitor sets
+
+[micro-cementuk.co.uk](https://micro-cementuk.co.uk/) — Manchester microcement firm,
+used as a structural reference. Runs Home / About / **What is Microcement** / Our Work /
+**Commercial Projects** / Contact / Order / Pay in 3, and describes work "from
+residential and commercial projects, to retail spaces such as bars, restaurants, and
+more recently gyms". Two ideas taken from it: a materials explainer, and splitting
+residential from commercial. Nothing else — we are not copying their copy or layout.
+
+### Network: what this environment cannot reach
+
+The egress proxy returns 403 for both `instagram.com` and `micro-cementuk.co.uk`. So:
+
+- **Instagram cannot be scraped from here.** Client media has to be sent into the chat
+  as attachments. That has worked well — keep doing it. Don't promise a scrape.
+- Competitor sites may need `WebSearch` (which works) rather than `WebFetch`.
+
 ### Unknowns — do NOT invent these
 
 Trading address, service area/radius, years established, company registration, team
 size, accreditations, testimonials, review scores, past client names, project
-locations, prices beyond the £80 sample fee. Leave a `<!-- TODO -->` and ask Adam.
+locations, prices beyond the £80 sample fee. **Which commercial sectors they have
+worked in** — the competitor names bars, restaurants and gyms; we have no evidence
+The Venetian Company has done any of those, so the commercial band stays text-only
+until Adam supplies commercial jobs. Leave a `<!-- TODO -->` and ask.
 
 ## Layout
 
