@@ -1,34 +1,42 @@
 ---
 import BookCall from './BookCall.astro';
+import Monogram from './Monogram.astro';
 import { phone } from '../data/site';
 const links = [
   ['#work', 'Work'], ['#materials', 'Materials'],
   ['#finish', 'The Finish'], ['#process', 'Process'],
 ];
 ---
+<!-- The wash has to cover the CONTENT, not just the top edge. `from-paper/90
+     to-transparent` faded to nothing by the time it reached the links and the
+     phone pill, so over the dark Materials and Finish bands the ink text sat on
+     near-black: the phone number measured 1.44:1 while scrolled to 4017. Ink
+     mute needs alpha .84 to clear 4.5:1 over that ground, so the ramp now holds
+     .96 through the row and does its fade below it. -->
 <header class="fixed inset-x-0 top-0 z-60 flex items-center justify-between gap-4 px-gutter py-4
-               bg-gradient-to-b from-paper/90 to-transparent backdrop-blur-[6px]">
+               bg-[linear-gradient(to_bottom,var(--color-paper)_0%,var(--color-paper)_84%,rgba(232,233,231,.55)_94%,rgba(232,233,231,0)_100%)]
+               backdrop-blur-[6px]">
   <a href="#top" class="block w-[46px] h-[46px] shrink-0 text-ink" aria-label="The Venetian Company, home">
-    <svg viewBox="0 0 48 48" class="block w-full h-full overflow-visible" aria-hidden="true" focusable="false">
-      <circle cx="24" cy="24" r="22.5" fill="rgba(252,253,252,.82)" stroke="currentColor" stroke-width="1"/>
-      <g class="font-display" font-weight="600" font-size="11" font-stretch="125%"
-         fill="currentColor" text-anchor="middle" letter-spacing=".2">
-        <text x="24" y="17.5">T</text><text x="24.8" y="28">V</text><text x="24" y="38.5">C</text>
-      </g>
-    </svg>
+    <Monogram class="block w-full h-full" disc />
   </a>
 
   <nav class="hidden lg:flex gap-9" aria-label="Sections">
     {links.map(([href, text]) => (
-      <a href={href} class="label text-ink-soft no-underline pb-[3px] hover:text-accent transition-colors duration-500">{text}</a>
+      <a href={href} class="label text-ink-soft no-underline pb-[3px] hover:text-accent transition-colors duration-240 ease-motion">{text}</a>
     ))}
   </nav>
 
   <div class="flex items-center gap-2">
     <a class="hidden sm:inline-flex label no-underline border border-ink/15 rounded-full px-4 py-2
               min-h-[44px] items-center whitespace-nowrap hover:border-accent hover:text-accent
-              transition-colors duration-500" href={`tel:${phone.e164}`}>{phone.display}</a>
-    <BookCall variant="solid" class="hidden md:inline-flex" />
+              transition-colors duration-240 ease-motion" href={`tel:${phone.e164}`}>{phone.display}</a>
+    <!-- Wrapped, not classed: BookCall's own `inline-flex` is a base-layer
+         display utility, and Tailwind v4 emits `.inline-flex` after `.hidden`,
+         so a passed `hidden` loses and the CTA renders at every width. On a
+         phone that wrapped to two lines and pushed the header to 104px.
+         `md:contents` dissolves the wrapper above md, so the flex row is
+         unchanged there. -->
+    <span class="hidden md:contents"><BookCall variant="solid" /></span>
     <button id="navbtn" type="button" aria-expanded="false" aria-controls="navpanel"
             class="lg:hidden inline-flex items-center gap-2 label text-ink border border-ink/15
                    rounded-full px-4 min-h-[44px] cursor-pointer bg-transparent">
@@ -41,11 +49,11 @@ const links = [
 
 <div id="navpanel" hidden data-open="false"
      class="fixed inset-0 z-55 flex flex-col justify-center gap-1 px-gutter pt-24 pb-12 bg-paper
-            invisible opacity-0 transition-[opacity,visibility] duration-300 data-[open=true]:visible
+            invisible opacity-0 transition-[opacity,visibility] duration-240 ease-motion data-[open=true]:visible
             data-[open=true]:opacity-100 lg:hidden">
   {links.map(([href, text]) => (
     <a href={href} class="font-display font-semibold uppercase no-underline text-ink py-1.5
-                          border-b border-ink/10 text-[clamp(1.6rem,8vw,2.6rem)] [font-stretch:125%]">{text}</a>
+                          border-b border-ink/10 text-h2 [font-stretch:125%]">{text}</a>
   ))}
   <div class="mt-8"><BookCall variant="solid" /></div>
 </div>

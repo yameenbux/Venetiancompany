@@ -5,7 +5,7 @@
    every one of them (bg-paper, text-d2, py-section, ease-slow…).
 
    The bespoke material effects below are NOT utility-shaped — a
-   troweled plaster ground and an arch-masked photograph are not
+   troweled plaster ground and a full-bleed hero plate are not
    things you compose from classes. Tailwind carries the system;
    plain CSS carries the surface.
    ───────────────────────────────────────────────────────────── */
@@ -28,23 +28,76 @@
   --font-ui:      'Archivo', 'Archivo-fallback', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-read:    'Newsreader', 'Newsreader-fallback', 'Iowan Old Style', Georgia, serif;
 
-  /* The scale has a deliberate hole between label and display — that gap is
-     what makes the display read as large rather than merely big. */
-  --text-label: 0.66rem;
-  --text-body:  clamp(1rem, 0.95rem + 0.25vw, 1.1rem);
-  --text-lede:  clamp(1.1rem, 1rem + 0.62vw, 1.5rem);
-  --text-d3:    clamp(1.35rem, 2.9vw, 2.15rem);
-  --text-d2:    clamp(2.05rem, 5.8vw, 4.5rem);
-  --text-d1:    clamp(2.5rem, 8.8vw, 7.6rem);
+  /* ── Type scale ─────────────────────────────────────────────
+     Strict modular scale. Ratio 1.25 (major third) from an 18px base at the
+     1440 anchor, compressed to 1.14 from 16px at the 360 anchor so the display
+     steps still fit a phone. Each clamp is the straight line between the two.
 
-  --tracking-label: 0.26em;
+       step   name       360px    1440px   line-height  tracking
+        -2    label     11.5px    11.5px      1.45        .22em    fixed
+        -1    caption   14.4px    14.4px      1.55       .005em    fixed
+         0    body      16.0px    18.0px      1.7            0
+         1    lede      18.2px    22.5px      1.45      -.005em
+         2    h4        20.8px    28.1px      1.25      -.012em
+         3    h3        23.7px    35.2px      1.15      -.016em
+         6    h2        35.1px    68.7px      1.02      -.022em
+         9    h1        52.0px   134.1px      0.94      -.028em
+
+     Steps 4, 5, 7 and 8 are deliberately unused. That hole is what makes the
+     display read as large rather than merely big — see the references.
+
+     label and caption are FIXED, not fluid: interpolating them produced a
+     clamp whose min exceeded its max (small text wants to be relatively
+     larger on a phone), which CSS resolves to the min and silently discards
+     the max. UI text at this size is a constant, not a step in a fluid ramp.
+
+     Size, line-height and tracking travel together on each token, so a
+     utility cannot pick up one without the other two. */
+  --text-label: 0.72rem;
+  --text-label--line-height: 1.45;
+  --text-label--letter-spacing: 0.22em;
+
+  --text-caption: 0.9rem;
+  --text-caption--line-height: 1.55;
+  --text-caption--letter-spacing: 0.005em;
+
+  --text-body: clamp(1rem, 0.958rem + 0.185vw, 1.125rem);
+  --text-body--line-height: 1.7;
+  --text-body--letter-spacing: 0em;
+
+  --text-lede: clamp(1.14rem, 1.051rem + 0.394vw, 1.406rem);
+  --text-lede--line-height: 1.45;
+  --text-lede--letter-spacing: -0.005em;
+
+  --text-h4: clamp(1.3rem, 1.147rem + 0.679vw, 1.758rem);
+  --text-h4--line-height: 1.25;
+  --text-h4--letter-spacing: -0.012em;
+
+  --text-h3: clamp(1.482rem, 1.243rem + 1.06vw, 2.197rem);
+  --text-h3--line-height: 1.15;
+  --text-h3--letter-spacing: -0.016em;
+
+  --text-h2: clamp(2.195rem, 1.496rem + 3.106vw, 4.292rem);
+  --text-h2--line-height: 1.02;
+  --text-h2--letter-spacing: -0.022em;
+
+  --text-h1: clamp(3.252rem, 1.542rem + 7.6vw, 8.382rem);
+  --text-h1--line-height: 0.94;
+  --text-h1--letter-spacing: -0.028em;
 
   --spacing-gutter:  clamp(1.25rem, 5vw, 5.5rem);
   --spacing-section: clamp(6rem, 13.5vw, 12.5rem);
   --spacing-head:    clamp(3.25rem, 7.5vw, 6rem);
 
-  --ease-slow: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Interaction motion. easeOutCubic: control-point y values are 0.68 and 1,
+     never above 1, so it decelerates into position and cannot overshoot.
+     Anything with y > 1 (back.out, spring curves) bounces — not used here. */
+  --ease-motion: cubic-bezier(0.33, 1, 0.68, 1);
+  --duration-reveal: 280ms;
+  --duration-hover: 240ms;
+
+  --ease-slow: cubic-bezier(0.16, 1, 0.3, 1);       /* ambient loops only */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);  /* ambient loops only */
 }
 
 /* Metric-matched fallbacks. Headings render Archivo at width 125; no system
@@ -67,12 +120,16 @@
     font-family: var(--font-ui);
     font-weight: 300;
     font-size: var(--text-body);
-    line-height: 1.7;
+    line-height: var(--text-body--line-height);
+    letter-spacing: var(--text-body--letter-spacing);
     overflow-x: hidden;
   }
-  h1, h2, h3 {
-    font-family: var(--font-display); font-weight: 600; margin: 0; line-height: .95;
-    font-stretch: 125%; font-variation-settings: 'wdth' 125; letter-spacing: -.018em;
+  /* Headings carry family and width only. Size, leading and tracking come from
+     whichever scale step the element is given, so they can never disagree. */
+  h1, h2, h3, h4 {
+    font-family: var(--font-display); font-weight: 600; margin: 0;
+    font-stretch: 125%; font-variation-settings: 'wdth' 125;
+    text-wrap: balance;
   }
   :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
   img, video { max-width: 100%; display: block; }
@@ -84,9 +141,11 @@
 
 @layer components {
   .label {
-    font-family: var(--font-ui); font-weight: 400; font-size: var(--text-label);
-    letter-spacing: var(--tracking-label); text-transform: uppercase;
-    color: var(--color-ink-mute);
+    font-family: var(--font-ui); font-weight: 400;
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    letter-spacing: var(--text-label--letter-spacing);
+    text-transform: uppercase; color: var(--color-ink-mute);
   }
 
   /* Troweled ground: soft passes plus a shallow sweep, with SVG tooth over it. */
@@ -112,33 +171,50 @@
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E");
   }
 
-  /* Hero arch: the silhouette, with a real photograph inside it. */
-  .arch { position:absolute; z-index:0; pointer-events:none; overflow:hidden;
-    right:calc(var(--spacing-gutter) * -1); bottom:0;
-    width:min(62vw,330px); height:min(54vh,470px);
-    border-radius:min(44vw,280px) min(44vw,280px) 0 0;
-    box-shadow:0 40px 90px -34px rgba(20,24,26,.42);
-    animation:archIn 2.1s var(--ease-slow) both;
-  }
-  .arch img { width:100%; height:100%; object-fit:cover; object-position:56% 26%; }
-  .arch::before { content:''; position:absolute; inset:0; z-index:1;
-    background:
-      linear-gradient(200deg, rgba(252,253,252,.34) 0%, rgba(252,253,252,0) 46%),
-      linear-gradient(90deg, var(--color-paper) 0%, rgba(232,233,231,.55) 18%, rgba(232,233,231,0) 46%),
-      linear-gradient(0deg, rgba(199,202,200,.5) 0%, rgba(199,202,200,0) 26%);
-  }
-  .arch::after { content:''; position:absolute; inset:0; z-index:2; border-radius:inherit;
-    background:linear-gradient(105deg, rgba(255,255,255,0) 30%, rgba(255,255,255,.55) 48%, rgba(255,255,255,0) 66%);
-    background-size:280% 100%; animation:sweep 22s var(--ease-out-soft) infinite;
-  }
-  @media(min-width:760px){
-    .arch { width:min(52vw,620px); height:min(84vh,760px);
-            border-radius:min(26vw,310px) min(26vw,310px) 0 0; }
-  }
-  @media(max-width:759px){
-    .arch::before { background:
-      linear-gradient(180deg, rgba(232,233,231,.66) 0%, rgba(232,233,231,.14) 38%, rgba(232,233,231,0) 100%),
-      linear-gradient(90deg, var(--color-paper) 0%, rgba(232,233,231,.35) 26%, rgba(232,233,231,0) 58%); }
+  /* ── Hero plate ──────────────────────────────────────────────
+     Replaces the arch. The photograph is full bleed and the wordmark sits in
+     it, so the whole hero is one plate rather than a masked cut-out.
+
+     The scrim is PAPER, not black. Washing toward the ground colour keeps the
+     ink palette and the daylight thesis; a dark overlay with white type would
+     be Direction B's hero pasted into this one.
+
+     The stops are solved, not eyeballed. Compositing alpha a of paper (#E8E9E7,
+     sRGB .910) over an image pixel v gives a*.910 + (1-a)*v. For 4.5:1 against
+     --color-ink-soft (#333A3D) the composite has to reach sRGB .629, which over
+     a black pixel needs a >= .69; the wordmark is large text, so 3:1 is enough
+     and it can sit as low as a >= .44. Small copy therefore lives in the dense
+     end of the ramp and the display type runs out into the clear end. The
+     measured worst case for every string is recorded in CLAUDE.md.
+
+     Mobile is a vertical ramp because the copy spans the full width; from md
+     the copy is a left column, so the ramp turns horizontal and the right of
+     the frame stays as good as unwashed. */
+  .plate-img { position:absolute; inset:0; z-index:0; width:100%; height:100%;
+    object-fit:cover; object-position:50% 34%; pointer-events:none;
+    animation:plateIn 300ms var(--ease-motion) both; }
+  .plate-scrim { position:absolute; inset:0; z-index:1; pointer-events:none;
+    /* Mobile stops are in PIXELS, not percentages, on purpose. The copy block
+       is a fixed height in px (it ends between 514 and 558px from the top at
+       every phone width) while the hero is 100svh, so a percentage ramp that
+       cleared the copy on a 812px screen left the scroll cue in open
+       photograph on a 640px one. Pixels track the copy; percentages track the
+       window. */
+    background:linear-gradient(180deg,
+      rgba(232,233,231,.95) 0px,   rgba(232,233,231,.94) 390px,
+      rgba(232,233,231,.92) 545px, rgba(232,233,231,.80) 620px,
+      rgba(232,233,231,.34) 715px, rgba(232,233,231,0)   800px); }
+  @media(min-width:768px){
+    .plate-img { object-position:56% 42%; }
+    /* From md the copy is a left column and vertically centred, so the wash
+       becomes a radial anchored on it: dense over the copy, open at the right
+       and in the corners, which is where the photograph actually reads. */
+    .plate-scrim { background:
+      radial-gradient(128% 116% at 14% 50%,
+        rgba(232,233,231,.96) 0%,  rgba(232,233,231,.94) 28%,
+        rgba(232,233,231,.86) 40%, rgba(232,233,231,.55) 52%,
+        rgba(232,233,231,.20) 66%, rgba(232,233,231,0)   80%),
+      linear-gradient(180deg, rgba(232,233,231,.34) 0%, rgba(232,233,231,0) 26%); }
   }
 
   /* Terminal wordmark. Raw vw with no clamp: it has to fill the width at every
@@ -147,25 +223,48 @@
     pointer-events:none; user-select:none; }
   .endmark span { display:block; font-family:var(--font-display); font-weight:600;
     font-stretch:125%; font-variation-settings:'wdth' 125;
+    /* Off-scale on purpose: this is a mark measured against the viewport, not
+       a heading. Tracking continues the ladder past h1. */
     font-size:15.6vw; line-height:.74; letter-spacing:-.035em; text-transform:uppercase;
     color:var(--color-ink); white-space:nowrap; margin-bottom:-.16em; }
 }
 
-@keyframes sweep { 0%,12% { background-position:130% 0; } 55%,100% { background-position:-60% 0; } }
-@keyframes archIn { from { opacity:0; transform:translateY(9%) scaleY(.94); } to { opacity:1; transform:none; } }
+/* Hero wordmark — a cap on h1, not a new step.
+   h1 stays on the scale, but the scale's floor (52.03px, the 360 anchor) stops
+   shrinking while the column keeps shrinking, so on a phone the wordmark ran
+   past the gutter and each word's overflow:hidden mask shaved the last glyph:
+   5px over at 375, 13px at 360, 53px at 320 — half of "COMPANY" gone on an SE.
+   The cap is what the column can actually carry. In Archivo wdth125 at the h1
+   tracking, "COMPANY" sets 6.40x its own font-size; 6.44 leaves a hair of
+   margin. Above ~388px the scale is already the smaller of the two, so this
+   changes nothing there or on desktop (at 1440 the cap would be 196px against
+   a 134px step). Same reasoning as .endmark: a lockup is measured against its
+   measure, not against the ladder.
+
+   Unlayered on purpose — `text-h1` is a Tailwind utility, and the utilities
+   layer beats @layer components no matter the specificity. Font-size only, so
+   the h1 line-height and tracking still come from the token. */
+.wordmark { font-size: min(var(--text-h1),
+             calc((100vw - 2 * var(--spacing-gutter)) / 6.44)); }
+
+@keyframes plateIn{ from { opacity:0; transform:scale(1.015); } to { opacity:1; transform:none; } }
 @keyframes rise  { to { opacity:1; transform:none; } }
 @keyframes fadeUp{ from{ opacity:0; transform:translateY(22px);} to{ opacity:1; transform:none; } }
 @keyframes lift  { from{ opacity:0; transform:translateY(105%);} to{ opacity:1; transform:none; } }
 @keyframes cue   { 0%{transform:translateX(-100%);} 55%,100%{transform:translateX(100%);} }
 
 /* Reveals: unhurried on purpose. Calm reads as expensive. */
-.rise > * { opacity:0; transform:translateY(34px); }
-.rise.in > * { animation:rise 1.25s var(--ease-slow) forwards; }
-.rise.in > *:nth-child(1){animation-delay:.06s} .rise.in > *:nth-child(2){animation-delay:.17s}
-.rise.in > *:nth-child(3){animation-delay:.28s} .rise.in > *:nth-child(4){animation-delay:.39s}
-.rise.in > *:nth-child(5){animation-delay:.50s} .rise.in > *:nth-child(6){animation-delay:.61s}
-.rise.in > *:nth-child(7){animation-delay:.72s} .rise.in > *:nth-child(8){animation-delay:.83s}
-.rise.in > *:nth-child(9){animation-delay:.94s}
+.rise > * { opacity:0; transform:translateY(14px); }
+.rise.in > * { animation:rise var(--duration-reveal) var(--ease-motion) forwards; }
+.rise.in > *:nth-child(1){animation-delay:0ms}
+.rise.in > *:nth-child(2){animation-delay:40ms}
+.rise.in > *:nth-child(3){animation-delay:80ms}
+.rise.in > *:nth-child(4){animation-delay:120ms}
+.rise.in > *:nth-child(5){animation-delay:160ms}
+.rise.in > *:nth-child(6){animation-delay:200ms}
+.rise.in > *:nth-child(7){animation-delay:240ms}
+.rise.in > *:nth-child(8){animation-delay:280ms}
+.rise.in > *:nth-child(9){animation-delay:320ms}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration:.001ms !important; animation-iteration-count:1 !important;

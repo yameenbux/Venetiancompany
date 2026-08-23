@@ -2,10 +2,14 @@
 interface Props { eyebrow?: string; title: string; lede?: string; id?: string }
 const { eyebrow, title, lede, id } = Astro.props;
 ---
-<div class="grid gap-6 mb-head md:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] md:items-end">
+<!-- The head track has a 21rem floor: as a bare `minmax(0,1fr)` it collapsed
+     to 251px at 768 while the lede kept its full 26rem, so the two-line
+     heading lockup broke into four lines and ran out of its own column.
+     The lede track is minmax(0,…) and absorbs the difference. -->
+<div class="grid gap-6 mb-head md:grid-cols-[minmax(21rem,1fr)_minmax(0,26rem)] md:items-end">
   <div>
     {eyebrow && <p class="label mb-5">{eyebrow}</p>}
-    <h2 id={id} class="text-d2 uppercase" set:html={title} />
+    <h2 id={id} class="text-h2 uppercase" set:html={title} />
   </div>
-  {lede && <p class="font-read text-lede leading-[1.5] text-ink-soft max-w-[42ch] m-0">{lede}</p>}
+  {lede && <p class="font-read text-lede text-ink-soft max-w-[42ch] m-0">{lede}</p>}
 </div>

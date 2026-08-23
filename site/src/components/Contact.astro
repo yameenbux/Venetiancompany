@@ -5,28 +5,31 @@ import { phone, contactName, serviceArea, instagram, tilingPartner } from '../da
 <section id="contact" class="px-gutter py-section">
   <div class="max-w-[1240px] mx-auto rise">
     <p class="label">Enquiries <span class="text-accent">&middot;</span> {contactName}</p>
-    <h2 class="text-d2 uppercase mt-5">Let's talk<br>about the finish</h2>
+    <h2 class="text-h2 uppercase mt-5">Let's talk<br>about the finish</h2>
 
-    <a class="inline-block font-display font-semibold [font-stretch:125%] text-[clamp(1.7rem,5vw,3.9rem)]
-              tracking-[-.018em] tabular-nums text-accent no-underline mt-6 relative
-              after:absolute after:left-0 after:bottom-[.06em] after:h-px after:w-full after:bg-accent
+    <!-- py-[5px] is hit area, not spacing: at 375 the line box alone is 36.3px
+         and this is the page's primary tap target. The underline is offset by
+         the same 5px so it stays on the baseline. -->
+    <a class="inline-block font-display font-semibold [font-stretch:125%] text-h2
+              tabular-nums text-accent no-underline mt-12 py-[5px] relative
+              after:absolute after:left-0 after:bottom-[calc(.06em+5px)] after:h-px after:w-full after:bg-accent
               after:origin-right after:scale-x-0 hover:after:origin-left hover:after:scale-x-100
-              after:transition-transform after:duration-700 after:ease-slow"
+              after:transition-transform after:duration-240 after:ease-slow"
        href={`tel:${phone.e164}`}>{phone.display}</a>
 
-    <div class="mt-10"><BookCall variant="solid" label="Book a call" /></div>
+    <div class="mt-20"><BookCall variant="solid" label="Book a call" /></div>
 
     <div class="grid gap-8 md:grid-cols-3 mt-[clamp(3rem,7vw,5rem)] pt-8 border-t border-ink/15">
       <div>
-        <h4 class="label m-0 mb-2">Direct</h4>
+        <h3 class="label m-0 mb-2">Direct</h3>
         <p class="m-0"><a class="no-underline border-b border-ink/15 hover:border-accent hover:text-accent" href={`tel:${phone.e164}`}>{phone.display}</a><br />{contactName}<br /><span class="text-ink-mute">Covering the UK, {serviceArea.toLowerCase()}</span></p>
       </div>
       <div>
-        <h4 class="label m-0 mb-2">Instagram</h4>
+        <h3 class="label m-0 mb-2">Instagram</h3>
         <p class="m-0"><a class="no-underline border-b border-ink/15 hover:border-accent hover:text-accent" href={instagram} target="_blank" rel="noopener">@thevenetiancompany_</a></p>
       </div>
       <div>
-        <h4 class="label m-0 mb-2">Tiling</h4>
+        <h3 class="label m-0 mb-2">Tiling</h3>
         <p class="m-0"><a class="no-underline border-b border-ink/15 hover:border-accent hover:text-accent" href={tilingPartner} target="_blank" rel="noopener">@sktiling</a></p>
       </div>
     </div>

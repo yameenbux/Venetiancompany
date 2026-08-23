@@ -6,7 +6,9 @@ interface Props { line: string }
 const { line } = Astro.props;
 ---
 <section class="px-gutter py-[clamp(3.5rem,8vw,6rem)]">
-  <div class="max-w-[1240px] mx-auto flex flex-wrap items-center justify-between gap-6
+  <!-- gap-x stays 24px; gap-y doubles because this row wraps on phones, where
+       24px between the line and a 48px-tall button reads cramped. -->
+  <div class="rise max-w-[1240px] mx-auto flex flex-wrap items-center justify-between gap-x-6 gap-y-12
               border-t border-ink/15 pt-[clamp(2rem,4vw,3rem)]">
     <p class="font-read text-lede text-ink-soft max-w-[34ch] m-0">{line}</p>
     <BookCall variant="bare" />

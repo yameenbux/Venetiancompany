@@ -63,8 +63,15 @@ Everything below is taken from the client's own public Instagram
   The finish is the product, so the page should feel like the surface.
 - **Service area:** nationwide (confirmed).
 - **Studio credit:** pages carry "Designed by YSBDesigns" in the footer.
-- **Existing brand assets:** circular TVC monogram (stacked T/V/C, thin black rule on
-  white). All-caps tracked typography across their story graphics. No website.
+- **Existing brand assets:** the TVC monogram — a thin black ring with the T, V and
+  C **interlocked down a shared axis**, the T's stem running into the V and the V's
+  point into the C. They are not three stacked letters with gaps; the first pass got
+  that wrong and set them as separate `<text>` baselines. Adam supplied the artwork,
+  and `site/src/components/Monogram.astro` is a **trace of it** (upscaled 4x,
+  thresholded, potrace; 98.7% IoU against the original, 9007 ink pixels to 9008).
+  The outlines are drawn, so there is no font dependency and the mark inherits
+  `currentColor`. Do not tidy the curves — the small asymmetries are in his mark.
+  All-caps tracked typography across their story graphics. No website.
 
 ### Written from general knowledge, not from them — needs Adam's sign-off
 
@@ -132,35 +139,137 @@ argument to make in the room, not "here are two palettes".
 | Display | Archivo `wdth 125`, uppercase | Newsreader 200, lowercase |
 | Labels | Archivo tracked caps | Courier Prime, spec-sheet annotation |
 | Thesis | the surface is the product | you judge a finish by taking a light to it |
-| Signature | the photographic arch | the raking light pass |
+| Signature | the daylight plate — the wordmark set *inside* a full-bleed photograph, washed toward the ground colour rather than dimmed | the raking light pass |
 
-### Type scale and rhythm
+#### The hero plate (replaces the arch)
 
-Taken from the BAMO and Olivia Harper references — the scale, spacing and motion,
-not the layouts. The point is the **gap**: one small tracked label size, one reading
-size, then a jump straight to display. Nothing lives in the middle of the ramp, and
-that emptiness is what makes the display read as large rather than merely big.
+The arch is gone. The hero is now one full-bleed photograph
+(`hero-courtyard.jpg`) with the wordmark sitting in it, and the thing that
+keeps it from being the same hero every agency ships is that **the scrim is
+paper, not black**. Everyone else dims the building and sets white type on it;
+this washes toward `#E8E9E7` and keeps the ink palette, so the hero still
+belongs to Direction A rather than to Direction B.
 
-```
---t-label  .66rem / .26em tracking     ~11px   every caption, nav item, eyebrow
---t-body   clamp(1rem, …, 1.1rem)      ~18px
---t-lede   clamp(1.1rem, …, 1.5rem)    ~24px   section statements
---t-d3     clamp(1.35rem, …, 2.15rem)  ~34px   row names, sub-heads
---t-d2     clamp(2.05rem, …, 4.5rem)   ~72px   section headings
---t-d1     clamp(2.5rem, …, 7.6rem)   ~122px   hero
-.endmark   15.6vw, no clamp           ~225px   terminal wordmark, fills the width
---section-y clamp(6rem, 13.5vw, 12.5rem)  ~194px at 1440
---head-gap  clamp(3.25rem, 7.5vw, 6rem)
-```
+**The scrim stops are solved, not eyeballed.** Compositing alpha *a* of paper
+(sRGB .910) over an image pixel *v* gives `a*.910 + (1-a)*v`. The image has
+near-black glazing in it, so the worst case is *v* ≈ 0:
 
-Motion is deliberately unhurried: reveals run 1.25s on `--ease-slow`
-(`cubic-bezier(.16,1,.3,1)`) with a 34px rise and a .11s stagger step. Calm reads
-as expensive; quick reads as a template. Don't speed these up.
+| text | colour | needs | over black needs |
+|---|---|---|---|
+| `.label` eyebrow, scroll cue | `--color-ink-mute` | 4.5:1 | a ≥ .81 |
+| lede | `--color-ink-soft` | 4.5:1 | a ≥ .69 |
+| wordmark (large text) | `--color-ink` | 3:1 | a ≥ .44 |
 
-The `.endmark` is sized in raw `vw` with no clamp on purpose — it has to fill the
-width at every viewport (verified 100% at 390/768/1440/1920). It also needs
-`position:relative; z-index:1`: it sits outside `main` and `footer`, and the fixed
-`.ground` is a positioned element, so in normal flow it paints underneath.
+So the small copy lives in the dense end of the ramp and the display type runs
+out into the clear end. Verified by rendering the hero, hiding the copy layer,
+and sampling the actual composited pixels under every glyph run: **16 viewport
+sizes from 320×568 to 1920×1080, worst pixel of every string, minimum ratio
+5.07**. Re-run `site/scripts/check-contrast.py` if you touch the stops or the image.
+
+**Mobile stops are in pixels, not percentages.** The copy block is a fixed
+height — it ends between 514px and 558px from the top at every phone width —
+while the hero is `100svh`. A percentage ramp tuned on a 812px screen left the
+scroll cue sitting in open photograph on a 640px one. Pixels track the copy;
+percentages track the window. From `md` the copy becomes a centred left column
+and the wash becomes a radial anchored on it, which opens the right of the
+frame back up.
+
+**The source is only 712×612.** It is upscaled ~2× at 1440 and more on a
+retina screen. The wash hides much of that, and the `.grain` layer hides more,
+but a higher-resolution original is needed before this goes in front of Adam.
+
+### Type scale
+
+Strict modular scale, defined in `site/src/styles/global.css` under `@theme`.
+Ratio **1.25** (major third) from an 18px base at the 1440 anchor, compressed to
+**1.14** from 16px at 360 so display steps still fit a phone. Every clamp is the
+straight line between those two anchors.
+
+| step | name | 360px | 1440px | line-height | tracking |
+|---|---|---|---|---|---|
+| −2 | label | 11.5px | 11.5px | 1.45 | +.22em |
+| −1 | caption | 14.4px | 14.4px | 1.55 | +.005em |
+| 0 | body | 16.0px | 18.0px | 1.70 | 0 |
+| 1 | lede | 18.2px | 22.5px | 1.45 | −.005em |
+| 2 | h4 | 20.8px | 28.1px | 1.25 | −.012em |
+| 3 | h3 | 23.7px | 35.2px | 1.15 | −.016em |
+| 6 | h2 | 35.1px | 68.7px | 1.02 | −.022em |
+| 9 | h1 | 52.0px | 134.1px | 0.94 | −.028em |
+
+**Steps 4, 5, 7 and 8 are deliberately unused.** That hole between h3 and h1 is
+what makes the display read as large rather than merely big. Do not fill it —
+if something seems to need step 4, it wants h3 or h2.
+
+Line-height falls as size rises; tracking runs monotonically from +.22em on the
+label to −.028em on h1. Each token carries **all three** values
+(`--text-h2`, `--text-h2--line-height`, `--text-h2--letter-spacing`), so a
+utility cannot pick up a size without its leading and tracking. Add sizes by
+adding a step, never with an arbitrary `text-[…]`.
+
+**label and caption are fixed, not fluid.** Interpolating them produced a clamp
+whose min exceeded its max — small text wants to be relatively *larger* on a
+phone — and CSS silently resolves that to the min, discarding the max. UI text
+at that size is a constant.
+
+Two justified off-scale values, both documented in place: `.endmark` (a mark
+measured against the viewport, `15.6vw`) and the hero's "The" (`.26em` of h1 —
+a lockup keeps its ratio at every size).
+
+**One cap, which is not a third exception.** `.wordmark` sets
+`font-size: min(var(--text-h1), calc((100vw - 2 * var(--spacing-gutter)) / 6.44))`.
+h1 is still the scale step; the `min()` only stops it exceeding what the column
+can carry. The floor at the 360 anchor (52.03px) stops the type shrinking while
+the column keeps shrinking, so on a phone "COMPANY" ran past the gutter and the
+`overflow:hidden` mask each hero word sits in shaved the last glyph — 5px over
+at 375, 13px at 360, 53px at 320. The divisor is measured: in Archivo `wdth 125`
+at h1 tracking, "COMPANY" sets 6.40× its own font-size, and 6.44 leaves margin.
+Above ~388px the scale is already the smaller of the two, so nothing changes
+there or on desktop (h1 is still exactly 134.1px at 1440). The rule is
+**unlayered on purpose** — `text-h1` is a utility, and Tailwind's utilities
+layer beats `@layer components` regardless of specificity.
+
+### Rhythm and motion
+
+`--spacing-section: clamp(6rem, 13.5vw, 12.5rem)` (~194px at 1440) and
+`--spacing-head: clamp(3.25rem, 7.5vw, 6rem)`, taken from the BAMO and Olivia
+Harper references.
+
+The outer rhythm is settled — section seams run 258–389px at 1440 and nothing
+there is cramped. What was cramped was **inside** sections: closing notes and
+credits sitting 24–36px under the blocks they belong to. Those were audited by
+measuring the rendered page and doubled. Don't tighten them back:
+
+| where | was | now |
+|---|---|---|
+| index → "and more" note | 36px | 72px |
+| feature figure → plates grid | 56px | 112px |
+| plates grid → photo credit | 24px | 48px |
+| quotes → placeholder flag | 28px | 56px |
+| contact h2 → phone number | 24px | 48px |
+| phone number → CTA | 40px | 80px |
+| CallBand row gap (stacked) | 24px | 48px |
+
+The 20px between an eyebrow and its heading is a **lockup**, not a gap — it
+matches `SectionHead`'s `mb-5` and should stay tight. **Motion was re-specced** to subtle / 200–300ms / nothing bounces, which
+supersedes the earlier "unhurried, don't speed these up" note taken from the
+references. That older rule is gone — do not reinstate it from the reference
+screenshots.
+
+- One curve for all interaction motion: `--ease-motion: cubic-bezier(.33,1,.68,1)`
+  (easeOutCubic). Both control-point y values are ≤ 1, so it decelerates into
+  place and **cannot overshoot**. Anything with y > 1 — `back.out`, spring
+  curves — bounces and is banned.
+- `--duration-reveal: 280ms`, `--duration-hover: 240ms`. Every transition and
+  entrance sits in the 200–300ms band; verified against the live document.
+- Scroll reveals travel **14px**, not 34px. A long throw at 280ms reads as a
+  jerk — short travel is what makes a fast reveal feel subtle.
+- Stagger step is 40ms, so a nine-child group finishes in ~600ms.
+
+One ambient loop is deliberately outside the band because it is neither a
+reveal nor a hover: the hero scroll `cue` (3.4s). It is a slow drift, not an
+interaction. The arch light `sweep` (22s) was the other one; it went with the
+arch, and its keyframe was deleted rather than left orphaned.
+
 
 ## Stack and brief
 
@@ -188,6 +297,8 @@ step 01 of the process is now the call. Both things stay true.
 site/                the site — Astro + Tailwind, deploys to Cloudflare Pages
   src/data/site.ts     every client-supplied fact, one file, no CMS
   src/components/      BookCall.astro is the one CTA, used six times
+  scripts/             check-contrast.py — samples the real composited pixels
+                       under the hero copy; run it if you touch the plate
   public/assets/       canonical home for the client's photography and film
   public/_headers      Cloudflare cache policy
 CLAUDE.md            this file
@@ -242,6 +353,12 @@ is available.
 - **One action, repeated.** Every call-to-action on the site is
   `src/components/BookCall.astro` — same words, same destination. Six instances, one
   href. Do not add a second competing ask.
+  **Never hide it with a passed class.** `BookCall`'s own `base` sets
+  `inline-flex`, and Tailwind v4 emits `.inline-flex` *after* `.hidden` in the
+  same layer, so `class="hidden md:…"` silently loses — that is how the nav CTA
+  ended up rendering at 375px, wrapping to two lines and pushing the header to
+  104px. Wrap the component in an element that carries the display utility
+  (`<span class="hidden md:contents">`) instead.
 - **Never overwrite a previous output.** Outputs are timestamped so we can compare
   directions side by side.
 - **Deploying to Pages.** `python samples/venetian-company/build-site.py` rebuilds

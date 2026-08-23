@@ -13,16 +13,22 @@ import { services, whatsappCall } from '../data/site';
         <a href={whatsappCall} target="_blank" rel="noopener"
            class="group relative grid grid-cols-[3.2rem_1fr_auto] items-center gap-4 no-underline
                   border-b border-ink/15 py-[clamp(1.1rem,2.6vw,1.7rem)]">
-          <span class="label group-hover:text-accent transition-colors duration-500">{String(i + 1).padStart(2, '0')}</span>
-          <span class="font-display font-semibold uppercase text-d3 leading-none [font-stretch:125%]
-                       transition-transform duration-700 ease-slow group-hover:translate-x-3">{s}</span>
-          <span class="label opacity-0 -translate-x-2 transition-all duration-500
+          <span class="label group-hover:text-accent transition-colors duration-240 ease-motion">{String(i + 1).padStart(2, '0')}</span>
+          <span class="font-display font-semibold uppercase text-h3 [font-stretch:125%]
+                       transition-transform duration-240 ease-motion group-hover:translate-x-3">{s}</span>
+          <!-- Hover-reveal, so it is laid out only where there is room for it.
+               Unconditionally it added a ~90px auto column that, against the h3
+               step's min-content width, pushed the row 9px past a 360px
+               viewport. Gated on width rather than (hover:hover) so a narrow
+               desktop window is covered too, not just touch devices. -->
+          <span class="hidden md:inline label opacity-0 -translate-x-2
+                       transition-all duration-240 ease-motion
                        group-hover:opacity-100 group-hover:translate-x-0">Book a call</span>
           <span class="absolute inset-x-0 -bottom-px h-px bg-accent scale-x-0 origin-left
-                       transition-transform duration-700 ease-slow group-hover:scale-x-100"></span>
+                       transition-transform duration-240 ease-motion group-hover:scale-x-100"></span>
         </a>
       ))}
     </div>
-    <p class="font-read italic text-ink-mute text-sm mt-9">And more — if you have a surface in mind that isn't listed, ask on the call.</p>
+    <p class="font-read italic text-ink-mute text-caption mt-18">And more — if you have a surface in mind that isn't listed, ask on the call.</p>
   </div>
 </section>
