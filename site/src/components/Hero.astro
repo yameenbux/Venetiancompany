@@ -2,11 +2,17 @@
 import BookCall from './BookCall.astro';
 import { serviceArea } from '../data/site';
 ---
+<!-- The plate: the photograph runs full bleed and the wordmark sits inside it.
+     The scrim is paper, not black. Every other site that puts type over a
+     building dims the picture; this direction reads the work in daylight, so
+     the frame is washed toward the ground colour instead. It also keeps the
+     ink palette — white-on-dark here would be Direction B's hero, not this one.
+     Scrim stops are solved for contrast, not eyeballed: see .plate-scrim. -->
 <section class="relative flex items-start md:items-center min-h-[100svh] overflow-hidden
                 px-gutter pt-36 md:pt-28 pb-16">
-  <div class="arch" aria-hidden="true">
-    <img src="/assets/stairwell.jpg" width="1050" height="1400" fetchpriority="high" decoding="async" alt="" />
-  </div>
+  <img class="plate-img" src="/assets/hero-courtyard.jpg" width="712" height="612"
+       fetchpriority="high" decoding="async" alt="" aria-hidden="true" />
+  <div class="plate-scrim" aria-hidden="true"></div>
 
   <div class="relative z-2 w-full max-w-[1240px] mx-auto">
     <p class="label [animation:fadeUp_300ms_var(--ease-motion)_both] [animation-delay:40ms]">

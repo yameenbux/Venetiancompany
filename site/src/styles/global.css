@@ -5,7 +5,7 @@
    every one of them (bg-paper, text-d2, py-section, ease-slow…).
 
    The bespoke material effects below are NOT utility-shaped — a
-   troweled plaster ground and an arch-masked photograph are not
+   troweled plaster ground and a full-bleed hero plate are not
    things you compose from classes. Tailwind carries the system;
    plain CSS carries the surface.
    ───────────────────────────────────────────────────────────── */
@@ -171,33 +171,50 @@
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E");
   }
 
-  /* Hero arch: the silhouette, with a real photograph inside it. */
-  .arch { position:absolute; z-index:0; pointer-events:none; overflow:hidden;
-    right:calc(var(--spacing-gutter) * -1); bottom:0;
-    width:min(62vw,330px); height:min(54vh,470px);
-    border-radius:min(44vw,280px) min(44vw,280px) 0 0;
-    box-shadow:0 40px 90px -34px rgba(20,24,26,.42);
-    animation:archIn 300ms var(--ease-motion) both;
-  }
-  .arch img { width:100%; height:100%; object-fit:cover; object-position:56% 26%; }
-  .arch::before { content:''; position:absolute; inset:0; z-index:1;
-    background:
-      linear-gradient(200deg, rgba(252,253,252,.34) 0%, rgba(252,253,252,0) 46%),
-      linear-gradient(90deg, var(--color-paper) 0%, rgba(232,233,231,.55) 18%, rgba(232,233,231,0) 46%),
-      linear-gradient(0deg, rgba(199,202,200,.5) 0%, rgba(199,202,200,0) 26%);
-  }
-  .arch::after { content:''; position:absolute; inset:0; z-index:2; border-radius:inherit;
-    background:linear-gradient(105deg, rgba(255,255,255,0) 30%, rgba(255,255,255,.55) 48%, rgba(255,255,255,0) 66%);
-    background-size:280% 100%; animation:sweep 22s var(--ease-out-soft) infinite;
-  }
-  @media(min-width:760px){
-    .arch { width:min(52vw,620px); height:min(84vh,760px);
-            border-radius:min(26vw,310px) min(26vw,310px) 0 0; }
-  }
-  @media(max-width:759px){
-    .arch::before { background:
-      linear-gradient(180deg, rgba(232,233,231,.66) 0%, rgba(232,233,231,.14) 38%, rgba(232,233,231,0) 100%),
-      linear-gradient(90deg, var(--color-paper) 0%, rgba(232,233,231,.35) 26%, rgba(232,233,231,0) 58%); }
+  /* ── Hero plate ──────────────────────────────────────────────
+     Replaces the arch. The photograph is full bleed and the wordmark sits in
+     it, so the whole hero is one plate rather than a masked cut-out.
+
+     The scrim is PAPER, not black. Washing toward the ground colour keeps the
+     ink palette and the daylight thesis; a dark overlay with white type would
+     be Direction B's hero pasted into this one.
+
+     The stops are solved, not eyeballed. Compositing alpha a of paper (#E8E9E7,
+     sRGB .910) over an image pixel v gives a*.910 + (1-a)*v. For 4.5:1 against
+     --color-ink-soft (#333A3D) the composite has to reach sRGB .629, which over
+     a black pixel needs a >= .69; the wordmark is large text, so 3:1 is enough
+     and it can sit as low as a >= .44. Small copy therefore lives in the dense
+     end of the ramp and the display type runs out into the clear end. The
+     measured worst case for every string is recorded in CLAUDE.md.
+
+     Mobile is a vertical ramp because the copy spans the full width; from md
+     the copy is a left column, so the ramp turns horizontal and the right of
+     the frame stays as good as unwashed. */
+  .plate-img { position:absolute; inset:0; z-index:0; width:100%; height:100%;
+    object-fit:cover; object-position:50% 34%; pointer-events:none;
+    animation:plateIn 300ms var(--ease-motion) both; }
+  .plate-scrim { position:absolute; inset:0; z-index:1; pointer-events:none;
+    /* Mobile stops are in PIXELS, not percentages, on purpose. The copy block
+       is a fixed height in px (it ends between 514 and 558px from the top at
+       every phone width) while the hero is 100svh, so a percentage ramp that
+       cleared the copy on a 812px screen left the scroll cue in open
+       photograph on a 640px one. Pixels track the copy; percentages track the
+       window. */
+    background:linear-gradient(180deg,
+      rgba(232,233,231,.95) 0px,   rgba(232,233,231,.94) 390px,
+      rgba(232,233,231,.92) 545px, rgba(232,233,231,.80) 620px,
+      rgba(232,233,231,.34) 715px, rgba(232,233,231,0)   800px); }
+  @media(min-width:768px){
+    .plate-img { object-position:56% 42%; }
+    /* From md the copy is a left column and vertically centred, so the wash
+       becomes a radial anchored on it: dense over the copy, open at the right
+       and in the corners, which is where the photograph actually reads. */
+    .plate-scrim { background:
+      radial-gradient(128% 116% at 14% 50%,
+        rgba(232,233,231,.96) 0%,  rgba(232,233,231,.94) 28%,
+        rgba(232,233,231,.86) 40%, rgba(232,233,231,.55) 52%,
+        rgba(232,233,231,.20) 66%, rgba(232,233,231,0)   80%),
+      linear-gradient(180deg, rgba(232,233,231,.34) 0%, rgba(232,233,231,0) 26%); }
   }
 
   /* Terminal wordmark. Raw vw with no clamp: it has to fill the width at every
@@ -230,8 +247,7 @@
 .wordmark { font-size: min(var(--text-h1),
              calc((100vw - 2 * var(--spacing-gutter)) / 6.44)); }
 
-@keyframes sweep { 0%,12% { background-position:130% 0; } 55%,100% { background-position:-60% 0; } }
-@keyframes archIn { from { opacity:0; transform:translateY(2%); } to { opacity:1; transform:none; } }
+@keyframes plateIn{ from { opacity:0; transform:scale(1.015); } to { opacity:1; transform:none; } }
 @keyframes rise  { to { opacity:1; transform:none; } }
 @keyframes fadeUp{ from{ opacity:0; transform:translateY(22px);} to{ opacity:1; transform:none; } }
 @keyframes lift  { from{ opacity:0; transform:translateY(105%);} to{ opacity:1; transform:none; } }

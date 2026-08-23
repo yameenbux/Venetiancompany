@@ -132,7 +132,44 @@ argument to make in the room, not "here are two palettes".
 | Display | Archivo `wdth 125`, uppercase | Newsreader 200, lowercase |
 | Labels | Archivo tracked caps | Courier Prime, spec-sheet annotation |
 | Thesis | the surface is the product | you judge a finish by taking a light to it |
-| Signature | the photographic arch | the raking light pass |
+| Signature | the daylight plate — the wordmark set *inside* a full-bleed photograph, washed toward the ground colour rather than dimmed | the raking light pass |
+
+#### The hero plate (replaces the arch)
+
+The arch is gone. The hero is now one full-bleed photograph
+(`hero-courtyard.jpg`) with the wordmark sitting in it, and the thing that
+keeps it from being the same hero every agency ships is that **the scrim is
+paper, not black**. Everyone else dims the building and sets white type on it;
+this washes toward `#E8E9E7` and keeps the ink palette, so the hero still
+belongs to Direction A rather than to Direction B.
+
+**The scrim stops are solved, not eyeballed.** Compositing alpha *a* of paper
+(sRGB .910) over an image pixel *v* gives `a*.910 + (1-a)*v`. The image has
+near-black glazing in it, so the worst case is *v* ≈ 0:
+
+| text | colour | needs | over black needs |
+|---|---|---|---|
+| `.label` eyebrow, scroll cue | `--color-ink-mute` | 4.5:1 | a ≥ .81 |
+| lede | `--color-ink-soft` | 4.5:1 | a ≥ .69 |
+| wordmark (large text) | `--color-ink` | 3:1 | a ≥ .44 |
+
+So the small copy lives in the dense end of the ramp and the display type runs
+out into the clear end. Verified by rendering the hero, hiding the copy layer,
+and sampling the actual composited pixels under every glyph run: **16 viewport
+sizes from 320×568 to 1920×1080, worst pixel of every string, minimum ratio
+5.07**. Re-run `site/scripts/check-contrast.py` if you touch the stops or the image.
+
+**Mobile stops are in pixels, not percentages.** The copy block is a fixed
+height — it ends between 514px and 558px from the top at every phone width —
+while the hero is `100svh`. A percentage ramp tuned on a 812px screen left the
+scroll cue sitting in open photograph on a 640px one. Pixels track the copy;
+percentages track the window. From `md` the copy becomes a centred left column
+and the wash becomes a radial anchored on it, which opens the right of the
+frame back up.
+
+**The source is only 712×612.** It is upscaled ~2× at 1440 and more on a
+retina screen. The wash hides much of that, and the `.grain` layer hides more,
+but a higher-resolution original is needed before this goes in front of Adam.
 
 ### Type scale
 
@@ -221,9 +258,10 @@ screenshots.
   jerk — short travel is what makes a fast reveal feel subtle.
 - Stagger step is 40ms, so a nine-child group finishes in ~600ms.
 
-Two ambient loops are deliberately outside the band because they are neither a
-reveal nor a hover: the arch light `sweep` (22s) and the hero scroll `cue`
-(3.4s). Both are slow drifts, not interactions.
+One ambient loop is deliberately outside the band because it is neither a
+reveal nor a hover: the hero scroll `cue` (3.4s). It is a slow drift, not an
+interaction. The arch light `sweep` (22s) was the other one; it went with the
+arch, and its keyframe was deleted rather than left orphaned.
 
 
 ## Stack and brief
@@ -252,6 +290,8 @@ step 01 of the process is now the call. Both things stay true.
 site/                the site — Astro + Tailwind, deploys to Cloudflare Pages
   src/data/site.ts     every client-supplied fact, one file, no CMS
   src/components/      BookCall.astro is the one CTA, used six times
+  scripts/             check-contrast.py — samples the real composited pixels
+                       under the hero copy; run it if you touch the plate
   public/assets/       canonical home for the client's photography and film
   public/_headers      Cloudflare cache policy
 CLAUDE.md            this file
