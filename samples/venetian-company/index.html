@@ -208,6 +208,10 @@ h1,h2,h3{
 }
 .topbar nav a:hover::after{ transform:scaleX(1); transform-origin:left; }
 .tel{
+  /* inline-flex + min-height: as a plain inline box this was a 36px-tall tap
+     target on a phone. The padding is unchanged; the box just can't sit under
+     44px any more. */
+  display:inline-flex; align-items:center; min-height:44px;
   text-decoration:none; font-size:var(--t-label); letter-spacing:.2em; text-transform:uppercase;
   border:1px solid var(--rule); border-radius:100px; padding:.5rem 1.05rem;
   white-space:nowrap; transition:background .45s var(--ease), color .45s var(--ease), border-color .45s var(--ease);
@@ -222,6 +226,7 @@ h1,h2,h3{
   display:inline-flex; align-items:center; gap:.55rem; background:none; cursor:pointer;
   font:inherit; font-size:var(--t-label); letter-spacing:.2em; text-transform:uppercase;
   color:var(--ink); border:1px solid var(--rule); border-radius:100px; padding:.5rem .95rem;
+  min-height:44px; /* was 36px — under the 44px touch minimum */
 }
 .navbtn .bars{ display:grid; gap:3px; width:14px; }
 .navbtn .bars i{ display:block; height:1px; background:currentColor; transition:transform .4s var(--ease), opacity .3s; }

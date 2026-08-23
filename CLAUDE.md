@@ -171,6 +171,19 @@ Two justified off-scale values, both documented in place: `.endmark` (a mark
 measured against the viewport, `15.6vw`) and the hero's "The" (`.26em` of h1 —
 a lockup keeps its ratio at every size).
 
+**One cap, which is not a third exception.** `.wordmark` sets
+`font-size: min(var(--text-h1), calc((100vw - 2 * var(--spacing-gutter)) / 6.44))`.
+h1 is still the scale step; the `min()` only stops it exceeding what the column
+can carry. The floor at the 360 anchor (52.03px) stops the type shrinking while
+the column keeps shrinking, so on a phone "COMPANY" ran past the gutter and the
+`overflow:hidden` mask each hero word sits in shaved the last glyph — 5px over
+at 375, 13px at 360, 53px at 320. The divisor is measured: in Archivo `wdth 125`
+at h1 tracking, "COMPANY" sets 6.40× its own font-size, and 6.44 leaves margin.
+Above ~388px the scale is already the smaller of the two, so nothing changes
+there or on desktop (h1 is still exactly 134.1px at 1440). The rule is
+**unlayered on purpose** — `text-h1` is a utility, and Tailwind's utilities
+layer beats `@layer components` regardless of specificity.
+
 ### Rhythm and motion
 
 `--spacing-section: clamp(6rem, 13.5vw, 12.5rem)` (~194px at 1440) and
@@ -293,6 +306,12 @@ is available.
 - **One action, repeated.** Every call-to-action on the site is
   `src/components/BookCall.astro` — same words, same destination. Six instances, one
   href. Do not add a second competing ask.
+  **Never hide it with a passed class.** `BookCall`'s own `base` sets
+  `inline-flex`, and Tailwind v4 emits `.inline-flex` *after* `.hidden` in the
+  same layer, so `class="hidden md:…"` silently loses — that is how the nav CTA
+  ended up rendering at 375px, wrapping to two lines and pushing the header to
+  104px. Wrap the component in an element that carries the display utility
+  (`<span class="hidden md:contents">`) instead.
 - **Never overwrite a previous output.** Outputs are timestamped so we can compare
   directions side by side.
 - **Deploying to Pages.** `python samples/venetian-company/build-site.py` rebuilds

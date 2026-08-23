@@ -5,7 +5,7 @@ import { about, finishes } from '../data/site';
   bg-[radial-gradient(90%_70%_at_20%_0%,rgba(18,80,79,.20)_0%,rgba(18,80,79,0)_55%),radial-gradient(80%_60%_at_90%_100%,rgba(168,172,170,.16)_0%,rgba(168,172,170,0)_60%),linear-gradient(172deg,#141A1C_0%,#101416_55%,#0A0D0E_100%)]">
   <div class="relative z-1 max-w-[1240px] mx-auto">
     <div class="rise">
-      <div class="grid gap-6 mb-head md:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] md:items-end">
+      <div class="grid gap-6 mb-head md:grid-cols-[minmax(21rem,1fr)_minmax(0,26rem)] md:items-end">
         <div>
           <p class="label text-stone mb-5">The material</p>
           <h2 class="text-h2 uppercase">The material<br>is the point</h2>
@@ -36,7 +36,7 @@ import { about, finishes } from '../data/site';
                  loading="lazy" decoding="async" alt={f.alt}
                  class="w-full h-full object-cover transition-transform duration-240 ease-motion
                         group-hover:scale-[1.03]" />
-            <b class="absolute inset-x-0 bottom-0 p-3 font-normal text-label uppercase text-white
+            <b class="absolute inset-x-0 bottom-0 p-2 sm:p-3 font-normal text-label uppercase text-white
                       bg-gradient-to-t from-black/45 to-transparent [text-shadow:0_1px_6px_rgba(0,0,0,.6)]">{f.name}</b>
           </figure>
         ))}

@@ -212,6 +212,24 @@
     color:var(--color-ink); white-space:nowrap; margin-bottom:-.16em; }
 }
 
+/* Hero wordmark — a cap on h1, not a new step.
+   h1 stays on the scale, but the scale's floor (52.03px, the 360 anchor) stops
+   shrinking while the column keeps shrinking, so on a phone the wordmark ran
+   past the gutter and each word's overflow:hidden mask shaved the last glyph:
+   5px over at 375, 13px at 360, 53px at 320 — half of "COMPANY" gone on an SE.
+   The cap is what the column can actually carry. In Archivo wdth125 at the h1
+   tracking, "COMPANY" sets 6.40x its own font-size; 6.44 leaves a hair of
+   margin. Above ~388px the scale is already the smaller of the two, so this
+   changes nothing there or on desktop (at 1440 the cap would be 196px against
+   a 134px step). Same reasoning as .endmark: a lockup is measured against its
+   measure, not against the ladder.
+
+   Unlayered on purpose — `text-h1` is a Tailwind utility, and the utilities
+   layer beats @layer components no matter the specificity. Font-size only, so
+   the h1 line-height and tracking still come from the token. */
+.wordmark { font-size: min(var(--text-h1),
+             calc((100vw - 2 * var(--spacing-gutter)) / 6.44)); }
+
 @keyframes sweep { 0%,12% { background-position:130% 0; } 55%,100% { background-position:-60% 0; } }
 @keyframes archIn { from { opacity:0; transform:translateY(2%); } to { opacity:1; transform:none; } }
 @keyframes rise  { to { opacity:1; transform:none; } }

@@ -28,7 +28,13 @@ const links = [
     <a class="hidden sm:inline-flex label no-underline border border-ink/15 rounded-full px-4 py-2
               min-h-[44px] items-center whitespace-nowrap hover:border-accent hover:text-accent
               transition-colors duration-240 ease-motion" href={`tel:${phone.e164}`}>{phone.display}</a>
-    <BookCall variant="solid" class="hidden md:inline-flex" />
+    <!-- Wrapped, not classed: BookCall's own `inline-flex` is a base-layer
+         display utility, and Tailwind v4 emits `.inline-flex` after `.hidden`,
+         so a passed `hidden` loses and the CTA renders at every width. On a
+         phone that wrapped to two lines and pushed the header to 104px.
+         `md:contents` dissolves the wrapper above md, so the flex row is
+         unchanged there. -->
+    <span class="hidden md:contents"><BookCall variant="solid" /></span>
     <button id="navbtn" type="button" aria-expanded="false" aria-controls="navpanel"
             class="lg:hidden inline-flex items-center gap-2 label text-ink border border-ink/15
                    rounded-full px-4 min-h-[44px] cursor-pointer bg-transparent">
