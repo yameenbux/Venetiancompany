@@ -288,14 +288,22 @@ h1,h2,h3{ font-family:var(--display); font-weight:400; margin:0; line-height:.98
 .dark .shead p{ color:rgba(242,237,228,.62); }
 .material{ display:grid; gap:clamp(2.5rem,6vw,4.5rem); grid-template-columns:1fr; }
 @media(min-width:900px){ .material{ grid-template-columns:1.05fr .95fr; align-items:start; } }
+.material .pull{ margin-top:0; }
 .material p{ font-family:var(--read); font-size:clamp(1.02rem,1rem + .35vw,1.28rem); color:rgba(242,237,228,.78); }
 .pull{
   font-family:var(--display); font-size:clamp(1.7rem,4.6vw,3.1rem); line-height:1.12;
   text-transform:uppercase; letter-spacing:.02em; color:var(--chalk);
   border-left:1px solid var(--venetian-lt); padding-left:clamp(1rem,3vw,2rem); margin:2.4rem 0 0 !important;
 }
-.swatches{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(.6rem,1.6vw,1.1rem); }
-.swatch{ position:relative; aspect-ratio:3/4; border-radius:2px; overflow:hidden; background:var(--clay); }
+/* Six surfaces need room to be compared; three in a side column did not have it. */
+.finishes{ margin-top:clamp(3rem,7vw,5rem); padding-top:clamp(2rem,5vw,3rem); border-top:1px solid var(--rule-dark); }
+.fin-head{ display:grid; gap:.9rem; margin-bottom:clamp(1.5rem,4vw,2.4rem); }
+@media(min-width:860px){ .fin-head{ grid-template-columns:minmax(0,14rem) minmax(0,44ch); align-items:baseline; gap:2.5rem; } }
+.fin-head p.lead{ font-family:var(--read); color:rgba(242,237,228,.7); margin:0; }
+.swatches{ display:grid; grid-template-columns:repeat(2,1fr); gap:clamp(.6rem,1.6vw,1.1rem); }
+@media(min-width:620px){ .swatches{ grid-template-columns:repeat(3,1fr); } }
+@media(min-width:1000px){ .swatches{ grid-template-columns:repeat(6,1fr); } }
+.swatch{ position:relative; aspect-ratio:3/4; border-radius:2px; overflow:hidden; background:#2A2420; }  /* placeholder sits on the dark ground, not against it */
 .swatch img{ width:100%; height:100%; object-fit:cover; display:block; }
 .swatch b{
   position:absolute; left:0; right:0; bottom:0; padding:.7rem .6rem;
@@ -380,6 +388,7 @@ h1,h2,h3{ font-family:var(--display); font-weight:400; margin:0; line-height:.98
 }
 @media(min-width:560px){ .gallery{ grid-template-columns:repeat(2,1fr); } }
 @media(min-width:1000px){ .gallery{ grid-template-columns:repeat(4,1fr); } }
+@media(min-width:1400px){ .gallery{ gap:clamp(1.2rem,2vw,1.6rem); } }
 .gallery .frame{ aspect-ratio:3/4; }
 .gallery .frame img,.gallery .frame video{ width:100%; height:100%; object-fit:cover; }
 
@@ -545,28 +554,50 @@ footer{
         <div>
           <p>The Venetian Company are a team of experienced professionals skilled in luxury Venetian plastering. We have experience creating unique and sophisticated designs to suit a variety of homes or commercial spaces.</p>
           <p>We are a friendly, customer-focused business with a passion for bringing your dream home to reality.</p>
-          <blockquote class="pull">Every wall is mixed, laid and finished by hand.</blockquote>
         </div>
         <div>
-          <div class="swatches">
-            <figure class="swatch">
-              <img src="assets/finish-venetian.jpg" width="600" height="800" loading="lazy" decoding="async"
-                   alt="Venetian plaster in raking light, the trowel strokes standing proud of the surface">
-              <b>Venetian plaster</b>
-            </figure>
-            <figure class="swatch">
-              <img src="assets/finish-microcement.jpg" width="600" height="800" loading="lazy" decoding="async"
-                   alt="Microcement laid flat and seamless in a soft warm grey">
-              <b>Microcement</b>
-            </figure>
-            <figure class="swatch">
-              <img src="assets/finish-pigmented.jpg" width="390" height="520" loading="lazy" decoding="async"
-                   alt="Plaster pigmented to a soft blush, laid in broad passes">
-              <b>Pigmented</b>
-            </figure>
-          </div>
-          <p class="swatch-note">Finishes from completed projects — your colour is agreed before anything starts</p>
+          <blockquote class="pull">Every wall is mixed, laid and finished by hand.</blockquote>
         </div>
+      </div>
+
+      <div class="finishes rise">
+        <div class="fin-head">
+          <p class="eyebrow">The range</p>
+          <p class="lead">Six surfaces from recent projects. Your finish and colour are agreed with you before anything starts.</p>
+        </div>
+        <div class="swatches">
+          <figure class="swatch">
+            <img src="assets/finish-venetian.jpg" width="600" height="800" loading="lazy" decoding="async"
+                 alt="Plaster in raking light with the trowel strokes standing proud of the surface">
+            <b>Trowelled</b>
+          </figure>
+          <figure class="swatch">
+            <img src="assets/finish-polished.jpg" width="600" height="800" loading="lazy" decoding="async"
+                 alt="Polished plaster with soft cloudy movement in a pale warm grey">
+            <b>Polished</b>
+          </figure>
+          <figure class="swatch">
+            <img src="assets/finish-microcement.jpg" width="600" height="800" loading="lazy" decoding="async"
+                 alt="Microcement laid flat and seamless in a soft warm grey">
+            <b>Microcement</b>
+          </figure>
+          <figure class="swatch">
+            <img src="assets/finish-textured.jpg" width="600" height="800" loading="lazy" decoding="async"
+                 alt="A coarse sand-grain plaster finish">
+            <b>Textured</b>
+          </figure>
+          <figure class="swatch">
+            <img src="assets/finish-pigmented.jpg" width="390" height="520" loading="lazy" decoding="async"
+                 alt="Plaster pigmented to a soft blush, laid in broad passes">
+            <b>Pigmented</b>
+          </figure>
+          <figure class="swatch">
+            <img src="assets/finish-marbled.jpg" width="600" height="800" loading="lazy" decoding="async"
+                 alt="Deep teal plaster with high-contrast marbled veining">
+            <b>Marbled</b>
+          </figure>
+        </div>
+        <p class="swatch-note">Photographed on site, not on sample boards — this is how each one landed on a real wall.</p>
       </div>
     </div>
   </section>
@@ -615,7 +646,7 @@ footer{
     <div class="wrap">
       <div class="shead rise">
         <h2>Recent<br>surfaces</h2>
-        <p>Lime and cement, laid by hand. Two of these are film rather than stills — the surface shifts as the light moves across it, which a photograph flattens out.</p>
+        <p>Nine pieces of recent work, two of them film rather than stills — the surface shifts as the light moves across it, which a photograph flattens out.</p>
       </div>
       <div class="feature rise">
         <figure class="tile">
@@ -637,9 +668,14 @@ footer{
       <div class="gallery rise">
         <figure class="tile">
           <div class="frame">
+            <img src="assets/stair-marbled.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="Deep teal marbled plaster wall behind a floating oak staircase with a glass balustrade">
+          </div>
+          <figcaption>Feature wall — marbled</figcaption>
+        </figure>
+        <figure class="tile">
+          <div class="frame">
             <video poster="assets/bathroom-blush-poster.jpg" width="720" height="1280"
-                   muted loop playsinline preload="none"
-                   aria-label="Pan across a bathroom finished in blush-pigmented plaster with a freestanding bath">
+                   muted loop playsinline preload="none" aria-label="Pan across a bathroom finished in blush-pigmented plaster with a freestanding bath">
               <source src="assets/bathroom-blush.mp4" type="video/mp4">
             </video>
           </div>
@@ -647,22 +683,37 @@ footer{
         </figure>
         <figure class="tile">
           <div class="frame">
-            <img src="assets/plaster-detail.jpg" width="1050" height="1400" loading="lazy" decoding="async"
-                 alt="Close detail of plaster in raking light, showing the ridges left by the trowel">
+            <img src="assets/stairwell.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="Double-height stairwell in polished plaster lit by a skylight above Crittall glazing">
+          </div>
+          <figcaption>Stairwell — full height, no joins</figcaption>
+        </figure>
+        <figure class="tile">
+          <div class="frame">
+            <img src="assets/fireplace.jpg" width="1136" height="1400" loading="lazy" decoding="async" alt="Chimney breast in plaster with strong movement through the finish">
+          </div>
+          <figcaption>Chimney breast — worked by hand</figcaption>
+        </figure>
+        <figure class="tile">
+          <div class="frame">
+            <img src="assets/texture-switch.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="Coarse-grained plaster wall meeting a walnut-framed lighting keypad">
+          </div>
+          <figcaption>Detail — coarse grain</figcaption>
+        </figure>
+        <figure class="tile">
+          <div class="frame">
+            <img src="assets/plaster-detail.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="Close detail of plaster in raking light, showing the ridges left by the trowel">
           </div>
           <figcaption>Detail — the trowel, up close</figcaption>
         </figure>
         <figure class="tile">
           <div class="frame">
-            <img src="assets/wet-room.jpg" width="1050" height="1400" loading="lazy" decoding="async"
-                 alt="Microcement wet room with a recessed shelf and brass rainfall shower">
+            <img src="assets/wet-room.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="Microcement wet room with a recessed shelf and brass rainfall shower">
           </div>
           <figcaption>Wet room — microcement, no seams</figcaption>
         </figure>
         <figure class="tile">
           <div class="frame">
-            <img src="assets/bathroom-arch.jpg" width="1050" height="1400" loading="lazy" decoding="async"
-                 alt="Bathroom with a freestanding bath, arched window and plastered walls beside a marble feature wall">
+            <img src="assets/bathroom-arch.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="Bathroom with a freestanding bath, arched window and plastered walls beside a marble feature wall">
           </div>
           <figcaption>Bathroom — plaster against marble</figcaption>
         </figure>
