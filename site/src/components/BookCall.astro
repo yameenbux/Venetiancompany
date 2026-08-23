@@ -1,0 +1,28 @@
+---
+/**
+ * The one action. Every instance on the site is this component — same words,
+ * same destination, so the page has a single ask rather than a menu of them.
+ *
+ * Adam has no booking system and the brief says no CMS, so "book a call"
+ * opens WhatsApp with the request pre-written. Swapping in Cal.com or
+ * Calendly later is a one-line change to `href`.
+ */
+import { whatsappCall, phone } from '../data/site';
+
+interface Props { variant?: 'solid' | 'ghost' | 'bare'; label?: string; class?: string }
+const { variant = 'solid', label = 'Book a call', class: cls = '' } = Astro.props;
+
+const base =
+  'inline-flex items-center gap-3 no-underline uppercase text-label tracking-label ' +
+  'rounded-full px-8 py-[1.15rem] min-h-[48px] transition-colors duration-500 ' +
+  'ease-out-soft border';
+const styles = {
+  solid: 'bg-accent text-paper border-accent hover:bg-transparent hover:text-accent',
+  ghost: 'bg-transparent text-ink border-ink/20 hover:border-accent hover:text-accent',
+  bare:  'bg-transparent text-accent border-accent hover:bg-accent hover:text-paper',
+};
+---
+<a class={`${base} ${styles[variant]} ${cls}`} href={whatsappCall} target="_blank" rel="noopener"
+   data-cta="book-call" aria-label={`${label} with ${phone.display}`}>
+  {label}<span aria-hidden="true">&#8594;</span>
+</a>

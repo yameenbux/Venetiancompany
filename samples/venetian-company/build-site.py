@@ -35,4 +35,5 @@ for f in sorted(DIST.rglob("*")):
 #   find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
 #   cp -r ../../dist/. .          # adjust path to wherever dist/ landed
 #   git add -A && git commit -m "Update site" && git push
-#   cd - && git worktree remove --force /tmp/ghp
+#   cd /home/user/Venetiancompany            # leave /tmp/ghp BEFORE removing it,
+#   git worktree remove --force /tmp/ghp     # or the shell loses its cwd
