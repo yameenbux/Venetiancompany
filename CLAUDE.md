@@ -123,8 +123,14 @@ the **teal in the marbled staircase (h180)**. So:
   Prose: **Newsreader**. No Didone, no Jost.
 
 Every muted-on-ground pair was solved for ≥4.5:1 before the palette was applied, not
-after. If you change a token, re-run the contrast check — `--ink-mute` on `--paper-3`
-is the tight one (4.7:1).
+after. **That first pass solved against a flat `--paper-3` and was wrong**: the ground
+is not flat. `.ground::before` lays a `rgba(110,117,115,.10)` radial over it and
+`.grain` multiplies at `.30` on top, and measured against the real composite the
+`.label` colour was landing at **4.20:1** in the materials list, 4.23 in the footer
+and 4.43 on the work captions. `--color-ink-mute` is `#454D50`, not `#4B5457` — a ~7%
+luminance move that clears 4.5 everywhere with margin. If you change a token, do not
+compute the pair: render it and sample the pixels, with
+`site/scripts/check-contrast.py` for the hero and the same method for the rest.
 
 ### Two directions, one source
 
