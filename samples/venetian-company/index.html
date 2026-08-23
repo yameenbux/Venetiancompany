@@ -332,6 +332,42 @@ h1,h2,h3{ font-family:var(--display); font-weight:400; margin:0; line-height:.98
 .terms span{ display:inline-flex; align-items:center; gap:.6rem; }
 .terms span::before{ content:''; width:5px; height:5px; background:var(--venetian); border-radius:50%; }
 
+/* ── Enquiry checklist ───────────────────────────────────────── */
+.checklist{ display:grid; gap:clamp(1.4rem,3.5vw,2.4rem); grid-template-columns:1fr; }
+@media(min-width:640px){ .checklist{ grid-template-columns:repeat(2,1fr); } }
+@media(min-width:1040px){ .checklist{ grid-template-columns:repeat(4,1fr); } }
+.check{ border-top:1px solid var(--ink); padding-top:1rem; position:relative; }
+.check::before{
+  content:''; position:absolute; top:-1px; left:0; width:100%; height:1px;
+  background:var(--venetian); transform:scaleX(0); transform-origin:left;
+  transition:transform .8s var(--ease);
+}
+.rise.in .check::before{ transform:scaleX(1); }
+.rise.in .check:nth-child(1)::before{ transition-delay:.20s }
+.rise.in .check:nth-child(2)::before{ transition-delay:.30s }
+.rise.in .check:nth-child(3)::before{ transition-delay:.40s }
+.rise.in .check:nth-child(4)::before{ transition-delay:.50s }
+.check h3{
+  font-family:var(--display); font-size:clamp(1.15rem,2.6vw,1.6rem); text-transform:uppercase;
+  letter-spacing:.02em; margin:0 0 .5rem; line-height:1.05;
+}
+.check p{ margin:0; font-family:var(--read); font-size:.94rem; color:var(--ink-mute); }
+.check .req{
+  font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--venetian);
+  display:block; margin-bottom:.7rem;
+}
+.enquire-aside{
+  margin-top:clamp(2.5rem,6vw,4rem); display:grid; gap:2rem; grid-template-columns:1fr;
+  padding-top:2rem; border-top:1px solid var(--rule);
+}
+@media(min-width:880px){ .enquire-aside{ grid-template-columns:1.15fr .85fr; align-items:start; } }
+.enquire-aside p{ font-family:var(--read); margin:0 0 1rem; color:var(--ink-soft); max-width:52ch; }
+.cta-stack{ display:flex; flex-wrap:wrap; gap:.8rem; }
+.btn--wa{ border-color:var(--venetian); color:var(--venetian); }
+.btn--wa::before{ background:var(--venetian); }
+.btn--wa:hover{ color:var(--chalk); }
+.btn .wa{ width:1em; height:1em; fill:currentColor; flex:0 0 auto; }
+
 /* ── Gallery placeholders ────────────────────────────────────── */
 .gallery{ display:grid; grid-template-columns:repeat(2,1fr); gap:clamp(.5rem,1.4vw,1rem); }
 @media(min-width:820px){ .gallery{ grid-template-columns:repeat(3,1fr); } }
@@ -461,7 +497,7 @@ footer{
     <a href="#work">Work</a>
     <a href="#material">The Material</a>
     <a href="#process">Process</a>
-    <a href="#contact">Enquire</a>
+    <a href="#enquire">Enquire</a>
   </nav>
   <a class="tel" href="tel:+447527180499">07527 180499</a>
 </header>
@@ -480,7 +516,7 @@ footer{
       </h1>
       <p class="lede">A team of finishing specialists covering all aspects.</p>
       <div class="hero-foot">
-        <a class="btn btn--accent" href="#contact">Request a sample <span class="arrow">→</span></a>
+        <a class="btn btn--accent" href="#enquire">Start an enquiry <span class="arrow">→</span></a>
         <div class="scroll-cue"><span class="bar"></span> Scroll</div>
       </div>
     </div>
@@ -544,28 +580,29 @@ footer{
         <div class="step">
           <span class="n">01</span>
           <h3>Initial discussion</h3>
-          <p>We talk through the space, the areas involved and the finish you're after.</p>
+          <p>Send us the space and what you're after. We're also able to visit the area to discuss before going ahead.</p>
         </div>
         <div class="step">
           <span class="n">02</span>
-          <h3>Samples</h3>
-          <p>Up to two samples are included as part of your package. Additional samples are charged at £80.</p>
+          <h3>Finish, colour, samples</h3>
+          <p>Once your finish, colour and other requirements are agreed, samples can be provided as part of your package — up to two included, additional samples £80.</p>
         </div>
         <div class="step">
           <span class="n">03</span>
           <h3>Quote agreed</h3>
-          <p>Pricing is provided in a quote after those discussions, and agreed before we commence. We can also suggest alternative finishes to suit a budget.</p>
+          <p>Pricing is provided in a quote after those discussions and agreed before we commence. We can also suggest alternative finishes to suit a budget.</p>
         </div>
         <div class="step">
           <span class="n">04</span>
-          <h3>On site</h3>
-          <p>A 50% deposit is required before commencing. The remaining balance is due on completion.</p>
+          <h3>Date &amp; deposit</h3>
+          <p>Once a date is mutually agreed, a 50% deposit secures the booking — this lets us buy the materials for your project, and it's non-refundable. The balance is due on completion.</p>
         </div>
       </div>
       <div class="terms rise">
         <span>Up to 2 samples included</span>
         <span>Additional samples £80</span>
-        <span>50% deposit to commence</span>
+        <span>50% deposit secures the booking</span>
+        <span>Deposit non-refundable</span>
         <span>Balance due on completion</span>
       </div>
     </div>
@@ -591,6 +628,48 @@ footer{
     </div>
   </section>
 
+  <!-- ── ENQUIRE ────────────────────────────────────────────── -->
+  <section class="section" id="enquire">
+    <div class="wrap">
+      <div class="shead rise">
+        <h2>Send us<br>four things</h2>
+        <p>Photographs of the area let us price it on size, so the more you send, the closer the first number is.</p>
+      </div>
+      <div class="checklist rise">
+        <div class="check">
+          <span class="req">Required</span>
+          <h3>Address of the project</h3>
+          <p>Where the work is.</p>
+        </div>
+        <div class="check">
+          <span class="req">Required</span>
+          <h3>Photographs of the area</h3>
+          <p>Wide shots are more useful than close-ups. These are what let us price on size.</p>
+        </div>
+        <div class="check">
+          <span class="req">If available</span>
+          <h3>Measurements</h3>
+          <p>Rough is fine. Don't hold up the enquiry for them.</p>
+        </div>
+        <div class="check">
+          <span class="req">Required</span>
+          <h3>Desired finish or style</h3>
+          <p>In your own words, or send the inspiration photos you've been saving.</p>
+        </div>
+      </div>
+      <div class="enquire-aside rise">
+        <div>
+          <p>Send your inspiration photos over — they help our team understand your vision. We're experienced specialists and will guide you to a finish that suits your requirements, and we can visit the area to discuss before anything goes ahead.</p>
+          <p>Our team are always happy to help with any initial discussions or queries, so please don't hesitate to get in touch.</p>
+        </div>
+        <div class="cta-stack">
+          <a class="btn btn--wa" href="https://wa.me/447527180499?text=Hi%20Adam%20%E2%80%94%20I%27d%20like%20to%20enquire%20about%20a%20project.%0A%0AAddress%20of%20project%3A%0APhotographs%20of%20the%20area%3A%20%28attached%29%0AMeasurements%20%28if%20available%29%3A%0ADesired%20finish%20or%20style%3A%0A" target="_blank" rel="noopener"><svg class="wa" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.39-1.48-.89-.79-1.48-1.76-1.66-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.22 3.07.15.2 2.1 3.2 5.08 4.49.7.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.42-.08-.12-.27-.2-.57-.34M12.05 21.8h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.89 9.89-9.89 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.43 9.89-9.89 9.89M20.46 3.49A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.69 1.45c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.23-6.17-3.48-8.42"/></svg> WhatsApp us <span class="arrow">→</span></a>
+          <a class="btn" href="tel:+447527180499">Call Adam <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ── CONTACT ────────────────────────────────────────────── -->
   <section class="section contact" id="contact">
     <div class="wrap rise">
@@ -603,15 +682,17 @@ footer{
           <p><a href="tel:+447527180499">07527 180499</a><br>Adam Knowles</p>
         </div>
         <div>
-          <h4>Instagram</h4>
-          <p><a href="https://www.instagram.com/thevenetiancompany_/" target="_blank" rel="noopener">@thevenetiancompany_</a></p>
+          <h4>WhatsApp</h4>
+          <p><a href="https://wa.me/447527180499?text=Hi%20Adam%20%E2%80%94%20I%27d%20like%20to%20enquire%20about%20a%20project.%0A%0AAddress%20of%20project%3A%0APhotographs%20of%20the%20area%3A%20%28attached%29%0AMeasurements%20%28if%20available%29%3A%0ADesired%20finish%20or%20style%3A%0A" target="_blank" rel="noopener">Message us with your details</a></p>
         </div>
         <div>
-          <h4>Tiling</h4>
-          <p><a href="https://www.instagram.com/sktiling/" target="_blank" rel="noopener">@sktiling</a></p>
+          <h4>Instagram</h4>
+          <p><a href="https://www.instagram.com/thevenetiancompany_/" target="_blank" rel="noopener">@thevenetiancompany_</a><br>
+             <span style="color:var(--ink-mute)">Tiling — </span><a href="https://www.instagram.com/sktiling/" target="_blank" rel="noopener">@sktiling</a></p>
         </div>
       </div>
-      <!-- TODO: email address, service area, trading address — none published, ask Adam -->
+      <!-- TODO: email address, service area, trading address — none published, ask Adam.
+           WhatsApp is their stated primary enquiry route, so it leads here deliberately. -->
     </div>
   </section>
 

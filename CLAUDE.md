@@ -39,6 +39,23 @@ Everything below is taken from the client's own public Instagram
   agreed before commencing; alternative finishes offered to suit a budget; up to 2
   samples included, additional samples £80; 50% deposit before commencing, balance due
   on completion.
+- **Enquiry channel:** direct message or **WhatsApp** — "please direct message or
+  contact us via the WhatsApp below". WhatsApp is the primary route, not email.
+- **What they ask an enquirer to send (verbatim from their Enquiries highlight):**
+  address of project · photographs of the area · measurements (if available) · your
+  desired finish or style. Plus: "Please feel free to send your inspiration photos to
+  our team to support in understanding your vision. We are experienced specialists who
+  will help in providing guidance for a finish that best suits your requirements."
+  And: "Photographs of the area will also support our team to provide a price based on
+  size."
+- **Site visits (verbatim):** "Once we have agreed your finish, colour and other
+  requirements, samples can be provided as part of your package. We are also able to
+  visit the area to discuss before going ahead." Note *colour* is agreed alongside
+  finish, and a booking date is "mutually agreed" before the deposit is taken.
+- **Deposit T&Cs (verbatim from their Deposits highlight):** "a 50% deposit is required
+  to secure all project bookings before going ahead. This allows our team to purchase
+  the required materials and products for your individual project. This deposit is
+  non-refundable. The remaining balance will be due upon completion of the project."
 - **Audience:** homeowners doing high-end renovations and new builds, plus commercial
   spaces. Their feed is contemporary architectural — flat-roofed new builds, pool
   areas, curved plaster staircases, wet rooms.
