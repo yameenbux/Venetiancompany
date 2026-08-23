@@ -61,6 +61,8 @@ prompts.py           DISTILLED_AESTHETICS_PROMPT — the system prompt for gener
 helpers.py           Claude client + streaming generation + save/preview helpers
 generate.py          CLI entry point: python generate.py "<brief>"
 html_outputs/        timestamped generated pages (gitignored except .gitkeep)
+samples/             pages we've kept and are willing to show
+  venetian-company/index.html   the current pitch page
 ```
 
 ## How to generate a page
