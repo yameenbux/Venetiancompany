@@ -189,6 +189,32 @@ is available.
 - **Vary the direction between runs.** If the last output was a dark serif thing, the
   next one shouldn't be. Keep genuinely different directions to show as options.
 
+## Installed skills
+
+Two design skills are vendored into `.claude/skills/` so they travel with the repo —
+this environment is ephemeral, so a user-level install at `~/.claude/skills/` would not
+survive the container.
+
+| Skill | Source | Licence |
+|---|---|---|
+| `frontend-design` | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/frontend-design) | see its `LICENSE.txt` |
+| `ui-ux-pro-max` | [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) v2.13.0 | MIT |
+
+`ui-ux-pro-max` ships a searchable local dataset and a CLI:
+
+```bash
+python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<brief>" --domain typography
+# domains: style color chart landing product ux typography icons gsap react web google-fonts
+python3 .claude/skills/ui-ux-pro-max/scripts/design_system.py --help
+```
+
+Its `scripts/tests/` were dropped on install (the skill's own CI, not ours). Scanned
+before installing: no network calls, no `subprocess`/`eval`/`exec`, no writes outside
+its own directory.
+
+**These do not replace `DISTILLED_AESTHETICS_PROMPT`** — that is still the system prompt
+for generation. Treat the skills as reference material during hand-editing.
+
 ## The aesthetics system prompt
 
 The canonical copy lives in `prompts.py` as `DISTILLED_AESTHETICS_PROMPT`. Reproduced
