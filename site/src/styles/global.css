@@ -28,16 +28,62 @@
   --font-ui:      'Archivo', 'Archivo-fallback', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-read:    'Newsreader', 'Newsreader-fallback', 'Iowan Old Style', Georgia, serif;
 
-  /* The scale has a deliberate hole between label and display — that gap is
-     what makes the display read as large rather than merely big. */
-  --text-label: 0.66rem;
-  --text-body:  clamp(1rem, 0.95rem + 0.25vw, 1.1rem);
-  --text-lede:  clamp(1.1rem, 1rem + 0.62vw, 1.5rem);
-  --text-d3:    clamp(1.35rem, 2.9vw, 2.15rem);
-  --text-d2:    clamp(2.05rem, 5.8vw, 4.5rem);
-  --text-d1:    clamp(2.5rem, 8.8vw, 7.6rem);
+  /* ── Type scale ─────────────────────────────────────────────
+     Strict modular scale. Ratio 1.25 (major third) from an 18px base at the
+     1440 anchor, compressed to 1.14 from 16px at the 360 anchor so the display
+     steps still fit a phone. Each clamp is the straight line between the two.
 
-  --tracking-label: 0.26em;
+       step   name       360px    1440px   line-height  tracking
+        -2    label     11.5px    11.5px      1.45        .22em    fixed
+        -1    caption   14.4px    14.4px      1.55       .005em    fixed
+         0    body      16.0px    18.0px      1.7            0
+         1    lede      18.2px    22.5px      1.45      -.005em
+         2    h4        20.8px    28.1px      1.25      -.012em
+         3    h3        23.7px    35.2px      1.15      -.016em
+         6    h2        35.1px    68.7px      1.02      -.022em
+         9    h1        52.0px   134.1px      0.94      -.028em
+
+     Steps 4, 5, 7 and 8 are deliberately unused. That hole is what makes the
+     display read as large rather than merely big — see the references.
+
+     label and caption are FIXED, not fluid: interpolating them produced a
+     clamp whose min exceeded its max (small text wants to be relatively
+     larger on a phone), which CSS resolves to the min and silently discards
+     the max. UI text at this size is a constant, not a step in a fluid ramp.
+
+     Size, line-height and tracking travel together on each token, so a
+     utility cannot pick up one without the other two. */
+  --text-label: 0.72rem;
+  --text-label--line-height: 1.45;
+  --text-label--letter-spacing: 0.22em;
+
+  --text-caption: 0.9rem;
+  --text-caption--line-height: 1.55;
+  --text-caption--letter-spacing: 0.005em;
+
+  --text-body: clamp(1rem, 0.958rem + 0.185vw, 1.125rem);
+  --text-body--line-height: 1.7;
+  --text-body--letter-spacing: 0em;
+
+  --text-lede: clamp(1.14rem, 1.051rem + 0.394vw, 1.406rem);
+  --text-lede--line-height: 1.45;
+  --text-lede--letter-spacing: -0.005em;
+
+  --text-h4: clamp(1.3rem, 1.147rem + 0.679vw, 1.758rem);
+  --text-h4--line-height: 1.25;
+  --text-h4--letter-spacing: -0.012em;
+
+  --text-h3: clamp(1.482rem, 1.243rem + 1.06vw, 2.197rem);
+  --text-h3--line-height: 1.15;
+  --text-h3--letter-spacing: -0.016em;
+
+  --text-h2: clamp(2.195rem, 1.496rem + 3.106vw, 4.292rem);
+  --text-h2--line-height: 1.02;
+  --text-h2--letter-spacing: -0.022em;
+
+  --text-h1: clamp(3.252rem, 1.542rem + 7.6vw, 8.382rem);
+  --text-h1--line-height: 0.94;
+  --text-h1--letter-spacing: -0.028em;
 
   --spacing-gutter:  clamp(1.25rem, 5vw, 5.5rem);
   --spacing-section: clamp(6rem, 13.5vw, 12.5rem);
@@ -67,12 +113,16 @@
     font-family: var(--font-ui);
     font-weight: 300;
     font-size: var(--text-body);
-    line-height: 1.7;
+    line-height: var(--text-body--line-height);
+    letter-spacing: var(--text-body--letter-spacing);
     overflow-x: hidden;
   }
-  h1, h2, h3 {
-    font-family: var(--font-display); font-weight: 600; margin: 0; line-height: .95;
-    font-stretch: 125%; font-variation-settings: 'wdth' 125; letter-spacing: -.018em;
+  /* Headings carry family and width only. Size, leading and tracking come from
+     whichever scale step the element is given, so they can never disagree. */
+  h1, h2, h3, h4 {
+    font-family: var(--font-display); font-weight: 600; margin: 0;
+    font-stretch: 125%; font-variation-settings: 'wdth' 125;
+    text-wrap: balance;
   }
   :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
   img, video { max-width: 100%; display: block; }
@@ -84,9 +134,11 @@
 
 @layer components {
   .label {
-    font-family: var(--font-ui); font-weight: 400; font-size: var(--text-label);
-    letter-spacing: var(--tracking-label); text-transform: uppercase;
-    color: var(--color-ink-mute);
+    font-family: var(--font-ui); font-weight: 400;
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    letter-spacing: var(--text-label--letter-spacing);
+    text-transform: uppercase; color: var(--color-ink-mute);
   }
 
   /* Troweled ground: soft passes plus a shallow sweep, with SVG tooth over it. */
@@ -147,6 +199,8 @@
     pointer-events:none; user-select:none; }
   .endmark span { display:block; font-family:var(--font-display); font-weight:600;
     font-stretch:125%; font-variation-settings:'wdth' 125;
+    /* Off-scale on purpose: this is a mark measured against the viewport, not
+       a heading. Tracking continues the ladder past h1. */
     font-size:15.6vw; line-height:.74; letter-spacing:-.035em; text-transform:uppercase;
     color:var(--color-ink); white-space:nowrap; margin-bottom:-.16em; }
 }

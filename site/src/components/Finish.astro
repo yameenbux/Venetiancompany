@@ -8,18 +8,18 @@ import { about, finishes } from '../data/site';
       <div class="grid gap-6 mb-head md:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] md:items-end">
         <div>
           <p class="label text-stone mb-5">The material</p>
-          <h2 class="text-d2 uppercase">The material<br>is the point</h2>
+          <h2 class="text-h2 uppercase">The material<br>is the point</h2>
         </div>
-        <p class="font-read text-lede leading-[1.5] text-paper/70 max-w-[42ch] m-0">
+        <p class="font-read text-lede text-paper/70 max-w-[42ch] m-0">
           Lime and cement finishes that are laid, burnished and sealed on site. No joins, no seams, no two walls identical.
         </p>
       </div>
     </div>
 
     <div class="rise grid gap-[clamp(2rem,6vw,4.5rem)] lg:grid-cols-[1.05fr_.95fr] items-start">
-      <div>{about.map((p) => <p class="font-read text-[clamp(1.02rem,1rem+.35vw,1.28rem)] text-paper/[.78] mb-4 mt-0">{p}</p>)}</div>
-      <blockquote class="font-display font-semibold uppercase [font-stretch:125%] text-[clamp(1.55rem,3.6vw,2.7rem)]
-                         leading-[1.12] tracking-[-.01em] border-l border-accent-lt pl-[clamp(1rem,3vw,2rem)]">
+      <div>{about.map((p) => <p class="font-read text-lede text-paper/[.78] mb-4 mt-0">{p}</p>)}</div>
+      <blockquote class="font-display font-semibold uppercase [font-stretch:125%] text-h3
+                         border-l border-accent-lt pl-[clamp(1rem,3vw,2rem)]">
         Every wall is mixed, laid and finished by hand.
       </blockquote>
     </div>
@@ -34,12 +34,12 @@ import { about, finishes } from '../data/site';
           <figure class="relative aspect-3/4 rounded-sm overflow-hidden bg-[#1B2022]">
             <img src={`/assets/${f.file}`} width={f.w ?? 600} height={f.h ?? 800}
                  loading="lazy" decoding="async" alt={f.alt} class="w-full h-full object-cover" />
-            <b class="absolute inset-x-0 bottom-0 p-3 font-normal text-label tracking-[.16em] uppercase text-white
+            <b class="absolute inset-x-0 bottom-0 p-3 font-normal text-label uppercase text-white
                       bg-gradient-to-t from-black/45 to-transparent [text-shadow:0_1px_6px_rgba(0,0,0,.6)]">{f.name}</b>
           </figure>
         ))}
       </div>
-      <p class="font-read italic text-paper/[.62] text-sm mt-4 max-w-[40ch]">
+      <p class="font-read italic text-paper/[.62] text-caption mt-4 max-w-[40ch]">
         Photographed on site, not on sample boards — this is how each one landed on a real wall.
       </p>
     </div>

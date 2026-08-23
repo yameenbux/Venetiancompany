@@ -134,33 +134,51 @@ argument to make in the room, not "here are two palettes".
 | Thesis | the surface is the product | you judge a finish by taking a light to it |
 | Signature | the photographic arch | the raking light pass |
 
-### Type scale and rhythm
+### Type scale
 
-Taken from the BAMO and Olivia Harper references — the scale, spacing and motion,
-not the layouts. The point is the **gap**: one small tracked label size, one reading
-size, then a jump straight to display. Nothing lives in the middle of the ramp, and
-that emptiness is what makes the display read as large rather than merely big.
+Strict modular scale, defined in `site/src/styles/global.css` under `@theme`.
+Ratio **1.25** (major third) from an 18px base at the 1440 anchor, compressed to
+**1.14** from 16px at 360 so display steps still fit a phone. Every clamp is the
+straight line between those two anchors.
 
-```
---t-label  .66rem / .26em tracking     ~11px   every caption, nav item, eyebrow
---t-body   clamp(1rem, …, 1.1rem)      ~18px
---t-lede   clamp(1.1rem, …, 1.5rem)    ~24px   section statements
---t-d3     clamp(1.35rem, …, 2.15rem)  ~34px   row names, sub-heads
---t-d2     clamp(2.05rem, …, 4.5rem)   ~72px   section headings
---t-d1     clamp(2.5rem, …, 7.6rem)   ~122px   hero
-.endmark   15.6vw, no clamp           ~225px   terminal wordmark, fills the width
---section-y clamp(6rem, 13.5vw, 12.5rem)  ~194px at 1440
---head-gap  clamp(3.25rem, 7.5vw, 6rem)
-```
+| step | name | 360px | 1440px | line-height | tracking |
+|---|---|---|---|---|---|
+| −2 | label | 11.5px | 11.5px | 1.45 | +.22em |
+| −1 | caption | 14.4px | 14.4px | 1.55 | +.005em |
+| 0 | body | 16.0px | 18.0px | 1.70 | 0 |
+| 1 | lede | 18.2px | 22.5px | 1.45 | −.005em |
+| 2 | h4 | 20.8px | 28.1px | 1.25 | −.012em |
+| 3 | h3 | 23.7px | 35.2px | 1.15 | −.016em |
+| 6 | h2 | 35.1px | 68.7px | 1.02 | −.022em |
+| 9 | h1 | 52.0px | 134.1px | 0.94 | −.028em |
 
-Motion is deliberately unhurried: reveals run 1.25s on `--ease-slow`
-(`cubic-bezier(.16,1,.3,1)`) with a 34px rise and a .11s stagger step. Calm reads
-as expensive; quick reads as a template. Don't speed these up.
+**Steps 4, 5, 7 and 8 are deliberately unused.** That hole between h3 and h1 is
+what makes the display read as large rather than merely big. Do not fill it —
+if something seems to need step 4, it wants h3 or h2.
 
-The `.endmark` is sized in raw `vw` with no clamp on purpose — it has to fill the
-width at every viewport (verified 100% at 390/768/1440/1920). It also needs
-`position:relative; z-index:1`: it sits outside `main` and `footer`, and the fixed
-`.ground` is a positioned element, so in normal flow it paints underneath.
+Line-height falls as size rises; tracking runs monotonically from +.22em on the
+label to −.028em on h1. Each token carries **all three** values
+(`--text-h2`, `--text-h2--line-height`, `--text-h2--letter-spacing`), so a
+utility cannot pick up a size without its leading and tracking. Add sizes by
+adding a step, never with an arbitrary `text-[…]`.
+
+**label and caption are fixed, not fluid.** Interpolating them produced a clamp
+whose min exceeded its max — small text wants to be relatively *larger* on a
+phone — and CSS silently resolves that to the min, discarding the max. UI text
+at that size is a constant.
+
+Two justified off-scale values, both documented in place: `.endmark` (a mark
+measured against the viewport, `15.6vw`) and the hero's "The" (`.26em` of h1 —
+a lockup keeps its ratio at every size).
+
+### Rhythm and motion
+
+`--spacing-section: clamp(6rem, 13.5vw, 12.5rem)` (~194px at 1440) and
+`--spacing-head: clamp(3.25rem, 7.5vw, 6rem)`, taken from the BAMO and Olivia
+Harper references. Reveals run 1.25s on `--ease-slow`
+(`cubic-bezier(.16,1,.3,1)`) with a 34px rise and a .11s stagger step. Calm
+reads as expensive; quick reads as a template. Don't speed these up.
+
 
 ## Stack and brief
 

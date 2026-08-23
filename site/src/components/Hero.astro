@@ -13,17 +13,20 @@ import { serviceArea } from '../data/site';
       Venetian Plaster <span class="text-accent">&middot;</span> Microcement <span class="text-accent">&middot;</span> {serviceArea}
     </p>
 
-    <h1 class="text-d1 uppercase mt-7 tracking-[-.022em]">
+    <!-- "The" is set as a proportion of the wordmark (.26em of h1), not as an
+         independent scale step — a lockup has to keep its ratio at every size.
+         It is one of two deliberate off-scale values; the other is .endmark. -->
+    <h1 class="text-h1 uppercase mt-7">
       {['The', 'Venetian', 'Company'].map((word, i) => (
         <span class="block overflow-hidden">
           <i class={`block not-italic [animation:lift_1.45s_var(--ease-slow)_both] ${
-            i === 0 ? 'text-[.26em] font-normal tracking-[.5em] pl-[.35em]' : ''}`}
+            i === 0 ? 'text-[.26em] font-normal tracking-[.42em] pl-[.35em]' : ''}`}
             style={`animation-delay:${[.36, .51, .66][i]}s`}>{word}</i>
         </span>
       ))}
     </h1>
 
-    <p class="font-read text-lede leading-[1.55] text-ink-soft max-w-[26ch] mt-8
+    <p class="font-read text-lede text-ink-soft max-w-[26ch] mt-8
               [animation:fadeUp_1.45s_var(--ease-slow)_both] [animation-delay:.86s]">
       A team of finishing specialists covering all aspects.
     </p>
