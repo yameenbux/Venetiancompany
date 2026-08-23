@@ -61,6 +61,8 @@ Everything below is taken from the client's own public Instagram
   areas, curved plaster staircases, wet rooms.
 - **Tone we're pitching:** material-led and quiet. Luxury trade, not luxury brochure.
   The finish is the product, so the page should feel like the surface.
+- **Service area:** nationwide (confirmed).
+- **Studio credit:** pages carry "Designed by YSBDesigns" in the footer.
 - **Existing brand assets:** circular TVC monogram (stacked T/V/C, thin black rule on
   white). All-caps tracked typography across their story graphics. No website.
 
@@ -98,6 +100,24 @@ locations, prices beyond the £80 sample fee. **Which commercial sectors they ha
 worked in** — the competitor names bars, restaurants and gyms; we have no evidence
 The Venetian Company has done any of those, so the commercial band stays text-only
 until Adam supplies commercial jobs. Leave a `<!-- TODO -->` and ask.
+
+## Current design direction
+
+The first pass was warm cream + a Didone display + terracotta — which is on Anthropic's
+own list of clustered AI looks. It was replaced, and the replacement was **sampled from
+the client's own photography** rather than picked: quantising their walls returns
+near-neutral greys (h0–60, s7–8, l41–63), and the only chroma anywhere on their feed is
+the **teal in the marbled staircase (h180)**. So:
+
+- Ground `#E8E9E7` cool screed · `#DBDDDB` · `#C7CAC8`, stone `#A8ACAA`
+- Ink `#14181A` blue-black · soft `#333A3D` · muted `#4B5457`
+- Accent `#12504F` petrol on light, `#35948F` on dark — from their own marbled wall
+- Display/UI: **Archivo** variable at `wdth 125` (expanded architectural caps).
+  Prose: **Newsreader**. No Didone, no Jost.
+
+Every muted-on-ground pair was solved for ≥4.5:1 before the palette was applied, not
+after. If you change a token, re-run the contrast check — `--ink-mute` on `--paper-3`
+is the tight one (4.7:1).
 
 ## Layout
 
@@ -157,6 +177,9 @@ is available.
   commit.** Serving Pages from here hands anyone who reads the URL a route straight to
   that. For a Pages URL with nothing to trace, push `dist/` to a separate repo with its
   own clean history. `index.html` stays the source of truth for both.
+- **Reviews must be real.** The page has a review section built and visibly marked
+  `PLACEHOLDER`. Do not fill it in. Three quotes with first name + area have to come
+  from Adam's actual customers.
 - **Client media is the client's.** Anything under `assets/` came off their Instagram
   and is theirs. Credit it, keep `CREDITS.md` current, and pull it if the pitch dies.
 - **Don't invent facts about the client.** No fake testimonials, fake awards, fake
