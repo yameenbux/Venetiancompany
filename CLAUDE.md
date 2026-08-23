@@ -91,6 +91,101 @@ residential and commercial projects, to retail spaces such as bars, restaurants,
 more recently gyms". Two ideas taken from it: a materials explainer, and splitting
 residential from commercial. Nothing else — we are not copying their copy or layout.
 
+### Reference: bamo.com/our-projects
+
+Sent in as the look to aim at, after the current design was called poor.
+`bamo.com` is blocked by the egress proxy like everything else, so this is read
+off three screenshots — the desktop nav overlay, the full Our Projects page, and
+the same page on a tablet. They are kept in
+`references/bamo/`, because the site cannot be re-fetched to check anything. Every
+number below is measured off those pixels, not remembered.
+
+BAMO is a San Francisco interior-design collective (offices in SF, Providence, Miami,
+New York and Barcelona; 52 projects; site by SDCO Partners). Hotels, restaurants,
+private residential, superyachts.
+
+**Palette** — three flat grounds and nothing else.
+
+| | |
+|---|---|
+| Cream ground | `#FDF8EF` — warm near-white, not a deep cream |
+| Vermilion band | `#E44C3A`; the nav overlay reads a touch muted at `#D65744` |
+| Ink | `#181917` on cream |
+| On the red | a deep oxblood, `#4B0200`–`#510000`. **Not white.** |
+| Red as a text colour | `#D35244` for "LOAD MORE" on cream |
+
+**Type** — two families, used with almost no sizes.
+
+- Display: a high-contrast transitional/Didone-adjacent serif, light weight, wide, with
+  hairline serifs. Used for the page title over the hero, the intro line, every project
+  name, the section headings, the accordion rows and the giant end wordmark. I am not
+  naming the face — I cannot load the site to check, and guessing one would be inventing
+  a fact.
+- Everything else: a grotesque, only ever small. Tracked caps for category labels
+  (`FOOD & BEVERAGE`, `HOTELS`, `PRIVATE RESIDENTIAL`) and for `WORK`, `NEWSLETTER`,
+  `LOAD MORE`; regular case for the body paragraph, the client names and the addresses.
+- The whole page has roughly four sizes. The contrast between them is enormous — a
+  ~40px nav item and a 12px label, with very little in between. Same hole in the ladder
+  our own scale has.
+
+**Structure of Our Projects**, top to bottom: full-bleed hero photograph with the page
+title bottom-left and a thin down arrow beside it · cream band with a serif intro line
+and one grotesque paragraph · the project grid · `LOAD MORE` with `9 of 52` under it ·
+full-bleed vermilion band holding `Our Clients` and two accordion rows (`Brands` open
+with a `—`, `Owners & Developers` closed with a `+`) · full-bleed photograph with
+centred white serif and an outlined `CONTACT US` · cream footer, offices in columns,
+newsletter field as a bare underline with an arrow · the wordmark, cropped by the
+bottom edge of the page.
+
+**Grid**, at a 2354px capture: three columns of 682px, **34px gutters**, 86px outer
+margin. The gutter is 5% of a column — the photographs almost touch, and that density
+is a lot of what makes it read as a portfolio rather than a brochure. Tiles are 4:3
+landscape. Under each: the tracked category label, then the project name in the serif.
+
+**Details worth stealing**
+
+- The category label above the project name. Two lines of metadata, no card, no border,
+  no shadow — the photograph is the card.
+- `9 of 52` under the load-more. It says "there is far more of this" without a claim.
+- The client list as a plain wall of names in three columns, inside an accordion. No
+  logos.
+- The end wordmark cropped by the page edge. Our `.endmark` is already this move.
+- Organic blob shapes, barely darker than the ground, drifting behind the nav overlay
+  and the footer. Tonal, never graphic — you notice them only once.
+- The nav overlay: five items on one row, `space-between` across the full width with
+  ~210px between them, sitting just below centre. Not a stacked list.
+
+**Two things stop this being a direction we can just take.**
+
+1. **It is the exact look this project deliberately walked away from.** Warm cream,
+   high-contrast serif display, terracotta accent — that is the first pass, and it is on
+   Anthropic's own list of clustered AI looks. BAMO carries it on 52 projects of
+   world-class photography, a wall of Ritz-Carlton and Four Seasons names, and five
+   offices. The palette is not doing the work there; the inventory is. Adam has eight
+   photographs, no reviews yet and one phone number. The same palette over that much
+   less material is where the look collapses back into the default.
+2. **The colour pairings fail our own contrast line.** Measured off the screenshots:
+
+   | pair | ratio |
+   |---|---|
+   | ink on cream | 16.68:1 |
+   | nav items, ink on the overlay red | 4.46:1 |
+   | oxblood headings on the red band | 4.12:1 |
+   | oxblood client names on the red band | 4.00:1 |
+   | `LOAD MORE`, red on cream | 3.92:1 |
+   | cream on red, for comparison | 3.68:1 |
+
+   Everything except the cream ground is under 4.5:1 — fine for large display type,
+   short for the small tracked labels they use it on. This page holds ≥4.5:1 on every
+   text run, measured against real composited pixels
+   (`site/scripts/check-page-contrast.py`). Taking the red band literally means either
+   dropping that line or deepening the oxblood until it clears — the second is a couple
+   of steps and keeps the look.
+
+So: take the **structure, the grid density, the label-over-name pattern, the counted
+load-more, the cropped wordmark, the restraint of four type sizes**. Do not take the
+palette wholesale, and if a coloured band goes in, solve it for contrast first.
+
 ### Network: what this environment cannot reach
 
 The egress proxy returns 403 for both `instagram.com` and `micro-cementuk.co.uk`. So:
@@ -255,7 +350,9 @@ layer beats `@layer components` regardless of specificity.
 
 `--spacing-section: clamp(6rem, 13.5vw, 12.5rem)` (~194px at 1440) and
 `--spacing-head: clamp(3.25rem, 7.5vw, 6rem)`, taken from the BAMO and Olivia
-Harper references.
+Harper references. Note BAMO's *horizontal* rhythm runs the other way: 34px gutters
+against 682px columns, so its photographs nearly touch. Generous vertically, tight
+horizontally.
 
 The outer rhythm is settled — section seams run 258–389px at 1440 and nothing
 there is cramped. What was cramped was **inside** sections: closing notes and
@@ -300,7 +397,7 @@ arch, and its keyframe was deleted rather than left orphaned.
 |---|---|
 | Audience | a trader charging upwards of £1,500 a project — the page has to carry that price |
 | The one action | book a call. One CTA, repeated, never a menu of asks |
-| Quality bar | the BAMO and Olivia Harper references: scale, rhythm, motion |
+| Quality bar | the BAMO and Olivia Harper references: scale, rhythm, motion. bamo.com is documented in full under *Reference: bamo.com/our-projects* — structure and density yes, palette no, and read the contrast table before borrowing a coloured band |
 | Stack | Astro + Tailwind v4, static output, no CMS, Cloudflare Pages |
 | Banned | purple gradients · emoji as icons · Inter as display · stock-photo placeholders · centred-everything |
 
@@ -325,6 +422,8 @@ site/                the site — Astro + Tailwind, deploys to Cloudflare Pages
   public/assets/       canonical home for the client's photography and film
   public/_headers      Cloudflare cache policy
 CLAUDE.md            this file
+references/bamo/     the bamo.com screenshots the reference section is measured
+                     from — the site itself is blocked from here
 prompts.py           DISTILLED_AESTHETICS_PROMPT — the system prompt for generation
 helpers.py           Claude client + streaming generation + save/preview helpers
 generate.py          CLI entry point: python generate.py "<brief>"
