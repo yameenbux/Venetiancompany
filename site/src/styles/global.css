@@ -132,9 +132,32 @@
   --text-h2--line-height: 1.06;
   --text-h2--letter-spacing: -0.019em;
 
+  /* ── Vertical rhythm ─────────────────────────────────────────
+     Measured before it was changed. The gaps between sections ran 80, 225,
+     112, 193, 168, 168, 113, 97 at 1440 — a range of nearly 3x with no
+     pattern, because --spacing-section was declared and then every section
+     wrote its own clamp instead. Same failure the type scale had.
+
+     Three values now, and which one a boundary uses is decided by what is on
+     each side of it, not by eye:
+
+       section  both sides quiet cream. Each contributes half, so the gap the
+                eye reads is 2 x section: 112 on a phone, 192 at 1440.
+       band     the internal padding of a full-bleed colour or photographic
+                band. It sits INSIDE the band, so it never adds to a gap.
+       edge     a quiet section meeting a band's edge. Only one side can
+                contribute there, so it carries the whole gap alone and is
+                sized to land near 2 x section rather than half of it.
+
+     Each is the straight line between a 375 and a 1440 anchor, like the type.
+     The two boundaries that were cramped — the intro running into the first
+     row of photographs at 80px, and the footer under the CTA band at 97px —
+     land at 192 and 176. Verified by scripts/check-rhythm.py. */
   --spacing-gutter:  clamp(1.25rem, 5vw, 5.5rem);
-  --spacing-section: clamp(5rem, 10vw, 9rem);
-  --spacing-head:    clamp(2.5rem, 5.5vw, 4.5rem);
+  --spacing-section: clamp(3.5rem, 2.62rem + 3.756vw, 6rem);   /*  56 →  96 */
+  --spacing-band:    clamp(4.5rem, 2.916rem + 6.761vw, 9rem);  /*  72 → 144 */
+  --spacing-edge:    clamp(7rem, 5.592rem + 6.009vw, 11rem);   /* 112 → 176 */
+  --spacing-head:    clamp(2.5rem, 5.5vw, 4.5rem);             /*  40 →  72 */
 
   /* easeOutCubic — control-point y values are 0.68 and 1, never above 1, so it
      decelerates into position and cannot overshoot. */
