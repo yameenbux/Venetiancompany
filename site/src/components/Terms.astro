@@ -1,0 +1,47 @@
+---
+import { terms, bringToCall, process } from '../data/site';
+
+/* The strongest colour moment on the page, and the same clay as the nav
+   overlay — that is what ties the two together. Used at full strength in
+   exactly three places on the site, never diluted across a dozen small
+   elements.
+
+   The reference fills this band with a client list. We have no clients to
+   name and will not invent any, so the band carries the thing a buyer
+   actually wants at this point in the page: what it costs and what happens
+   to the money. Every line is the client's own wording. */
+const panels = [
+  { id: 'included', title: "What's included", open: true,
+    items: terms },
+  { id: 'ready', title: 'What to have ready for the call', open: false,
+    items: bringToCall.map((b) => `${b.title} — ${b.body}`) },
+  { id: 'pricing', title: 'How pricing is agreed', open: false,
+    items: process.slice(1).map((p) => p.body) },
+];
+---
+<section id="terms" class="bg-clay text-ink px-gutter py-[clamp(4rem,8vw,7rem)]">
+  <div class="max-w-[1240px] mx-auto">
+    <h2 class="text-h2 text-center text-ink">What it costs</h2>
+    <div class="mt-head">
+      {panels.map((p) => (
+        <details name="terms" open={p.open} class="group border-t border-ink/25 last:border-b">
+          <summary class="flex items-center justify-between gap-6 cursor-pointer list-none
+                          py-[clamp(1rem,2.4vw,1.5rem)] font-display text-h3 text-ink
+                          [&::-webkit-details-marker]:hidden">
+            {p.title}
+            <span class="relative shrink-0 w-4 h-4 mr-1" aria-hidden="true">
+              <i class="absolute left-0 top-1/2 w-4 h-px bg-ink -translate-y-1/2"></i>
+              <i class="absolute left-1/2 top-0 w-px h-4 bg-ink -translate-x-1/2
+                        transition-opacity duration-240 ease-motion group-open:opacity-0"></i>
+            </span>
+          </summary>
+          <ul class="list-none p-0 m-0 pb-[clamp(1.5rem,3vw,2.5rem)] grid gap-x-10 gap-y-3 md:grid-cols-3">
+            {p.items.map((t) => (
+              <li class="font-read text-caption text-ink">{t}</li>
+            ))}
+          </ul>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

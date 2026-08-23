@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import { asset } from '../lib/asset';
 import Nav from '../components/Nav.astro';
-import { phone, contactName, serviceArea, instagram } from '../data/site';
+import { phone, contactName, serviceArea, instagram, tilingPartner, whatsappCall } from '../data/site';
 
 interface Props { title: string; description: string }
 const { title, description } = Astro.props;
@@ -19,8 +19,8 @@ const schema = {
   telephone: phone.e164,
   areaServed: { '@type': 'Country', name: 'United Kingdom' },
   // contactPoint, not founder: the brief only says Adam is the contact. Whether
-  // he founded the business is not something they have published, and this is
-  // structured data search engines may surface as fact.
+  // he founded the business is not published, and this is structured data that
+  // search engines may surface as fact.
   contactPoint: { '@type': 'ContactPoint', name: contactName, telephone: phone.e164, contactType: 'sales' },
   sameAs: [instagram],
   knowsAbout: ['Venetian plaster', 'Microcement', 'Wet rooms', 'Feature walls', 'Microcement floors'],
@@ -36,11 +36,11 @@ const schema = {
   <link rel="canonical" href={canonical} />
   <link rel="icon" href={asset("assets/favicon.svg")} type="image/svg+xml" />
   <link rel="apple-touch-icon" href={asset("assets/apple-touch-icon.png")} />
-  <meta name="theme-color" content="#E8E9E7" />
+  <meta name="theme-color" content="#FAF6EF" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,300..700&family=Newsreader:ital,opsz,wght@0,6..72,300;1,6..72,400&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..600&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap" />
 
   <!-- WhatsApp is the enquiry route, so the link preview matters more than the
        search snippet. og:image must be absolute or scrapers will not resolve it. -->
@@ -59,36 +59,116 @@ const schema = {
   <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
 </head>
 <body>
-  <div class="ground" aria-hidden="true"></div>
-  <div class="grain" aria-hidden="true"></div>
+  <div class="curtain" aria-hidden="true"></div>
 
   <Nav />
 
-  <main id="top"><slot /></main>
+  <main><slot /></main>
 
-  <div class="endmark" aria-hidden="true"><span>Venetian</span></div>
+  <footer class="px-gutter pt-[clamp(3.5rem,7vw,6rem)] pb-8 border-t border-rule">
+    <div class="max-w-[1240px] mx-auto grid gap-x-10 gap-y-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1.4fr)]">
+      <div>
+        <!-- The positioning line, given the most typographic weight down here. -->
+        <p class="font-display text-h3 text-ink m-0 max-w-[16ch]">A team of finishing specialists.</p>
+        <p class="font-read text-caption text-ink-mute m-0 mt-6">
+          The Venetian Company &middot; Venetian plaster &amp; microcement &middot; {serviceArea}
+        </p>
+        <p class="font-read text-caption text-ink-mute m-0">
+          Photography &amp; film: The Venetian Company
+        </p>
+      </div>
 
-  <footer class="px-gutter pt-10 pb-14 border-t border-ink/15 flex flex-wrap justify-between
-                 items-center gap-x-8 gap-y-3 label">
-    <span>The Venetian Company — Venetian Plaster &amp; Microcement &middot; {serviceArea}</span>
-    <span>Photography &amp; film: The Venetian Company</span>
-    <span>Designed by <strong class="text-ink font-normal">YSBDesigns</strong> &middot; Design concept, not an official site</span>
+      <div class="grid gap-8 sm:grid-cols-3">
+        <div>
+          <p class="label m-0 mb-3">Direct</p>
+          <a class="font-read text-body text-ink no-underline hover:text-clay-ink
+                    transition-colors duration-240 ease-motion block" href={`tel:${phone.e164}`}>{phone.display}</a>
+          <p class="font-read text-caption text-ink-mute m-0 mt-1">{contactName}</p>
+          <a class="label text-clay-ink no-underline mt-4 inline-block hover:underline underline-offset-4"
+             href={whatsappCall} target="_blank" rel="noopener" data-cta="book-call">Book a call</a>
+        </div>
+        <div>
+          <p class="label m-0 mb-3">Instagram</p>
+          <a class="font-read text-body text-ink no-underline hover:text-clay-ink
+                    transition-colors duration-240 ease-motion" href={instagram} target="_blank" rel="noopener">@thevenetiancompany_</a>
+        </div>
+        <div>
+          <p class="label m-0 mb-3">Tiling</p>
+          <a class="font-read text-body text-ink no-underline hover:text-clay-ink
+                    transition-colors duration-240 ease-motion" href={tilingPartner} target="_blank" rel="noopener">@sktiling</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="max-w-[1240px] mx-auto font-read text-caption text-ink-mute mt-12 mb-0">
+      Designed by <strong class="text-ink font-normal">YSBDesigns</strong> &middot;
+      Design concept, not an official site
+    </p>
   </footer>
 
+  <!-- Costs nothing, and ends the page with confidence. -->
+  <div class="endmark" aria-hidden="true"><span>Venetian</span></div>
+
   <script>
-    // Mobile navigation
+    // ── Hero slideshow ────────────────────────────────────────────
+    // Straight opacity cross-fade, ~5s hold and a 1s dissolve. No zoom, no
+    // pan. It does not start until the second image has decoded, so the
+    // first transition is never a flash of empty frame.
+    (function () {
+      const slides = Array.from(document.querySelectorAll<HTMLImageElement>('#slides .slide'));
+      if (slides.length < 2 || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      let i = 0;
+      const advance = () => {
+        slides[i].dataset.on = 'false';
+        i = (i + 1) % slides.length;
+        slides[i].dataset.on = 'true';
+      };
+      const start = () => setInterval(advance, 5000);
+      const second = slides[1];
+      if (second.complete) start();
+      else second.addEventListener('load', start, { once: true });
+    })();
+
+    // ── Header: cream over the hero, ink once past it ──────────────
+    (function () {
+      const hdr = document.getElementById('hdr');
+      const hero = document.querySelector('main section');
+      if (!hdr || !hero) return;
+      const io = new IntersectionObserver(
+        ([e]) => hdr.classList.toggle('solid', !e.isIntersecting),
+        { rootMargin: '-72px 0px 0px 0px', threshold: 0 },
+      );
+      io.observe(hero);
+    })();
+
+    // ── Nav overlay ───────────────────────────────────────────────
     (function () {
       const btn = document.getElementById('navbtn');
       const panel = document.getElementById('navpanel');
       if (!btn || !panel) return;
+      const page = Array.from(document.querySelectorAll('main, footer, .endmark'));
       panel.hidden = false;
       const setOpen = (open: boolean) => {
         panel.setAttribute('data-open', String(open));
         btn.setAttribute('aria-expanded', String(open));
+        btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
         document.body.style.overflow = open ? 'hidden' : '';
-        // The panel is still visibility:hidden this frame; a hidden element
-        // silently refuses focus, so wait for the transition to make it focusable.
-        if (open) requestAnimationFrame(() => requestAnimationFrame(() => panel.querySelector('a')?.focus()));
+        document.getElementById('hdr')?.classList.toggle('over-panel', open);
+        // Everything behind the panel is still in the tab order while it is
+        // covered, so focus could land on links nobody can see. The header is
+        // deliberately NOT inert: it stays visible above the overlay and its
+        // close button and CTA have to remain reachable.
+        page.forEach((el) => el.toggleAttribute('inert', open));
+        // A visibility:hidden element silently refuses focus. Two rAFs are not
+        // long enough — measured, the panel is still hidden at ~32ms and the
+        // focus() call is dropped — so wait for the transition itself, with a
+        // timeout in case transitionend never fires.
+        if (open) {
+          let done = false;
+          const grab = () => { if (done) return; done = true; panel.querySelector('a')?.focus(); };
+          panel.addEventListener('transitionend', grab, { once: true });
+          setTimeout(grab, 600);
+        }
       };
       btn.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') !== 'true'));
       panel.addEventListener('click', (e) => {
@@ -97,24 +177,24 @@ const schema = {
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') { setOpen(false); btn.focus(); }
       });
-      matchMedia('(min-width:1024px)').addEventListener('change', (m) => { if (m.matches) setOpen(false); });
     })();
 
-    // Section reveals
+    // ── Load more ─────────────────────────────────────────────────
     (function () {
-      const els = document.querySelectorAll('.rise');
-      if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        els.forEach((el) => el.classList.add('in'));
-        return;
-      }
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-      }, { rootMargin: '0px 0px -12% 0px', threshold: 0.1 });
-      els.forEach((el) => io.observe(el));
+      const btn = document.getElementById('loadmore');
+      const count = document.getElementById('count');
+      if (!btn || !count) return;
+      const hidden = Array.from(document.querySelectorAll<HTMLElement>('#grid .more'));
+      const total = document.querySelectorAll('#grid figure').length;
+      if (!hidden.length) { btn.parentElement?.remove(); return; }
+      btn.addEventListener('click', () => {
+        hidden.forEach((el) => { el.hidden = false; });
+        count.textContent = `${total} of ${total}`;
+        btn.remove();
+      });
     })();
 
-    // Clips play only while on screen — no point fetching video for a section
-    // nobody scrolled to. Reduced motion gets controls instead.
+    // ── Video ─────────────────────────────────────────────────────
     (function () {
       const vids = Array.from(document.querySelectorAll('video'));
       if (!vids.length) return;
@@ -125,11 +205,24 @@ const schema = {
       const io = new IntersectionObserver((entries) => {
         entries.forEach((e) => {
           const v = e.target as HTMLVideoElement;
-          if (e.isIntersecting) v.play().catch(() => { v.controls = true; });
+          if (e.isIntersecting) { v.preload = 'auto'; v.play().catch(() => { v.controls = true; }); }
           else v.pause();
         });
       }, { threshold: 0.25 });
       vids.forEach((v) => io.observe(v));
+    })();
+
+    // ── Reveals ───────────────────────────────────────────────────
+    (function () {
+      const els = document.querySelectorAll('.rise');
+      if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        els.forEach((el) => el.classList.add('in'));
+        return;
+      }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+      els.forEach((el) => io.observe(el));
     })();
   </script>
 </body>

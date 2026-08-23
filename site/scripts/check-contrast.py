@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Measure real composited contrast for the hero copy over the plate photograph.
+"""Measure real composited contrast for the hero copy over the slideshow photograph.
 
 The hero sets ink-coloured type over a photograph, so contrast cannot be read
 off the tokens — it depends on the pixels behind each glyph after the scrim has
@@ -66,7 +66,7 @@ RUNS_JS = """() => {
   };
 
   const sec = document.querySelector('section'), out = [];
-  sec.querySelectorAll('p.label, h1 i, p.font-read, div.label').forEach(el => {
+  sec.querySelectorAll('p.label, h1, a[aria-label]').forEach(el => {
     if (![...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())) return;
     const cs = getComputedStyle(el), r = document.createRange();
     r.selectNodeContents(el);
@@ -98,10 +98,12 @@ async def measure(pw, url, fonts, W, H):
     page = await ctx.new_page()
     await page.goto(url, wait_until="load")
     await page.evaluate("() => document.fonts.ready")
-    await page.evaluate("() => document.querySelector('.plate-img').decode()")
+    await page.evaluate("() => document.querySelector('#slides .slide').decode()")
     await page.wait_for_timeout(800)
     runs = await page.evaluate(RUNS_JS)
-    await page.evaluate("() => { document.querySelector('section > div.relative').style.visibility = 'hidden'; }")
+    # Hide the copy layer without changing layout, so the runs' coordinates
+    # still describe where the text was.
+    await page.evaluate("() => { document.querySelector('section > div.relative.z-1').style.visibility = 'hidden'; }")
     await page.wait_for_timeout(150)
     shot = await page.screenshot(clip={"x": 0, "y": 0, "width": W, "height": H})
     await browser.close()

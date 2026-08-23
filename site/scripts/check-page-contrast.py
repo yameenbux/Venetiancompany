@@ -68,6 +68,13 @@ RUNS=r"""()=>{
     const el=n.parentElement; if(!el)continue;
     const cs=getComputedStyle(el);
     if(cs.display==='none'||cs.visibility==='hidden'||parseFloat(cs.opacity)===0)continue;
+    // A CLOSED <details> is not display:none in current Chrome — its content
+    // gets content-visibility:hidden, so it keeps real client rects while
+    // painting nothing. Sampling those reported six phantom failures at 1.06:1
+    // against whatever happened to be behind them. checkVisibility() is the
+    // only test that catches it; the display/visibility/opacity trio does not.
+    if(el.checkVisibility && !el.checkVisibility(
+       {contentVisibilityAuto:true,opacityProperty:true,visibilityProperty:true}))continue;
     if(el.closest('[aria-hidden=true]'))continue;
     if(el.closest('header'))continue;   // fixed; checked separately at 11 scroll positions
     const r=document.createRange(); r.selectNode(n);
@@ -109,7 +116,14 @@ async def sweep(pw,W,H,label):
     for y in range(0,max(1,total-H)+step,step):
         await page.evaluate(f"()=>window.scrollTo(0,{y})"); await page.wait_for_timeout(140)
     await page.evaluate("()=>window.scrollTo(0,0)"); await page.wait_for_timeout(300)
-    try: await page.evaluate("async()=>{await Promise.all([...document.images].map(i=>i.decode().catch(()=>{})))}")
+    # decode() on an image that has not started loading never settles, and
+    # .catch() does not rescue a pending promise — it only handles rejection.
+    # The grid keeps three cards behind Load more with hidden + loading=lazy, so
+    # they never fetch and the await hung the whole sweep. Race each decode.
+    try: await page.evaluate("""async()=>{
+      const t=ms=>new Promise(r=>setTimeout(r,ms));
+      await Promise.all([...document.images].map(i=>Promise.race([i.decode().catch(()=>{}),t(1500)])));
+    }""")
     except Exception: pass
     await page.wait_for_timeout(300)
     runs=await page.evaluate(RUNS)          # document coordinates, collected once

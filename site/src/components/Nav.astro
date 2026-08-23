@@ -1,59 +1,69 @@
 ---
-import BookCall from './BookCall.astro';
-import Monogram from './Monogram.astro';
-import { phone } from '../data/site';
+import { whatsappCall } from '../data/site';
 const links = [
-  ['#work', 'Work'], ['#materials', 'Materials'],
-  ['#finish', 'The Finish'], ['#process', 'Process'],
+  ['#work', 'The work'], ['#material', 'The material'],
+  ['#process', 'The process'], ['#terms', 'What it costs'],
 ];
 ---
-<!-- The wash has to cover the CONTENT, not just the top edge. `from-lime/90
-     to-transparent` faded to nothing by the time it reached the links and the
-     phone pill, so over the dark Materials and Finish bands the ink text sat on
-     near-black: the phone number measured 1.44:1 while scrolled to 4017. Ink
-     mute needs alpha .84 to clear 4.5:1 over that ground, so the ramp now holds
-     .96 through the row and does its fade below it. -->
-<header class="fixed inset-x-0 top-0 z-60 flex items-center justify-between gap-4 px-gutter py-4
-               bg-[linear-gradient(to_bottom,var(--color-lime)_0%,var(--color-lime)_84%,rgba(235,232,229,.55)_94%,rgba(235,232,229,0)_100%)]
-               backdrop-blur-[6px]">
-  <a href="#top" class="block w-[46px] h-[46px] shrink-0 text-ink" aria-label="The Venetian Company, home">
-    <Monogram class="block w-full h-full" disc />
+<!-- Three elements, and that is the whole header: menu, wordmark, one link.
+     The previous version carried a logo, four section links, a phone pill and
+     a filled button — seven things, which is what makes a header read as a
+     small-business site rather than a studio. Everything that came out lives
+     in the overlay, one tap away. -->
+<header id="hdr" class="fixed inset-x-0 top-0 z-60 grid grid-cols-[1fr_auto_1fr] items-center
+                        gap-4 px-gutter py-5 transition-colors duration-240 ease-motion">
+  <!-- Not a generic burger: three short rules of unequal width. It becomes the
+       close X in the same position when the overlay is open. -->
+  <button id="navbtn" type="button" aria-expanded="false" aria-controls="navpanel"
+          class="justify-self-start inline-flex items-center justify-center w-11 h-11 -ml-3
+                 cursor-pointer bg-transparent border-0 text-current p-0"
+          aria-label="Open menu">
+    <span class="nav-ico grid gap-[5px] w-[22px]" aria-hidden="true">
+      <i class="block h-px bg-current w-full origin-center transition-transform duration-240 ease-motion"></i>
+      <i class="block h-px bg-current w-[70%] transition-opacity duration-240 ease-motion"></i>
+      <i class="block h-px bg-current w-[85%] origin-center transition-transform duration-240 ease-motion"></i>
+    </span>
+  </button>
+
+  <a href="#top" class="font-display text-[clamp(.95rem,1.5vw,1.15rem)] uppercase tracking-[.24em]
+                        no-underline text-current whitespace-nowrap leading-none">
+    <span class="hidden sm:inline">The Venetian Company</span>
+    <span class="sm:hidden">Venetian</span>
   </a>
 
-  <nav class="hidden lg:flex gap-9" aria-label="Sections">
-    {links.map(([href, text]) => (
-      <a href={href} class="label text-ink-soft no-underline pb-[3px] hover:text-slate transition-colors duration-240 ease-motion">{text}</a>
-    ))}
-  </nav>
-
-  <div class="flex items-center gap-2">
-    <a class="hidden sm:inline-flex label no-underline border border-ink/15 rounded-full px-4 py-2
-              min-h-[44px] items-center whitespace-nowrap hover:border-slate hover:text-slate
-              transition-colors duration-240 ease-motion" href={`tel:${phone.e164}`}>{phone.display}</a>
-    <!-- Wrapped, not classed: BookCall's own `inline-flex` is a base-layer
-         display utility, and Tailwind v4 emits `.inline-flex` after `.hidden`,
-         so a passed `hidden` loses and the CTA renders at every width. On a
-         phone that wrapped to two lines and pushed the header to 104px.
-         `md:contents` dissolves the wrapper above md, so the flex row is
-         unchanged there. -->
-    <span class="hidden md:contents"><BookCall variant="solid" /></span>
-    <button id="navbtn" type="button" aria-expanded="false" aria-controls="navpanel"
-            class="lg:hidden inline-flex items-center gap-2 label text-ink border border-ink/15
-                   rounded-full px-4 min-h-[44px] cursor-pointer bg-transparent">
-      <span class="grid gap-[3px] w-[14px]" aria-hidden="true">
-        <i class="block h-px bg-current"></i><i class="block h-px bg-current"></i><i class="block h-px bg-current"></i>
-      </span>Menu
-    </button>
-  </div>
+  <a href={whatsappCall} target="_blank" rel="noopener" data-cta="book-call"
+     class="justify-self-end label text-current no-underline pb-1 border-b border-current/40
+            hover:border-current transition-colors duration-240 ease-motion">Book a call</a>
 </header>
 
+<!-- Full-viewport clay panel. The nav sits in a single horizontal row, and the
+     whole thing — panel, ghost shapes and items together — cross-fades at full
+     scale. It does not slide, wipe, or expand from the button, and the items do
+     not stagger: all five resolve at once, which keeps the moment quiet. -->
 <div id="navpanel" hidden data-open="false"
-     class="fixed inset-0 z-55 flex flex-col justify-center gap-1 px-gutter pt-24 pb-12 bg-lime
-            invisible opacity-0 transition-[opacity,visibility] duration-240 ease-motion data-[open=true]:visible
-            data-[open=true]:opacity-100 lg:hidden">
-  {links.map(([href, text]) => (
-    <a href={href} class="font-display font-light no-underline text-ink py-1.5
-                          border-b border-ink/10 text-h2 [font-stretch:125%]">{text}</a>
-  ))}
-  <div class="mt-8"><BookCall variant="solid" /></div>
+     class="fixed inset-0 z-55 bg-clay invisible opacity-0
+            transition-[opacity,visibility] duration-500 ease-motion
+            data-[open=true]:visible data-[open=true]:opacity-100">
+  <!-- Soft organic shapes in a darker tint of the same clay, low enough in
+       contrast to read as a watermark rather than a graphic. -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+    <svg class="absolute -left-[10%] top-[8%] w-[70%] opacity-45" viewBox="0 0 600 600" fill="none">
+      <path d="M120 460c-70-90-40-230 60-300S420 80 500 170s30 250-70 320-240 60-310-30Z" fill="var(--color-clay-2)"/>
+    </svg>
+    <svg class="absolute -right-[8%] -bottom-[18%] w-[62%] opacity-40" viewBox="0 0 600 600" fill="none">
+      <path d="M300 20c150 0 260 130 260 280S440 580 290 580 20 450 20 300 150 20 300 20Z" fill="var(--color-clay-2)"/>
+    </svg>
+  </div>
+
+  <nav class="relative h-full flex flex-col lg:flex-row items-start lg:items-center justify-center
+              lg:justify-evenly gap-2 lg:gap-6 px-gutter pt-28 pb-16" aria-label="Sections">
+    {links.map(([href, text]) => (
+      <a href={href} class="font-display no-underline text-ink text-h3 lg:text-h4 xl:text-h3
+                            whitespace-nowrap py-1 border-b border-transparent hover:border-ink
+                            transition-colors duration-240 ease-motion">{text}</a>
+    ))}
+    <a href={whatsappCall} target="_blank" rel="noopener" data-cta="book-call"
+       class="font-display no-underline text-ink text-h3 lg:text-h4 xl:text-h3 whitespace-nowrap py-1
+              border-b border-ink/40 hover:border-ink transition-colors duration-240 ease-motion">Book a call</a>
+  </nav>
 </div>

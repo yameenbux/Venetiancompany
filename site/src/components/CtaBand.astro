@@ -1,0 +1,33 @@
+---
+import { asset } from '../lib/asset';
+import { whatsappCall, phone, contactName } from '../data/site';
+---
+<!-- Full-bleed photograph, dark scrim, centred display serif, one link out.
+     The button is a thin rule and letterspaced micro-type, not a filled pill:
+     nothing else on this page has a radius and this should not be the
+     exception. -->
+<section class="relative isolate px-gutter py-[clamp(5rem,11vw,9rem)] text-cream text-center">
+  <img src={asset('assets/fireplace.jpg')} alt="" aria-hidden="true" loading="lazy"
+       decoding="async" width="1136" height="1400"
+       class="absolute inset-0 -z-2 w-full h-full object-cover object-[50%_38%]" />
+  <div class="absolute inset-0 -z-1 bg-[rgba(20,16,13,.68)]" aria-hidden="true"></div>
+
+  <div class="relative">
+    <!-- The heading gets its own measure. Inside the 46ch column the display
+         step broke "Start your / project" across two lines at every desktop
+         width, which reads as a wrap rather than a decision. -->
+    <h2 class="text-h2 text-cream max-w-[18ch] mx-auto">Start your project</h2>
+    <p class="font-read text-lede text-cream/85 mt-5 max-w-[46ch] mx-auto">
+      Ten minutes with {contactName} is usually enough to tell you whether it is the
+      right finish for the room — and roughly what it will cost.
+    </p>
+    <div class="mt-9 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
+      <a href={whatsappCall} target="_blank" rel="noopener" data-cta="book-call"
+         class="label text-cream no-underline border border-cream/50 px-8 py-4
+                hover:bg-cream hover:text-ink transition-colors duration-240 ease-motion">Book a call</a>
+      <a href={`tel:${phone.e164}`} class="label text-cream/80 no-underline pb-1
+                border-b border-transparent hover:border-cream/60 hover:text-cream
+                transition-colors duration-240 ease-motion">{phone.display}</a>
+    </div>
+  </div>
+</section>
