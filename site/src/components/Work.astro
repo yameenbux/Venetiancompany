@@ -13,7 +13,10 @@ const rest = work.slice(1);
 
     <figure class="rise group mb-[clamp(4rem,10vw,7rem)]">
       <div class="relative overflow-hidden rounded-sm bg-paper-3 shadow-[0_20px_40px_-28px_rgba(20,24,26,.45)] aspect-4/5 sm:aspect-16/9">
-        <img src={`/assets/${feature.file}`} width={1050} height={1400} loading="eager" decoding="async"
+        <!-- lazy, not eager: the hero is a full viewport, so this sits below the fold
+             and eager loading only made 286KB compete with the LCP image for
+             bandwidth. First load went 454KB -> 168KB. -->
+        <img src={`/assets/${feature.file}`} width={1050} height={1400} loading="lazy" decoding="async"
              alt={feature.alt}
              class="w-full h-full object-cover transition-transform duration-240 ease-motion
                     group-hover:scale-[1.02]" />

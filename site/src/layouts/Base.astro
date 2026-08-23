@@ -17,7 +17,10 @@ const schema = {
   image: ogImage,
   telephone: phone.e164,
   areaServed: { '@type': 'Country', name: 'United Kingdom' },
-  founder: { '@type': 'Person', name: contactName },
+  // contactPoint, not founder: the brief only says Adam is the contact. Whether
+  // he founded the business is not something they have published, and this is
+  // structured data search engines may surface as fact.
+  contactPoint: { '@type': 'ContactPoint', name: contactName, telephone: phone.e164, contactType: 'sales' },
   sameAs: [instagram],
   knowsAbout: ['Venetian plaster', 'Microcement', 'Wet rooms', 'Feature walls', 'Microcement floors'],
 };
@@ -52,7 +55,7 @@ const schema = {
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content={ogImage} />
 
-  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
 </head>
 <body>
   <div class="ground" aria-hidden="true"></div>

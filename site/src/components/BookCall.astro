@@ -15,7 +15,7 @@
 import { whatsappCall, phone } from '../data/site';
 
 interface Props { variant?: 'solid' | 'ghost' | 'bare'; label?: string; class?: string }
-const { variant = 'solid', label = 'Book a call', class: cls = '' } = Astro.props;
+const { variant = 'solid', label = 'Book a call', class: cls = '' } = Astro.props as Props;
 
 const base =
   'inline-flex items-center gap-3 no-underline uppercase text-label tracking-label ' +
