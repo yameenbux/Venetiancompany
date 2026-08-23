@@ -20,14 +20,14 @@ const links = [
 
   <nav class="hidden lg:flex gap-9" aria-label="Sections">
     {links.map(([href, text]) => (
-      <a href={href} class="label text-ink-soft no-underline pb-[3px] hover:text-accent transition-colors duration-500">{text}</a>
+      <a href={href} class="label text-ink-soft no-underline pb-[3px] hover:text-accent transition-colors duration-240 ease-motion">{text}</a>
     ))}
   </nav>
 
   <div class="flex items-center gap-2">
     <a class="hidden sm:inline-flex label no-underline border border-ink/15 rounded-full px-4 py-2
               min-h-[44px] items-center whitespace-nowrap hover:border-accent hover:text-accent
-              transition-colors duration-500" href={`tel:${phone.e164}`}>{phone.display}</a>
+              transition-colors duration-240 ease-motion" href={`tel:${phone.e164}`}>{phone.display}</a>
     <BookCall variant="solid" class="hidden md:inline-flex" />
     <button id="navbtn" type="button" aria-expanded="false" aria-controls="navpanel"
             class="lg:hidden inline-flex items-center gap-2 label text-ink border border-ink/15
@@ -41,7 +41,7 @@ const links = [
 
 <div id="navpanel" hidden data-open="false"
      class="fixed inset-0 z-55 flex flex-col justify-center gap-1 px-gutter pt-24 pb-12 bg-paper
-            invisible opacity-0 transition-[opacity,visibility] duration-300 data-[open=true]:visible
+            invisible opacity-0 transition-[opacity,visibility] duration-240 ease-motion data-[open=true]:visible
             data-[open=true]:opacity-100 lg:hidden">
   {links.map(([href, text]) => (
     <a href={href} class="font-display font-semibold uppercase no-underline text-ink py-1.5

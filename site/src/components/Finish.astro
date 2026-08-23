@@ -31,9 +31,11 @@ import { about, finishes } from '../data/site';
       </div>
       <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-[clamp(.6rem,1.6vw,1.1rem)]">
         {finishes.map((f) => (
-          <figure class="relative aspect-3/4 rounded-sm overflow-hidden bg-[#1B2022]">
+          <figure class="group relative aspect-3/4 rounded-sm overflow-hidden bg-[#1B2022]">
             <img src={`/assets/${f.file}`} width={f.w ?? 600} height={f.h ?? 800}
-                 loading="lazy" decoding="async" alt={f.alt} class="w-full h-full object-cover" />
+                 loading="lazy" decoding="async" alt={f.alt}
+                 class="w-full h-full object-cover transition-transform duration-240 ease-motion
+                        group-hover:scale-[1.03]" />
             <b class="absolute inset-x-0 bottom-0 p-3 font-normal text-label uppercase text-white
                       bg-gradient-to-t from-black/45 to-transparent [text-shadow:0_1px_6px_rgba(0,0,0,.6)]">{f.name}</b>
           </figure>

@@ -11,33 +11,41 @@ const rest = work.slice(1);
         lede="Eight pieces of recent work, one of them film rather than a still — the surface shifts as the light moves across it, which a photograph flattens out." />
     </div>
 
-    <figure class="rise mb-[clamp(4rem,10vw,7rem)]">
+    <figure class="rise group mb-[clamp(4rem,10vw,7rem)]">
       <div class="relative overflow-hidden rounded-sm bg-paper-3 shadow-[0_20px_40px_-28px_rgba(20,24,26,.45)] aspect-4/5 sm:aspect-16/9">
         <img src={`/assets/${feature.file}`} width={1050} height={1400} loading="eager" decoding="async"
-             alt={feature.alt} class="w-full h-full object-cover" />
+             alt={feature.alt}
+             class="w-full h-full object-cover transition-transform duration-240 ease-motion
+                    group-hover:scale-[1.02]" />
       </div>
       <figcaption class="mt-4 flex items-baseline gap-3 label">
-        <span class="block w-3.5 h-px bg-accent shrink-0 relative -top-[.28em]" aria-hidden="true"></span>{feature.caption}
+        <span class="block w-3.5 h-px bg-accent shrink-0 relative -top-[.28em] transition-all
+                         duration-240 ease-motion group-hover:w-7" aria-hidden="true"></span>{feature.caption}
       </figcaption>
     </figure>
 
     <div class="rise grid gap-[clamp(1.2rem,3vw,2rem)] sm:grid-cols-2 xl:grid-cols-4">
       {rest.map((w) => (
-        <figure>
+        <figure class="group">
           <div class="relative overflow-hidden rounded-sm bg-paper-3 aspect-3/4
                       shadow-[0_20px_40px_-28px_rgba(20,24,26,.45)]">
             {w.file.endsWith('.mp4') ? (
               <video poster={`/assets/${w.poster}`} width="720" height="1280" muted loop playsinline
-                     preload="none" aria-label={w.alt} class="w-full h-full object-cover">
+                     preload="none" aria-label={w.alt}
+                     class="w-full h-full object-cover transition-transform duration-240
+                            ease-motion group-hover:scale-[1.02]">
                 <source src={`/assets/${w.file}`} type="video/mp4" />
               </video>
             ) : (
               <img src={`/assets/${w.file}`} width={w.w ?? 1050} height={1400} loading="lazy"
-                   decoding="async" alt={w.alt} class="w-full h-full object-cover" />
+                   decoding="async" alt={w.alt}
+                   class="w-full h-full object-cover transition-transform duration-240
+                          ease-motion group-hover:scale-[1.02]" />
             )}
           </div>
           <figcaption class="mt-4 flex items-baseline gap-3 label">
-            <span class="block w-3.5 h-px bg-accent shrink-0 relative -top-[.28em]" aria-hidden="true"></span>{w.caption}
+            <span class="block w-3.5 h-px bg-accent shrink-0 relative -top-[.28em] transition-all
+                         duration-240 ease-motion group-hover:w-7" aria-hidden="true"></span>{w.caption}
           </figcaption>
         </figure>
       ))}

@@ -9,7 +9,7 @@ import { serviceArea } from '../data/site';
   </div>
 
   <div class="relative z-2 w-full max-w-[1240px] mx-auto">
-    <p class="label [animation:fadeUp_1.45s_var(--ease-slow)_both] [animation-delay:.18s]">
+    <p class="label [animation:fadeUp_300ms_var(--ease-motion)_both] [animation-delay:40ms]">
       Venetian Plaster <span class="text-accent">&middot;</span> Microcement <span class="text-accent">&middot;</span> {serviceArea}
     </p>
 
@@ -19,20 +19,20 @@ import { serviceArea } from '../data/site';
     <h1 class="text-h1 uppercase mt-7">
       {['The', 'Venetian', 'Company'].map((word, i) => (
         <span class="block overflow-hidden">
-          <i class={`block not-italic [animation:lift_1.45s_var(--ease-slow)_both] ${
+          <i class={`block not-italic [animation:lift_300ms_var(--ease-motion)_both] ${
             i === 0 ? 'text-[.26em] font-normal tracking-[.42em] pl-[.35em]' : ''}`}
-            style={`animation-delay:${[.36, .51, .66][i]}s`}>{word}</i>
+            style={`animation-delay:${[80, 120, 160][i]}ms`}>{word}</i>
         </span>
       ))}
     </h1>
 
     <p class="font-read text-lede text-ink-soft max-w-[26ch] mt-8
-              [animation:fadeUp_1.45s_var(--ease-slow)_both] [animation-delay:.86s]">
+              [animation:fadeUp_300ms_var(--ease-motion)_both] [animation-delay:200ms]">
       A team of finishing specialists covering all aspects.
     </p>
 
     <div class="flex flex-wrap items-center gap-x-10 gap-y-4 mt-12
-                [animation:fadeUp_1.45s_var(--ease-slow)_both] [animation-delay:1.04s]">
+                [animation:fadeUp_300ms_var(--ease-motion)_both] [animation-delay:240ms]">
       <BookCall variant="solid" />
       <div class="flex items-center gap-3 label">
         <span class="relative block w-14 h-px bg-ink-mute overflow-hidden">

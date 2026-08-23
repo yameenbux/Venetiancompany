@@ -89,8 +89,15 @@
   --spacing-section: clamp(6rem, 13.5vw, 12.5rem);
   --spacing-head:    clamp(3.25rem, 7.5vw, 6rem);
 
-  --ease-slow: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Interaction motion. easeOutCubic: control-point y values are 0.68 and 1,
+     never above 1, so it decelerates into position and cannot overshoot.
+     Anything with y > 1 (back.out, spring curves) bounces — not used here. */
+  --ease-motion: cubic-bezier(0.33, 1, 0.68, 1);
+  --duration-reveal: 280ms;
+  --duration-hover: 240ms;
+
+  --ease-slow: cubic-bezier(0.16, 1, 0.3, 1);       /* ambient loops only */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);  /* ambient loops only */
 }
 
 /* Metric-matched fallbacks. Headings render Archivo at width 125; no system
@@ -170,7 +177,7 @@
     width:min(62vw,330px); height:min(54vh,470px);
     border-radius:min(44vw,280px) min(44vw,280px) 0 0;
     box-shadow:0 40px 90px -34px rgba(20,24,26,.42);
-    animation:archIn 2.1s var(--ease-slow) both;
+    animation:archIn 300ms var(--ease-motion) both;
   }
   .arch img { width:100%; height:100%; object-fit:cover; object-position:56% 26%; }
   .arch::before { content:''; position:absolute; inset:0; z-index:1;
@@ -206,20 +213,24 @@
 }
 
 @keyframes sweep { 0%,12% { background-position:130% 0; } 55%,100% { background-position:-60% 0; } }
-@keyframes archIn { from { opacity:0; transform:translateY(9%) scaleY(.94); } to { opacity:1; transform:none; } }
+@keyframes archIn { from { opacity:0; transform:translateY(2%); } to { opacity:1; transform:none; } }
 @keyframes rise  { to { opacity:1; transform:none; } }
 @keyframes fadeUp{ from{ opacity:0; transform:translateY(22px);} to{ opacity:1; transform:none; } }
 @keyframes lift  { from{ opacity:0; transform:translateY(105%);} to{ opacity:1; transform:none; } }
 @keyframes cue   { 0%{transform:translateX(-100%);} 55%,100%{transform:translateX(100%);} }
 
 /* Reveals: unhurried on purpose. Calm reads as expensive. */
-.rise > * { opacity:0; transform:translateY(34px); }
-.rise.in > * { animation:rise 1.25s var(--ease-slow) forwards; }
-.rise.in > *:nth-child(1){animation-delay:.06s} .rise.in > *:nth-child(2){animation-delay:.17s}
-.rise.in > *:nth-child(3){animation-delay:.28s} .rise.in > *:nth-child(4){animation-delay:.39s}
-.rise.in > *:nth-child(5){animation-delay:.50s} .rise.in > *:nth-child(6){animation-delay:.61s}
-.rise.in > *:nth-child(7){animation-delay:.72s} .rise.in > *:nth-child(8){animation-delay:.83s}
-.rise.in > *:nth-child(9){animation-delay:.94s}
+.rise > * { opacity:0; transform:translateY(14px); }
+.rise.in > * { animation:rise var(--duration-reveal) var(--ease-motion) forwards; }
+.rise.in > *:nth-child(1){animation-delay:0ms}
+.rise.in > *:nth-child(2){animation-delay:40ms}
+.rise.in > *:nth-child(3){animation-delay:80ms}
+.rise.in > *:nth-child(4){animation-delay:120ms}
+.rise.in > *:nth-child(5){animation-delay:160ms}
+.rise.in > *:nth-child(6){animation-delay:200ms}
+.rise.in > *:nth-child(7){animation-delay:240ms}
+.rise.in > *:nth-child(8){animation-delay:280ms}
+.rise.in > *:nth-child(9){animation-delay:320ms}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration:.001ms !important; animation-iteration-count:1 !important;

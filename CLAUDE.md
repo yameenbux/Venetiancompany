@@ -193,9 +193,24 @@ measuring the rendered page and doubled. Don't tighten them back:
 | CallBand row gap (stacked) | 24px | 48px |
 
 The 20px between an eyebrow and its heading is a **lockup**, not a gap — it
-matches `SectionHead`'s `mb-5` and should stay tight. Reveals run 1.25s on `--ease-slow`
-(`cubic-bezier(.16,1,.3,1)`) with a 34px rise and a .11s stagger step. Calm
-reads as expensive; quick reads as a template. Don't speed these up.
+matches `SectionHead`'s `mb-5` and should stay tight. **Motion was re-specced** to subtle / 200–300ms / nothing bounces, which
+supersedes the earlier "unhurried, don't speed these up" note taken from the
+references. That older rule is gone — do not reinstate it from the reference
+screenshots.
+
+- One curve for all interaction motion: `--ease-motion: cubic-bezier(.33,1,.68,1)`
+  (easeOutCubic). Both control-point y values are ≤ 1, so it decelerates into
+  place and **cannot overshoot**. Anything with y > 1 — `back.out`, spring
+  curves — bounces and is banned.
+- `--duration-reveal: 280ms`, `--duration-hover: 240ms`. Every transition and
+  entrance sits in the 200–300ms band; verified against the live document.
+- Scroll reveals travel **14px**, not 34px. A long throw at 280ms reads as a
+  jerk — short travel is what makes a fast reveal feel subtle.
+- Stagger step is 40ms, so a nine-child group finishes in ~600ms.
+
+Two ambient loops are deliberately outside the band because they are neither a
+reveal nor a hover: the arch light `sweep` (22s) and the hero scroll `cue`
+(3.4s). Both are slow drifts, not interactions.
 
 
 ## Stack and brief
