@@ -80,6 +80,7 @@ generate.py          CLI entry point: python generate.py "<brief>"
 html_outputs/        timestamped generated pages (gitignored except .gitkeep)
 samples/             pages we've kept and are willing to show
   venetian-company/index.html   the current pitch page
+  venetian-company/build-artifact.py  strips the wrapper for Artifact publishing
 ```
 
 ## How to generate a page
@@ -113,6 +114,10 @@ is available.
   prospect's laptop.
 - **Never overwrite a previous output.** Outputs are timestamped so we can compare
   directions side by side.
+- **Publish samples as Artifacts, not GitHub Pages.** These pages carry a real
+  business's name and a real person's mobile number. An Artifact is private until
+  we share the link; Pages is public and findable. Run `build-artifact.py` and
+  publish the result — `index.html` stays the source of truth.
 - **Don't invent facts about the client.** No fake testimonials, fake awards, fake
   addresses, fake founding dates, fake client logos. Use obviously-placeholder copy
   (e.g. "Est. —", lorem-adjacent but on-brand) or leave a `<!-- TODO -->`. This is going

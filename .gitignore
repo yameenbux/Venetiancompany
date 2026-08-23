@@ -6,3 +6,6 @@ venv/
 .ipynb_checkpoints/
 html_outputs/*
 !html_outputs/.gitkeep
+
+# built from index.html by build-artifact.py
+samples/venetian-company/artifact.html
