@@ -13,9 +13,16 @@ It is theirs. If the pitch doesn't go ahead, these files come out.
 | `wet-room.jpg` | IG post | microcement wet room |
 | `bathroom-arch.jpg` | IG post | bathroom, arched window, marble |
 | `plaster-detail.jpg` | IG post | trowel texture in raking light |
-| `finish-venetian.jpg` | crop of `plaster-detail` source | finishes strip |
-| `finish-microcement.jpg` | crop of `wet-room` source | finishes strip |
-| `finish-pigmented.jpg` | frame from `bathroom-blush` source | finishes strip |
+| `stair-marbled.jpg` | IG post | deep teal marbled feature wall, floating oak stair |
+| `stairwell.jpg` | IG post | double-height stairwell, polished plaster, skylight |
+| `fireplace.jpg` | IG post | chimney breast, strong movement in the finish |
+| `texture-switch.jpg` | IG post | coarse grain against a walnut keypad plate |
+| `finish-venetian.jpg` | crop of `plaster-detail` source | "Trowelled" |
+| `finish-polished.jpg` | crop of `stairwell` source | "Polished" |
+| `finish-microcement.jpg` | crop of `wet-room` source | "Microcement" |
+| `finish-textured.jpg` | crop of `texture-switch` source | "Textured" |
+| `finish-pigmented.jpg` | frame from `bathroom-blush` source | "Pigmented" |
+| `finish-marbled.jpg` | crop of `stair-marbled` source | "Marbled" |
 
 Stills resized to 1400px on the long edge, JPEG q82 progressive. Swatches are 3:4 crops
 at 800px. Nothing retouched or colour-graded — the finishes are the product, so they
