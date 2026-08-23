@@ -10,23 +10,49 @@
    plain CSS carries the surface.
    ───────────────────────────────────────────────────────────── */
 @theme {
-  --color-paper:    #E8E9E7;
-  --color-paper-2:  #DBDDDB;
-  --color-paper-3:  #C7CAC8;
-  --color-stone:    #A8ACAA;
-  --color-stone-d:  #6E7573;
-  --color-ink:      #14181A;
-  --color-ink-soft: #333A3D;
-  --color-ink-mute: #4B5457;   /* 4.7:1 on paper-3, the tightest pair */
-  --color-accent:   #12504F;
-  --color-accent-lt:#35948F;
-  --color-night:    #101416;
-  --color-night-2:  #141A1C;
-  --color-night-3:  #0A0D0E;
+  /* ── Palette ─────────────────────────────────────────────────
+     Sampled from the client's own finishes, not picked, and re-sampled for
+     this pass because the first one got the hue wrong twice.
 
-  --font-display: 'Archivo', 'Archivo-fallback', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+     The ground was a COOL screed (#E8E9E7, green-leaning). That came from
+     photographs read under daylight, which skews blue. Quantising the plaster
+     itself — finish-venetian, plaster-detail — returns h27-32 at s6-9%: lime
+     and marble dust are WARM. So the ground is warm chalk now.
+
+     The band was petrol #12504F, documented as "from their marbled wall
+     (h180)". The wall does not read h180. Its most saturated pixels sit at
+     h206 and its midtones at h195-198 — a deep blue-teal, not a green one.
+     One chroma, two lightnesses, taken from where it actually is. */
+  --color-lime:     #EBE8E5;   /* ground — hsl(32 14% 91%), the trowelled plaster */
+  --color-chalk:    #F6F4F1;   /* lifted ground for insets */
+  --color-lime-2:   #DEDAD5;
+  --color-lime-3:   #C8C2BA;
+  --color-ink:      #1A1817;   /* warm near-black — 14.5:1 on the ground */
+  --color-ink-soft: #3A352F;
+  /* 6.3:1 against a FLAT ground, which is again not what the ground is: the
+     gradient runs down to --color-lime-3 and .grain multiplies over it, and
+     measured against the composite #58524B was landing at 3.86. Same mistake
+     as the last palette, so the same correction — sample, do not compute. */
+  --color-ink-mute: #4A453F;
+  --color-slate:    #1C3C4A;   /* the band — hsl(198 45% 20%), the marbled wall */
+  --color-slate-2:  #16303B;
+  --color-slate-lt: #80B5CB;   /* for use ON the band — 5.2:1 there */
+  --color-stone:    #C6C0B8;   /* muted on the band; the band has highlights */
+
+  /* Kept so the archived single-file directions still resolve their tokens. */
+  --color-paper:    #EBE8E5;
+  --color-night:    #16303B;
+
+  /* The roles are swapped from the previous pass. Newsreader now DISPLAYS and
+     Archivo works: headings are a serif set roman and sentence case, and the
+     grotesque is demoted to labels, metadata and body. Two families, four
+     sizes, which is the discipline the reference actually runs on. Archivo
+     keeps the wordmark and every tracked cap, because all-caps tracked
+     lettering is the client's own vernacular across their story graphics. */
+  --font-display: 'Newsreader', 'Newsreader-fallback', 'Iowan Old Style', Georgia, serif;
+  --font-mark:    'Archivo', 'Archivo-fallback', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-ui:      'Archivo', 'Archivo-fallback', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-read:    'Newsreader', 'Newsreader-fallback', 'Iowan Old Style', Georgia, serif;
+  --font-read:    'Archivo', 'Archivo-fallback', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
   /* ── Type scale ─────────────────────────────────────────────
      Strict modular scale. Ratio 1.25 (major third) from an 18px base at the
@@ -75,15 +101,15 @@
 
   --text-h3: clamp(1.482rem, 1.243rem + 1.06vw, 2.197rem);
   --text-h3--line-height: 1.15;
-  --text-h3--letter-spacing: -0.016em;
+  --text-h3--letter-spacing: -0.010em;
 
   --text-h2: clamp(2.195rem, 1.496rem + 3.106vw, 4.292rem);
   --text-h2--line-height: 1.02;
-  --text-h2--letter-spacing: -0.022em;
+  --text-h2--letter-spacing: -0.014em;
 
   --text-h1: clamp(3.252rem, 1.542rem + 7.6vw, 8.382rem);
   --text-h1--line-height: 0.94;
-  --text-h1--letter-spacing: -0.028em;
+  --text-h1--letter-spacing: -0.018em;
 
   --spacing-gutter:  clamp(1.25rem, 5vw, 5.5rem);
   --spacing-section: clamp(6rem, 13.5vw, 12.5rem);
@@ -115,7 +141,7 @@
 @layer base {
   html { -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
   body {
-    background: var(--color-paper);
+    background: var(--color-lime);
     color: var(--color-ink);
     font-family: var(--font-ui);
     font-weight: 300;
@@ -124,14 +150,20 @@
     letter-spacing: var(--text-body--letter-spacing);
     overflow-x: hidden;
   }
-  /* Headings carry family and width only. Size, leading and tracking come from
-     whichever scale step the element is given, so they can never disagree. */
+  /* Headings carry family and weight only. Size, leading and tracking come
+     from whichever scale step the element is given, so they cannot disagree.
+     Newsreader at 300 set large is the point of this direction: a text serif
+     used at display size stays warm where a Didone would go brittle — and
+     brittle-Didone-on-cream is the look this project spent a pass escaping. */
   h1, h2, h3, h4 {
-    font-family: var(--font-display); font-weight: 600; margin: 0;
-    font-stretch: 125%; font-variation-settings: 'wdth' 125;
-    text-wrap: balance;
+    font-family: var(--font-display); font-weight: 300; margin: 0;
+    font-optical-sizing: auto; text-wrap: balance;
   }
-  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+  /* Archivo keeps the wordmark and every tracked cap — the client's own
+     vernacular. Anything with .mark opts back into it. */
+  .mark { font-family: var(--font-mark); font-weight: 600;
+          font-stretch: 125%; font-variation-settings: 'wdth' 125; }
+  :focus-visible { outline: 2px solid var(--color-slate); outline-offset: 3px; }
   img, video { max-width: 100%; display: block; }
   figure, blockquote { margin: 0; }
   /* The fixed ground layers are positioned, so anything left in normal flow
@@ -146,25 +178,28 @@
     line-height: var(--text-label--line-height);
     letter-spacing: var(--text-label--letter-spacing);
     text-transform: uppercase; color: var(--color-ink-mute);
+    font-variation-settings: 'wdth' 112;
   }
 
   /* Troweled ground: soft passes plus a shallow sweep, with SVG tooth over it. */
+  /* Troweled ground: soft passes plus a shallow sweep, with SVG tooth over it.
+     Warm now, not cool — the hue comes off their own plaster (h32). */
   .ground { position:fixed; inset:0; z-index:0; pointer-events:none;
     background:
-      radial-gradient(120% 80% at 78% 8%,  rgba(252,253,252,.95) 0%, rgba(252,253,252,0) 55%),
-      radial-gradient(90% 70% at 12% 30%,  rgba(168,172,170,.42) 0%, rgba(168,172,170,0) 60%),
-      radial-gradient(70% 60% at 88% 78%,  rgba(110,117,115,.20) 0%, rgba(110,117,115,0) 60%),
-      radial-gradient(100% 90% at 40% 105%,rgba(199,202,200,.75) 0%, rgba(199,202,200,0) 65%),
-      linear-gradient(168deg, var(--color-paper) 0%, var(--color-paper-2) 62%, var(--color-paper-3) 100%);
+      radial-gradient(120% 80% at 78% 8%, rgba(255,253,250,.95) 0%, rgba(255,253,250,0) 55%),
+      radial-gradient(90% 70% at 12% 30%, rgba(178,168,155,.34) 0%, rgba(178,168,155,0) 60%),
+      radial-gradient(70% 60% at 88% 78%, rgba(120,110,98,.16) 0%, rgba(120,110,98,0) 60%),
+      radial-gradient(100% 90% at 40% 105%, rgba(200,194,186,.62) 0%, rgba(200,194,186,0) 65%),
+      linear-gradient(168deg, var(--color-lime) 0%, var(--color-lime-2) 62%, var(--color-lime-3) 100%);
   }
-  .ground::before { content:''; position:absolute; inset:-20%; opacity:.6;
+  .ground::before { content:''; position:absolute; inset:-20%; opacity:.55;
     background:
       radial-gradient(38% 26% at 18% 22%, rgba(255,255,255,.5), rgba(255,255,255,0) 70%),
-      radial-gradient(30% 22% at 62% 48%, rgba(110,117,115,.10), rgba(110,117,115,0) 72%),
+      radial-gradient(30% 22% at 62% 48%, rgba(122,112,100,.10), rgba(122,112,100,0) 72%),
       radial-gradient(44% 30% at 84% 72%, rgba(255,255,255,.42), rgba(255,255,255,0) 70%),
       repeating-linear-gradient(97deg,
         rgba(255,255,255,.10) 0 3px, rgba(255,255,255,0) 3px 23px,
-        rgba(110,117,115,.03) 23px 26px, rgba(255,255,255,0) 26px 59px);
+        rgba(122,112,100,.03) 23px 26px, rgba(255,255,255,0) 26px 59px);
   }
   .grain { position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.30;
     mix-blend-mode:multiply;
@@ -172,49 +207,49 @@
   }
 
   /* ── Hero plate ──────────────────────────────────────────────
-     Replaces the arch. The photograph is full bleed and the wordmark sits in
-     it, so the whole hero is one plate rather than a masked cut-out.
+     The photograph runs full bleed and the wordmark sits in it.
 
-     The scrim is PAPER, not black. Washing toward the ground colour keeps the
-     ink palette and the daylight thesis; a dark overlay with white type would
-     be Direction B's hero pasted into this one.
+     The scrim is INK. The earlier version washed toward paper, on the argument
+     that dimming a building is what everyone else does — but that was written
+     for a bright courtyard shot. The client's marbled stairwell is a dark
+     photograph (mean luminance .144, median .122), and paper over it does not
+     read as daylight, it reads as fog: the marble greys out and the hero looks
+     washed rather than lit. Ink over it just deepens what is already there.
 
-     The stops are solved, not eyeballed. Compositing alpha a of paper (#E8E9E7,
-     sRGB .910) over an image pixel v gives a*.910 + (1-a)*v. For 4.5:1 against
-     --color-ink-soft (#333A3D) the composite has to reach sRGB .629, which over
-     a black pixel needs a >= .69; the wordmark is large text, so 3:1 is enough
-     and it can sit as low as a >= .44. Small copy therefore lives in the dense
-     end of the ramp and the display type runs out into the clear end. The
-     measured worst case for every string is recorded in CLAUDE.md.
+     Stops are solved, not eyeballed. Compositing alpha a of ink (#16303B,
+     sRGB .063) over an image pixel v gives a*.063 + (1-a)*v. The copy sits over
+     the bright end of this frame — the window and the pale room, sRGB up to
+     ~240 — so that is the case to solve:
 
-     Mobile is a vertical ramp because the copy spans the full width; from md
-     the copy is a left column, so the ramp turns horizontal and the right of
-     the frame stays as good as unwashed. */
+       --color-paper at 4.5:1 needs the composite at or under sRGB .415, so a >= .61
+       --color-stone at 4.5:1 is the tight one
+       the wordmark is large text at 3:1, so a >= .48
+
+     Mobile is a vertical ramp in PIXELS, not percentages: the copy block is a
+     fixed height (it ends between 514 and 558px from the top at every phone
+     width) while the hero is 100svh, so a percentage ramp tuned on an 812px
+     screen leaves the scroll cue in open photograph on a 640px one. From md the
+     copy becomes a centred left column and the ramp turns horizontal, which
+     opens the right of the frame — where the marbled wall is — back up. */
   .plate-img { position:absolute; inset:0; z-index:0; width:100%; height:100%;
-    object-fit:cover; object-position:50% 34%; pointer-events:none;
+    object-fit:cover; object-position:45% 50%; pointer-events:none;
     animation:plateIn 300ms var(--ease-motion) both; }
   .plate-scrim { position:absolute; inset:0; z-index:1; pointer-events:none;
-    /* Mobile stops are in PIXELS, not percentages, on purpose. The copy block
-       is a fixed height in px (it ends between 514 and 558px from the top at
-       every phone width) while the hero is 100svh, so a percentage ramp that
-       cleared the copy on a 812px screen left the scroll cue in open
-       photograph on a 640px one. Pixels track the copy; percentages track the
-       window. */
+    /* Pixel stops, re-solved: the wordmark now fills its column, so the copy
+       block is taller and ends between 546 and 676px rather than 514 and 558.
+       The old ramp had faded by 620 and left the scroll cue at 3.89:1 on a
+       767-wide window. */
     background:linear-gradient(180deg,
-      rgba(232,233,231,.95) 0px,   rgba(232,233,231,.94) 390px,
-      rgba(232,233,231,.92) 545px, rgba(232,233,231,.80) 620px,
-      rgba(232,233,231,.34) 715px, rgba(232,233,231,0)   800px); }
+      rgba(22,48,59,.86) 0px,   rgba(22,48,59,.85) 440px,
+      rgba(22,48,59,.82) 620px, rgba(22,48,59,.76) 700px,
+      rgba(22,48,59,.50) 800px, rgba(22,48,59,.36) 900px); }
   @media(min-width:768px){
-    .plate-img { object-position:56% 42%; }
-    /* From md the copy is a left column and vertically centred, so the wash
-       becomes a radial anchored on it: dense over the copy, open at the right
-       and in the corners, which is where the photograph actually reads. */
+    .plate-img { object-position:50% 50%; }
     .plate-scrim { background:
-      radial-gradient(128% 116% at 14% 50%,
-        rgba(232,233,231,.96) 0%,  rgba(232,233,231,.94) 28%,
-        rgba(232,233,231,.86) 40%, rgba(232,233,231,.55) 52%,
-        rgba(232,233,231,.20) 66%, rgba(232,233,231,0)   80%),
-      linear-gradient(180deg, rgba(232,233,231,.34) 0%, rgba(232,233,231,0) 26%); }
+      linear-gradient(96deg,
+        rgba(22,48,59,.91) 0%,  rgba(22,48,59,.89) 40%,
+        rgba(22,48,59,.84) 58%, rgba(22,48,59,.66) 76%,
+        rgba(22,48,59,.48) 100%); }
   }
 
   /* Terminal wordmark. Raw vw with no clamp: it has to fill the width at every
@@ -229,23 +264,27 @@
     color:var(--color-ink); white-space:nowrap; margin-bottom:-.16em; }
 }
 
-/* Hero wordmark — a cap on h1, not a new step.
-   h1 stays on the scale, but the scale's floor (52.03px, the 360 anchor) stops
-   shrinking while the column keeps shrinking, so on a phone the wordmark ran
-   past the gutter and each word's overflow:hidden mask shaved the last glyph:
-   5px over at 375, 13px at 360, 53px at 320 — half of "COMPANY" gone on an SE.
-   The cap is what the column can actually carry. In Archivo wdth125 at the h1
-   tracking, "COMPANY" sets 6.40x its own font-size; 6.44 leaves a hair of
-   margin. Above ~388px the scale is already the smaller of the two, so this
-   changes nothing there or on desktop (at 1440 the cap would be 196px against
-   a 134px step). Same reasoning as .endmark: a lockup is measured against its
-   measure, not against the ladder.
+/* Hero wordmark — a lockup measured against its column, not a scale step.
 
-   Unlayered on purpose — `text-h1` is a Tailwind utility, and the utilities
-   layer beats @layer components no matter the specificity. Font-size only, so
-   the h1 line-height and tracking still come from the token. */
-.wordmark { font-size: min(var(--text-h1),
-             calc((100vw - 2 * var(--spacing-gutter)) / 6.44)); }
+   It was a cap on h1, sized for Archivo at wdth 125 where "COMPANY" sets 6.40x
+   its own font-size. The display face is Newsreader now and its caps are much
+   narrower — 5.09x at the h1 tracking — so the old divisor left the wordmark
+   floating in the middle of a column it should be filling. Filling it is the
+   point of the direction: the name is the largest thing on the page and it
+   runs the full measure, the way .endmark already does.
+
+   The vh term stops it crowding the hero on a wide, short window: at 1440x900
+   the column would give 238px and the height cap holds it to 198px, while a
+   phone is always column-bound. Caps in a serif want a little air, so the
+   tracking goes positive where the ladder's h1 step is negative. "VENETIAN"
+   sets 5.09x its font-size at the h1 tracking; +.012em over eight characters
+   adds .24, so the real ratio is 5.33 and the divisor is 5.40 for margin.
+   5.30 was measured at the wrong tracking and overflowed by up to 5.7px.
+
+   Unlayered on purpose: `text-h1` is a utility and the utilities layer beats
+   @layer components regardless of specificity. */
+.wordmark { font-size: min(calc((100vw - 2 * var(--spacing-gutter)) / 5.40), 22vh);
+            letter-spacing: .012em; line-height: 1.02; }
 
 @keyframes plateIn{ from { opacity:0; transform:scale(1.015); } to { opacity:1; transform:none; } }
 @keyframes rise  { to { opacity:1; transform:none; } }

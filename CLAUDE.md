@@ -91,6 +91,101 @@ residential and commercial projects, to retail spaces such as bars, restaurants,
 more recently gyms". Two ideas taken from it: a materials explainer, and splitting
 residential from commercial. Nothing else — we are not copying their copy or layout.
 
+### Reference: bamo.com/our-projects
+
+Sent in as the look to aim at, after the current design was called poor.
+`bamo.com` is blocked by the egress proxy like everything else, so this is read
+off three screenshots — the desktop nav overlay, the full Our Projects page, and
+the same page on a tablet. They are kept in
+`references/bamo/`, because the site cannot be re-fetched to check anything. Every
+number below is measured off those pixels, not remembered.
+
+BAMO is a San Francisco interior-design collective (offices in SF, Providence, Miami,
+New York and Barcelona; 52 projects; site by SDCO Partners). Hotels, restaurants,
+private residential, superyachts.
+
+**Palette** — three flat grounds and nothing else.
+
+| | |
+|---|---|
+| Cream ground | `#FDF8EF` — warm near-white, not a deep cream |
+| Vermilion band | `#E44C3A`; the nav overlay reads a touch muted at `#D65744` |
+| Ink | `#181917` on cream |
+| On the red | a deep oxblood, `#4B0200`–`#510000`. **Not white.** |
+| Red as a text colour | `#D35244` for "LOAD MORE" on cream |
+
+**Type** — two families, used with almost no sizes.
+
+- Display: a high-contrast transitional/Didone-adjacent serif, light weight, wide, with
+  hairline serifs. Used for the page title over the hero, the intro line, every project
+  name, the section headings, the accordion rows and the giant end wordmark. I am not
+  naming the face — I cannot load the site to check, and guessing one would be inventing
+  a fact.
+- Everything else: a grotesque, only ever small. Tracked caps for category labels
+  (`FOOD & BEVERAGE`, `HOTELS`, `PRIVATE RESIDENTIAL`) and for `WORK`, `NEWSLETTER`,
+  `LOAD MORE`; regular case for the body paragraph, the client names and the addresses.
+- The whole page has roughly four sizes. The contrast between them is enormous — a
+  ~40px nav item and a 12px label, with very little in between. Same hole in the ladder
+  our own scale has.
+
+**Structure of Our Projects**, top to bottom: full-bleed hero photograph with the page
+title bottom-left and a thin down arrow beside it · cream band with a serif intro line
+and one grotesque paragraph · the project grid · `LOAD MORE` with `9 of 52` under it ·
+full-bleed vermilion band holding `Our Clients` and two accordion rows (`Brands` open
+with a `—`, `Owners & Developers` closed with a `+`) · full-bleed photograph with
+centred white serif and an outlined `CONTACT US` · cream footer, offices in columns,
+newsletter field as a bare underline with an arrow · the wordmark, cropped by the
+bottom edge of the page.
+
+**Grid**, at a 2354px capture: three columns of 682px, **34px gutters**, 86px outer
+margin. The gutter is 5% of a column — the photographs almost touch, and that density
+is a lot of what makes it read as a portfolio rather than a brochure. Tiles are 4:3
+landscape. Under each: the tracked category label, then the project name in the serif.
+
+**Details worth stealing**
+
+- The category label above the project name. Two lines of metadata, no card, no border,
+  no shadow — the photograph is the card.
+- `9 of 52` under the load-more. It says "there is far more of this" without a claim.
+- The client list as a plain wall of names in three columns, inside an accordion. No
+  logos.
+- The end wordmark cropped by the page edge. Our `.endmark` is already this move.
+- Organic blob shapes, barely darker than the ground, drifting behind the nav overlay
+  and the footer. Tonal, never graphic — you notice them only once.
+- The nav overlay: five items on one row, `space-between` across the full width with
+  ~210px between them, sitting just below centre. Not a stacked list.
+
+**Two things stop this being a direction we can just take.**
+
+1. **It is the exact look this project deliberately walked away from.** Warm cream,
+   high-contrast serif display, terracotta accent — that is the first pass, and it is on
+   Anthropic's own list of clustered AI looks. BAMO carries it on 52 projects of
+   world-class photography, a wall of Ritz-Carlton and Four Seasons names, and five
+   offices. The palette is not doing the work there; the inventory is. Adam has eight
+   photographs, no reviews yet and one phone number. The same palette over that much
+   less material is where the look collapses back into the default.
+2. **The colour pairings fail our own contrast line.** Measured off the screenshots:
+
+   | pair | ratio |
+   |---|---|
+   | ink on cream | 16.68:1 |
+   | nav items, ink on the overlay red | 4.46:1 |
+   | oxblood headings on the red band | 4.12:1 |
+   | oxblood client names on the red band | 4.00:1 |
+   | `LOAD MORE`, red on cream | 3.92:1 |
+   | cream on red, for comparison | 3.68:1 |
+
+   Everything except the cream ground is under 4.5:1 — fine for large display type,
+   short for the small tracked labels they use it on. This page holds ≥4.5:1 on every
+   text run, measured against real composited pixels
+   (`site/scripts/check-page-contrast.py`). Taking the red band literally means either
+   dropping that line or deepening the oxblood until it clears — the second is a couple
+   of steps and keeps the look.
+
+So: take the **structure, the grid density, the label-over-name pattern, the counted
+load-more, the cropped wordmark, the restraint of four type sizes**. Do not take the
+palette wholesale, and if a coloured band goes in, solve it for contrast first.
+
 ### Network: what this environment cannot reach
 
 The egress proxy returns 403 for both `instagram.com` and `micro-cementuk.co.uk`. So:
@@ -110,21 +205,66 @@ until Adam supplies commercial jobs. Leave a `<!-- TODO -->` and ask.
 
 ## Current design direction
 
-The first pass was warm cream + a Didone display + terracotta — which is on Anthropic's
-own list of clustered AI looks. It was replaced, and the replacement was **sampled from
-the client's own photography** rather than picked: quantising their walls returns
-near-neutral greys (h0–60, s7–8, l41–63), and the only chroma anywhere on their feed is
-the **teal in the marbled staircase (h180)**. So:
+Third pass, and the one that is built. Driven by the bamo.com reference above —
+its structure and restraint, not its palette, which is the distinction that
+section exists to hold.
 
-- Ground `#E8E9E7` cool screed · `#DBDDDB` · `#C7CAC8`, stone `#A8ACAA`
-- Ink `#14181A` blue-black · soft `#333A3D` · muted `#4B5457`
-- Accent `#12504F` petrol on light, `#35948F` on dark — from their own marbled wall
-- Display/UI: **Archivo** variable at `wdth 125` (expanded architectural caps).
-  Prose: **Newsreader**. No Didone, no Jost.
+**What changed and why.**
 
-Every muted-on-ground pair was solved for ≥4.5:1 before the palette was applied, not
-after. If you change a token, re-run the contrast check — `--ink-mute` on `--paper-3`
-is the tight one (4.7:1).
+The first pass was warm cream + a Didone display + terracotta, which is on
+Anthropic's own list of clustered AI looks. The second replaced it with a cool
+screed ground and Archivo expanded caps. That was disciplined but cold, and it
+was also **sampled wrong twice**:
+
+- The ground was `#E8E9E7`, a green-leaning grey, taken from photographs read
+  under daylight — which skews blue. Quantising the *plaster itself*
+  (`finish-venetian`, `plaster-detail`) returns **h27–32 at s6–9%**. Lime and
+  marble dust are warm. The ground is warm chalk now.
+- The accent was petrol `#12504F`, documented as "from their marbled wall
+  (h180)". The wall does not read h180. Its most saturated pixels sit at **h206**
+  and its midtones at **h195–198** — a deep blue-teal, not a green one.
+
+| token | value | where it comes from |
+|---|---|---|
+| `--color-lime` | `#EBE8E5` | hsl(32 14% 91%) — the trowelled plaster |
+| `--color-chalk` | `#F6F4F1` | lifted, for insets |
+| `--color-lime-2/-3` | `#DEDAD5` `#C8C2BA` | the ground gradient |
+| `--color-ink` | `#1A1817` | warm near-black, 14.5:1 on the ground |
+| `--color-ink-mute` | `#4A453F` | see below |
+| `--color-slate` | `#1C3C4A` | hsl(198 45% 20%) — the marbled wall |
+| `--color-slate-lt` | `#80B5CB` | for use on the band |
+| `--color-stone` | `#C6C0B8` | muted on the band |
+
+**The type roles are swapped.** Newsreader now displays and Archivo works:
+headings are a serif set roman and **sentence case**, and the grotesque is
+demoted to labels, metadata and body. Two families, four sizes — the discipline
+the reference actually runs on. Archivo keeps the wordmark's spirit through the
+monogram and every tracked cap, because all-caps tracked lettering is the
+client's own vernacular. A text serif at display size stays warm where a Didone
+goes brittle, and brittle-Didone-on-cream is exactly what pass one was.
+
+**Three structural moves taken from the reference.**
+
+1. **The service index lost its 01–09.** Nine things they do is not nine steps;
+   the order carried no information, so the numbers were decoration wearing the
+   costume of structure. What is left is a wall of names with a rule between
+   each — the reference's client list, applied to services.
+2. **The sample board.** The six finishes now run full bleed with a **3px**
+   gutter, edge to edge. The reference runs 34px between 682px columns, about
+   5%, and that density is most of why its grid reads as a portfolio rather than
+   a brochure. It is also what a sample board physically is, and samples are how
+   this trade actually sells — up to two come with the package, £80 after that.
+3. **Counted, not claimed.** "Six of six shown", the way the reference says
+   "9 of 52".
+
+**Contrast was solved against pixels, again, and the same mistake was made
+again first.** `--color-ink-mute` at `#58524B` computes to 6.3:1 against a flat
+`#EBE8E5` — but the ground is not flat, the gradient runs down to
+`--color-lime-3` and `.grain` multiplies over it. Measured against the
+composite it was landing at **3.86:1**. `#4A453F` clears it: the page-wide sweep
+is 0 failures on both viewports, lowest 4.71 mobile and 4.77 desktop. Do not
+compute a pair — render it and sample, with `site/scripts/check-contrast.py`
+for the hero and `site/scripts/check-page-contrast.py` for the rest.
 
 ### Two directions, one source
 
@@ -134,49 +274,71 @@ argument to make in the room, not "here are two palettes".
 | | A — Daylight | B — After hours |
 |---|---|---|
 | Sampled from | the walls, in daylight | the room, under tungsten |
-| Ground | `#E8E9E7` cool screed | `#14120F` warm near-black |
-| Accent | `#12504F` petrol, from the marbled wall | `#C79A63` brass, from their fittings (`#D8A878` sampled) |
-| Display | Archivo `wdth 125`, uppercase | Newsreader 200, lowercase |
+| Ground | `#EBE8E5` warm chalk | `#14120F` warm near-black |
+| Accent | `#1C3C4A` deep blue-teal, from the marbled wall | `#C79A63` brass, from their fittings (`#D8A878` sampled) |
+| Display | Newsreader 300, sentence case | Newsreader 200, lowercase |
 | Labels | Archivo tracked caps | Courier Prime, spec-sheet annotation |
 | Thesis | the surface is the product | you judge a finish by taking a light to it |
-| Signature | the daylight plate — the wordmark set *inside* a full-bleed photograph, washed toward the ground colour rather than dimmed | the raking light pass |
+| Signature | the plate — the wordmark set *inside* a full-bleed photograph of the work, not beside it | the raking light pass |
 
 #### The hero plate (replaces the arch)
 
-The arch is gone. The hero is now one full-bleed photograph
-(`hero-courtyard.jpg`) with the wordmark sitting in it, and the thing that
-keeps it from being the same hero every agency ships is that **the scrim is
-paper, not black**. Everyone else dims the building and sets white type on it;
-this washes toward `#E8E9E7` and keeps the ink palette, so the hero still
-belongs to Direction A rather than to Direction B.
+The arch is gone. The hero is one full-bleed photograph — the marbled stairwell
+— with the wordmark sitting in it.
 
-**The scrim stops are solved, not eyeballed.** Compositing alpha *a* of paper
-(sRGB .910) over an image pixel *v* gives `a*.910 + (1-a)*v`. The image has
-near-black glazing in it, so the worst case is *v* ≈ 0:
+**The scrim is ink, and that reverses what this file said before.** The earlier
+rule was "the scrim is paper, not black", on the argument that everyone else
+dims the building and this direction should wash toward the ground colour
+instead. That was written for a bright courtyard shot. The photograph is now a
+dark one — mean luminance .144, median .122 — and paper over it does not read as
+daylight, it reads as fog: the marble greys out and the hero looks washed rather
+than lit. **Do not reinstate the paper scrim while the hero photograph is dark.**
+If a bright hero image ever comes back, the paper wash is the right tool again.
 
-| text | colour | needs | over black needs |
+This is not Direction B borrowed. B is lowercase Newsreader, brass and Courier
+labels; none of that is here. The type is the same Archivo caps on the same
+scale, the accent is the same blue-teal family (the dark-ground CTA inverts to the
+page's own ground colour, since the band colour on near-black is only ~2.2:1 as
+a shape), and paper-on-near-black is
+already Direction A's own vocabulary — the Materials and Finish bands are built
+from it.
+
+**The scrim stops are solved, not eyeballed.** Compositing alpha *a* of ink
+(`#101416`, sRGB .063) over an image pixel *v* gives `a*.063 + (1-a)*v`. The
+copy sits over the bright end of this frame — the window and the pale room,
+sRGB up to ~240 — so that is the case to solve:
+
+| text | colour | needs | over the bright end needs |
 |---|---|---|---|
-| `.label` eyebrow, scroll cue | `--color-ink-mute` | 4.5:1 | a ≥ .81 |
-| lede | `--color-ink-soft` | 4.5:1 | a ≥ .69 |
-| wordmark (large text) | `--color-ink` | 3:1 | a ≥ .44 |
+| wordmark (large text) | `--color-paper` | 3:1 | a ≥ .48 |
+| lede | `--color-paper` at .82 | 4.5:1 | a ≥ .61 |
+| eyebrow, scroll cue | `--color-stone` | 4.5:1 | a ≥ .72 — the tight one |
 
-So the small copy lives in the dense end of the ramp and the display type runs
-out into the clear end. Verified by rendering the hero, hiding the copy layer,
-and sampling the actual composited pixels under every glyph run: **16 viewport
-sizes from 320×568 to 1920×1080, worst pixel of every string, minimum ratio
-5.07**. Re-run `site/scripts/check-contrast.py` if you touch the stops or the image.
+The wordmark now fills its column rather than sitting on the h1 step, so the copy
+block is taller — it ends between 546px and 676px, not 514 and 558 — and the
+mobile pixel stops were re-solved to match. The scrim is tinted to the band
+colour (`#16303B`) rather than neutral ink.
+
+The eyebrow's `·` separators lost their accent tint in the flip: petrol measured
+1.49:1 on this ground and even `accent-lt` only reaches 3.28, short of 4.5 at
+that size. They take the label colour.
+
+Verified by rendering the hero, hiding the copy layer, and sampling the actual
+composited pixels under every glyph run: **15 viewport sizes from 320×568 to
+1920×1080, worst pixel of every string, minimum ratio 5.28**. Re-run
+`site/scripts/check-contrast.py` if you touch the stops or the image, and
+`site/scripts/check-page-contrast.py` for the page as a whole.
 
 **Mobile stops are in pixels, not percentages.** The copy block is a fixed
 height — it ends between 514px and 558px from the top at every phone width —
 while the hero is `100svh`. A percentage ramp tuned on a 812px screen left the
 scroll cue sitting in open photograph on a 640px one. Pixels track the copy;
 percentages track the window. From `md` the copy becomes a centred left column
-and the wash becomes a radial anchored on it, which opens the right of the
-frame back up.
+and the wash becomes a horizontal ramp, which opens the right of the frame —
+where the marbled wall is — back up.
 
-**The source is only 712×612.** It is upscaled ~2× at 1440 and more on a
-retina screen. The wash hides much of that, and the `.grain` layer hides more,
-but a higher-resolution original is needed before this goes in front of Adam.
+**Resolution is no longer a worry.** The source is 3024×4032, served as three
+widths behind a `<picture>` with a WebP source and a JPEG fallback.
 
 ### Type scale
 
@@ -232,7 +394,9 @@ layer beats `@layer components` regardless of specificity.
 
 `--spacing-section: clamp(6rem, 13.5vw, 12.5rem)` (~194px at 1440) and
 `--spacing-head: clamp(3.25rem, 7.5vw, 6rem)`, taken from the BAMO and Olivia
-Harper references.
+Harper references. Note BAMO's *horizontal* rhythm runs the other way: 34px gutters
+against 682px columns, so its photographs nearly touch. Generous vertically, tight
+horizontally.
 
 The outer rhythm is settled — section seams run 258–389px at 1440 and nothing
 there is cramped. What was cramped was **inside** sections: closing notes and
@@ -277,7 +441,7 @@ arch, and its keyframe was deleted rather than left orphaned.
 |---|---|
 | Audience | a trader charging upwards of £1,500 a project — the page has to carry that price |
 | The one action | book a call. One CTA, repeated, never a menu of asks |
-| Quality bar | the BAMO and Olivia Harper references: scale, rhythm, motion |
+| Quality bar | the BAMO and Olivia Harper references: scale, rhythm, motion. bamo.com is documented in full under *Reference: bamo.com/our-projects* — structure and density yes, palette no, and read the contrast table before borrowing a coloured band |
 | Stack | Astro + Tailwind v4, static output, no CMS, Cloudflare Pages |
 | Banned | purple gradients · emoji as icons · Inter as display · stock-photo placeholders · centred-everything |
 
@@ -302,6 +466,8 @@ site/                the site — Astro + Tailwind, deploys to Cloudflare Pages
   public/assets/       canonical home for the client's photography and film
   public/_headers      Cloudflare cache policy
 CLAUDE.md            this file
+references/bamo/     the bamo.com screenshots the reference section is measured
+                     from — the site itself is blocked from here
 prompts.py           DISTILLED_AESTHETICS_PROMPT — the system prompt for generation
 helpers.py           Claude client + streaming generation + save/preview helpers
 generate.py          CLI entry point: python generate.py "<brief>"

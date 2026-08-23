@@ -1,28 +1,47 @@
 ---
 import BookCall from './BookCall.astro';
+import { asset } from '../lib/asset';
 import { serviceArea } from '../data/site';
 ---
 <!-- The plate: the photograph runs full bleed and the wordmark sits inside it.
-     The scrim is paper, not black. Every other site that puts type over a
-     building dims the picture; this direction reads the work in daylight, so
-     the frame is washed toward the ground colour instead. It also keeps the
-     ink palette — white-on-dark here would be Direction B's hero, not this one.
-     Scrim stops are solved for contrast, not eyeballed: see .plate-scrim. -->
-<section class="relative flex items-start md:items-center min-h-[100svh] overflow-hidden
+     The scrim is INK, not lime. That reverses the earlier rule, and the reason
+     is that the rule's premise changed: it was written for a bright courtyard
+     shot, where washing toward the ground colour kept the ink palette. Adam's
+     marbled stairwell is a dark photograph — mean luminance .144, median .122 —
+     and washing that toward lime does not read as daylight, it reads as fog.
+     Dimming a dark photograph is what the photograph already is.
+     This is not Direction B borrowed: B is lowercase Newsreader, brass and
+     Courier labels. The type here is the same Archivo caps on the same scale,
+     the slate is the same petrol family, and lime-on-near-black is already
+     Direction A's own vocabulary — the Materials and Finish bands are built
+     from it. Scrim stops are solved against measured pixels, see .plate-scrim. -->
+<section class="hero-plate relative flex items-start md:items-center min-h-[100svh] overflow-hidden
                 px-gutter pt-36 md:pt-28 pb-16">
-  <img class="plate-img" src="/assets/hero-courtyard.jpg" width="712" height="612"
-       fetchpriority="high" decoding="async" alt="" aria-hidden="true" />
+  <!-- The LCP image, so it is eager and high priority. Three widths behind a
+       <picture>: WebP saves about a third on a texture this busy (296KB against
+       441KB at 1400w) and the JPEG is there for anything that cannot take it. -->
+  <picture>
+    <source type="image/webp" sizes="100vw"
+            srcset={`${asset("assets/hero-stair-700.webp")} 700w, ${asset("assets/hero-stair-1000.webp")} 1000w, ${asset("assets/hero-stair-1400.webp")} 1400w`} />
+    <img class="plate-img" sizes="100vw"
+         srcset={`${asset("assets/hero-stair-700.jpg")} 700w, ${asset("assets/hero-stair-1000.jpg")} 1000w, ${asset("assets/hero-stair-1400.jpg")} 1400w`}
+         src={asset("assets/hero-stair-1000.jpg")} width="3024" height="4032"
+         fetchpriority="high" decoding="async" alt="" aria-hidden="true" />
+  </picture>
   <div class="plate-scrim" aria-hidden="true"></div>
 
   <div class="relative z-2 w-full max-w-[1240px] mx-auto">
-    <p class="label [animation:fadeUp_300ms_var(--ease-motion)_both] [animation-delay:40ms]">
-      Venetian Plaster <span class="text-accent">&middot;</span> Microcement <span class="text-accent">&middot;</span> {serviceArea}
+    <p class="label text-stone [animation:fadeUp_300ms_var(--ease-motion)_both] [animation-delay:40ms]">
+      <!-- The separators lost their slate tint when the plate went dark: petrol
+           on this ground measured 1.49:1, and slate-lt only reaches 3.28 —
+           still short of 4.5 for text this size. They take the label colour. -->
+      Venetian Plaster &middot; Microcement &middot; {serviceArea}
     </p>
 
     <!-- "The" is set as a proportion of the wordmark (.26em of h1), not as an
          independent scale step — a lockup has to keep its ratio at every size.
          It is one of two deliberate off-scale values; the other is .endmark. -->
-    <h1 class="wordmark text-h1 uppercase mt-7">
+    <h1 class="wordmark text-h1 uppercase mt-7 text-lime">
       {['The', 'Venetian', 'Company'].map((word, i) => (
         <span class="block overflow-hidden">
           <i class={`block not-italic [animation:lift_300ms_var(--ease-motion)_both] ${
@@ -32,17 +51,17 @@ import { serviceArea } from '../data/site';
       ))}
     </h1>
 
-    <p class="font-read text-lede text-ink-soft max-w-[26ch] mt-8
+    <p class="font-read text-lede text-lime/[.82] max-w-[26ch] mt-8
               [animation:fadeUp_300ms_var(--ease-motion)_both] [animation-delay:200ms]">
       A team of finishing specialists covering all aspects.
     </p>
 
     <div class="flex flex-wrap items-center gap-x-10 gap-y-4 mt-12
                 [animation:fadeUp_300ms_var(--ease-motion)_both] [animation-delay:240ms]">
-      <BookCall variant="solid" />
-      <div class="flex items-center gap-3 label">
-        <span class="relative block w-14 h-px bg-ink-mute overflow-hidden">
-          <span class="absolute inset-0 bg-accent [animation:cue_3.4s_var(--ease-out-soft)_infinite]"></span>
+      <BookCall variant="lit" />
+      <div class="flex items-center gap-3 label text-stone">
+        <span class="relative block w-14 h-px bg-stone overflow-hidden">
+          <span class="absolute inset-0 bg-slate [animation:cue_3.4s_var(--ease-out-soft)_infinite]"></span>
         </span>Scroll
       </div>
     </div>

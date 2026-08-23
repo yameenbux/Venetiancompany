@@ -1,38 +1,44 @@
 ---
 import { about, finishes } from '../data/site';
+import { asset } from '../lib/asset';
 ---
-<section id="finish" class="relative px-gutter py-section text-paper
-  bg-[radial-gradient(90%_70%_at_20%_0%,rgba(18,80,79,.20)_0%,rgba(18,80,79,0)_55%),radial-gradient(80%_60%_at_90%_100%,rgba(168,172,170,.16)_0%,rgba(168,172,170,0)_60%),linear-gradient(172deg,#141A1C_0%,#101416_55%,#0A0D0E_100%)]">
+<section id="finish" class="relative px-gutter py-section text-lime
+  bg-[radial-gradient(90%_70%_at_20%_0%,rgba(128,181,203,.16)_0%,rgba(128,181,203,0)_55%),radial-gradient(80%_60%_at_90%_100%,rgba(185,178,170,.12)_0%,rgba(185,178,170,0)_60%),linear-gradient(172deg,#22414F_0%,#1C3C4A_55%,#16303B_100%)]">
   <div class="relative z-1 max-w-[1240px] mx-auto">
     <div class="rise">
       <div class="grid gap-6 mb-head md:grid-cols-[minmax(21rem,1fr)_minmax(0,26rem)] md:items-end">
         <div>
           <p class="label text-stone mb-5">The material</p>
-          <h2 class="text-h2 uppercase">The material<br>is the point</h2>
+          <h2 class="text-h2">The material<br>is the point</h2>
         </div>
-        <p class="font-read text-lede text-paper/70 max-w-[42ch] m-0">
+        <p class="font-read text-lede text-lime/80 max-w-[42ch] m-0">
           Lime and cement finishes that are laid, burnished and sealed on site. No joins, no seams, no two walls identical.
         </p>
       </div>
     </div>
 
     <div class="rise grid gap-[clamp(2rem,6vw,4.5rem)] lg:grid-cols-[1.05fr_.95fr] items-start">
-      <div>{about.map((p) => <p class="font-read text-lede text-paper/[.78] mb-4 mt-0">{p}</p>)}</div>
-      <blockquote class="font-display font-semibold uppercase [font-stretch:125%] text-h3
-                         border-l border-accent-lt pl-[clamp(1rem,3vw,2rem)]">
+      <div>{about.map((p) => <p class="font-read text-lede text-lime/[.86] mb-4 mt-0">{p}</p>)}</div>
+      <blockquote class="font-display font-light text-h3
+                         border-l border-slate-lt pl-[clamp(1rem,3vw,2rem)]">
         Every wall is mixed, laid and finished by hand.
       </blockquote>
     </div>
 
-    <div class="rise mt-[clamp(3rem,7vw,5rem)] pt-[clamp(2rem,5vw,3rem)] border-t border-paper/15">
+    <div class="rise mt-[clamp(3rem,7vw,5rem)] pt-[clamp(2rem,5vw,3rem)] border-t border-lime/15">
       <div class="grid gap-4 mb-[clamp(1.5rem,4vw,2.4rem)] md:grid-cols-[minmax(0,14rem)_minmax(0,44ch)] md:items-baseline md:gap-10">
-        <p class="label text-stone">The range</p>
-        <p class="font-read text-paper/70 m-0">Six surfaces from recent projects. Your finish and colour are agreed with you before anything starts.</p>
+        <p class="label text-stone">The sample board</p>
+        <p class="font-read text-lime/80 m-0">Six surfaces from recent projects. Up to two samples come with your package, so you hold the finish before anyone starts.</p>
       </div>
-      <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-[clamp(.6rem,1.6vw,1.1rem)]">
+      <!-- Full bleed, and the gutter is deliberately tight. The reference runs 34px
+           between 682px columns — about 5% — and that density is most of why its
+           grid reads as a portfolio rather than a brochure. Six surfaces laid
+           edge to edge is also what a sample board physically is. -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-[3px]
+                  relative left-1/2 -translate-x-1/2 w-screen max-w-none">
         {finishes.map((f) => (
-          <figure class="group relative aspect-3/4 rounded-sm overflow-hidden bg-[#1B2022]">
-            <img src={`/assets/${f.file}`} width={f.w ?? 600} height={f.h ?? 800}
+          <figure class="group relative aspect-3/4 overflow-hidden bg-[#16303B]">
+            <img src={asset(`assets/${f.file}`)} width={f.w ?? 600} height={f.h ?? 800}
                  loading="lazy" decoding="async" alt={f.alt}
                  class="w-full h-full object-cover transition-transform duration-240 ease-motion
                         group-hover:scale-[1.03]" />
@@ -47,8 +53,9 @@ import { about, finishes } from '../data/site';
           </figure>
         ))}
       </div>
-      <p class="font-read italic text-paper/[.62] text-caption mt-4 max-w-[40ch]">
-        Photographed on site, not on sample boards — this is how each one landed on a real wall.
+      <p class="font-display italic text-lime/[.72] text-caption mt-6 max-w-[46ch]">
+        Six of six shown. Photographed on site, not on sample boards — this is how
+        each one landed on a real wall.
       </p>
     </div>
   </div>

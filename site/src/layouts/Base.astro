@@ -1,12 +1,13 @@
 ---
 import '../styles/global.css';
+import { asset } from '../lib/asset';
 import Nav from '../components/Nav.astro';
 import { phone, contactName, serviceArea, instagram } from '../data/site';
 
 interface Props { title: string; description: string }
 const { title, description } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
-const ogImage = new URL('/assets/og-image.jpg', Astro.site).toString();
+const ogImage = new URL(asset('assets/og-image.jpg'), Astro.site).toString();
 
 const schema = {
   '@context': 'https://schema.org',
@@ -33,8 +34,8 @@ const schema = {
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonical} />
-  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+  <link rel="icon" href={asset("assets/favicon.svg")} type="image/svg+xml" />
+  <link rel="apple-touch-icon" href={asset("assets/apple-touch-icon.png")} />
   <meta name="theme-color" content="#E8E9E7" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />

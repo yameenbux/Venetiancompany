@@ -130,7 +130,9 @@ h3{ font-size:clamp(1.3rem,2.6vw,1.8rem); font-weight:300; }
 .hero .shot::before{
   content:''; position:absolute; inset:0; z-index:1;
   background:
-    linear-gradient(6deg, rgba(20,18,15,.96) 6%, rgba(20,18,15,.55) 42%, rgba(20,18,15,.30) 78%),
+    /* Raised from .55/.30: the spec eyebrow sits about halfway up, where the old
+       stops left it on the lit part of the stairwell at 2.57:1. */
+    linear-gradient(6deg, rgba(20,18,15,.96) 6%, rgba(20,18,15,.80) 42%, rgba(20,18,15,.60) 78%),
     linear-gradient(90deg, rgba(20,18,15,.85) 0%, rgba(20,18,15,.15) 55%, rgba(20,18,15,.55) 100%);
 }
 .hero .inner{ position:relative; z-index:2; width:100%; padding:0 var(--gutter) clamp(3rem,8vw,6rem); }

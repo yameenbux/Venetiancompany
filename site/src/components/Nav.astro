@@ -7,14 +7,14 @@ const links = [
   ['#finish', 'The Finish'], ['#process', 'Process'],
 ];
 ---
-<!-- The wash has to cover the CONTENT, not just the top edge. `from-paper/90
+<!-- The wash has to cover the CONTENT, not just the top edge. `from-lime/90
      to-transparent` faded to nothing by the time it reached the links and the
      phone pill, so over the dark Materials and Finish bands the ink text sat on
      near-black: the phone number measured 1.44:1 while scrolled to 4017. Ink
      mute needs alpha .84 to clear 4.5:1 over that ground, so the ramp now holds
      .96 through the row and does its fade below it. -->
 <header class="fixed inset-x-0 top-0 z-60 flex items-center justify-between gap-4 px-gutter py-4
-               bg-[linear-gradient(to_bottom,var(--color-paper)_0%,var(--color-paper)_84%,rgba(232,233,231,.55)_94%,rgba(232,233,231,0)_100%)]
+               bg-[linear-gradient(to_bottom,var(--color-lime)_0%,var(--color-lime)_84%,rgba(235,232,229,.55)_94%,rgba(235,232,229,0)_100%)]
                backdrop-blur-[6px]">
   <a href="#top" class="block w-[46px] h-[46px] shrink-0 text-ink" aria-label="The Venetian Company, home">
     <Monogram class="block w-full h-full" disc />
@@ -22,13 +22,13 @@ const links = [
 
   <nav class="hidden lg:flex gap-9" aria-label="Sections">
     {links.map(([href, text]) => (
-      <a href={href} class="label text-ink-soft no-underline pb-[3px] hover:text-accent transition-colors duration-240 ease-motion">{text}</a>
+      <a href={href} class="label text-ink-soft no-underline pb-[3px] hover:text-slate transition-colors duration-240 ease-motion">{text}</a>
     ))}
   </nav>
 
   <div class="flex items-center gap-2">
     <a class="hidden sm:inline-flex label no-underline border border-ink/15 rounded-full px-4 py-2
-              min-h-[44px] items-center whitespace-nowrap hover:border-accent hover:text-accent
+              min-h-[44px] items-center whitespace-nowrap hover:border-slate hover:text-slate
               transition-colors duration-240 ease-motion" href={`tel:${phone.e164}`}>{phone.display}</a>
     <!-- Wrapped, not classed: BookCall's own `inline-flex` is a base-layer
          display utility, and Tailwind v4 emits `.inline-flex` after `.hidden`,
@@ -48,11 +48,11 @@ const links = [
 </header>
 
 <div id="navpanel" hidden data-open="false"
-     class="fixed inset-0 z-55 flex flex-col justify-center gap-1 px-gutter pt-24 pb-12 bg-paper
+     class="fixed inset-0 z-55 flex flex-col justify-center gap-1 px-gutter pt-24 pb-12 bg-lime
             invisible opacity-0 transition-[opacity,visibility] duration-240 ease-motion data-[open=true]:visible
             data-[open=true]:opacity-100 lg:hidden">
   {links.map(([href, text]) => (
-    <a href={href} class="font-display font-semibold uppercase no-underline text-ink py-1.5
+    <a href={href} class="font-display font-light no-underline text-ink py-1.5
                           border-b border-ink/10 text-h2 [font-stretch:125%]">{text}</a>
   ))}
   <div class="mt-8"><BookCall variant="solid" /></div>
