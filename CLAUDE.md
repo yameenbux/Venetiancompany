@@ -14,15 +14,61 @@ business.
 
 ## Client brief
 
-<!-- Fill these in before generating. The more specific this is, the less generic the output. -->
+Everything below is taken from the client's own public Instagram
+(@thevenetiancompany_ profile and their About Us / Pricing story highlights).
+**Nothing here is inferred — do not add to this list without a source.**
 
-- **Business:** The Venetian Company
-- **Sector:** TBD
-- **Location / market:** TBD
-- **Audience:** TBD
-- **Tone we're pitching:** TBD
-- **Existing brand assets:** none known (no website)
-- **Reference points / mood:** TBD
+- **Business:** The Venetian Company — "The Venetian Company - Venetian Plastering"
+- **Sector:** Venetian plaster & microcement. Listed on IG as "Product/service",
+  bio "VENETIAN PLASTER/MICROCEMENT — A team of finishing specialists covering all
+  aspects"
+- **Contact:** Adam Knowles — 07527180499
+- **Instagram:** [@thevenetiancompany_](https://instagram.com/thevenetiancompany_)
+  (228 posts, ~2.9k followers)
+- **Partner:** tiling via [@sktiling](https://instagram.com/sktiling)
+- **Services (verbatim from their About Us highlight):** full house applications,
+  media walls, bathrooms, swimming pool areas, feature walls, microcement,
+  staircases, wet rooms, floors — "and more"
+- **About (verbatim):** "The Venetian Company are a team of experienced professionals
+  skilled in luxury Venetian plastering. We have experience creating unique and
+  sophisticated designs to suit a variety of homes or commercial spaces." … "We are a
+  friendly, customer-focused business with a passion for bringing your dream home to
+  reality."
+- **Pricing process (verbatim from their Pricing highlight):** pricing depends on the
+  size of the area and desired finish/style; quoted after initial discussions and
+  agreed before commencing; alternative finishes offered to suit a budget; up to 2
+  samples included, additional samples £80; 50% deposit before commencing, balance due
+  on completion.
+- **Enquiry channel:** direct message or **WhatsApp** — "please direct message or
+  contact us via the WhatsApp below". WhatsApp is the primary route, not email.
+- **What they ask an enquirer to send (verbatim from their Enquiries highlight):**
+  address of project · photographs of the area · measurements (if available) · your
+  desired finish or style. Plus: "Please feel free to send your inspiration photos to
+  our team to support in understanding your vision. We are experienced specialists who
+  will help in providing guidance for a finish that best suits your requirements."
+  And: "Photographs of the area will also support our team to provide a price based on
+  size."
+- **Site visits (verbatim):** "Once we have agreed your finish, colour and other
+  requirements, samples can be provided as part of your package. We are also able to
+  visit the area to discuss before going ahead." Note *colour* is agreed alongside
+  finish, and a booking date is "mutually agreed" before the deposit is taken.
+- **Deposit T&Cs (verbatim from their Deposits highlight):** "a 50% deposit is required
+  to secure all project bookings before going ahead. This allows our team to purchase
+  the required materials and products for your individual project. This deposit is
+  non-refundable. The remaining balance will be due upon completion of the project."
+- **Audience:** homeowners doing high-end renovations and new builds, plus commercial
+  spaces. Their feed is contemporary architectural — flat-roofed new builds, pool
+  areas, curved plaster staircases, wet rooms.
+- **Tone we're pitching:** material-led and quiet. Luxury trade, not luxury brochure.
+  The finish is the product, so the page should feel like the surface.
+- **Existing brand assets:** circular TVC monogram (stacked T/V/C, thin black rule on
+  white). All-caps tracked typography across their story graphics. No website.
+
+### Unknowns — do NOT invent these
+
+Trading address, service area/radius, years established, company registration, team
+size, accreditations, testimonials, review scores, past client names, project
+locations, prices beyond the £80 sample fee. Leave a `<!-- TODO -->` and ask Adam.
 
 ## Layout
 
@@ -32,6 +78,12 @@ prompts.py           DISTILLED_AESTHETICS_PROMPT — the system prompt for gener
 helpers.py           Claude client + streaming generation + save/preview helpers
 generate.py          CLI entry point: python generate.py "<brief>"
 html_outputs/        timestamped generated pages (gitignored except .gitkeep)
+samples/             pages we've kept and are willing to show
+  venetian-company/index.html   the current pitch page
+  venetian-company/assets/       the client's own photography and film (see CREDITS.md)
+  venetian-company/build-artifact.py  strips the wrapper, inlines media, for Artifacts
+  venetian-company/build-site.py      builds dist/ — a clean standalone site for hosting
+dist/                built site, gitignored
 ```
 
 ## How to generate a page
@@ -65,6 +117,19 @@ is available.
   prospect's laptop.
 - **Never overwrite a previous output.** Outputs are timestamped so we can compare
   directions side by side.
+- **Deploying to Pages.** `python samples/venetian-company/build-site.py` rebuilds
+  `dist/`, then push it to the orphan `gh-pages` branch — that branch holds the built
+  site only, one plain commit, no repo furniture. Never merge `gh-pages` into anything
+  or merge anything into it.
+- **Two ways to publish, and they leak different things.** `build-artifact.py` makes
+  a private Artifact — no repo, no history, but a claude.ai URL. `build-site.py` makes
+  `dist/` for GitHub Pages — a neutral URL, but Pages exposes the repo behind it, and
+  **this repo is public and contains CLAUDE.md plus Claude co-author trailers on every
+  commit.** Serving Pages from here hands anyone who reads the URL a route straight to
+  that. For a Pages URL with nothing to trace, push `dist/` to a separate repo with its
+  own clean history. `index.html` stays the source of truth for both.
+- **Client media is the client's.** Anything under `assets/` came off their Instagram
+  and is theirs. Credit it, keep `CREDITS.md` current, and pull it if the pitch dies.
 - **Don't invent facts about the client.** No fake testimonials, fake awards, fake
   addresses, fake founding dates, fake client logos. Use obviously-placeholder copy
   (e.g. "Est. —", lorem-adjacent but on-brand) or leave a `<!-- TODO -->`. This is going
