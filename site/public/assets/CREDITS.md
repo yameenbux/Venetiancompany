@@ -8,7 +8,7 @@ It is theirs. If the pitch doesn't go ahead, these files come out.
 
 | File | Source | Notes |
 |---|---|---|
-| `staircase.mp4` / `staircase-poster.jpg` | IG reel | curved plaster staircase; audio stripped, re-encoded H.264 CRF 30 |
+| `staircase.mp4` / `staircase-poster.jpg` | sent into chat | marbled stairwell, treads to roof light — same job as `stair-marbled.jpg`; replaced the earlier lower-bitrate curved-staircase reel. 720x1280, 21.4s, audio stripped, H.264 CRF 28 (981 kb/s, 2.6 MB), faststart. Poster is frame 0 at 540x960 so there is no jump when it starts. |
 | `bathroom-blush.mp4` / `bathroom-blush-poster.jpg` | IG reel | blush-pigmented bathroom; same treatment |
 | `wet-room.jpg` | IG post | microcement wet room |
 | `bathroom-arch.jpg` | IG post | bathroom, arched window, marble |
