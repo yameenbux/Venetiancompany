@@ -1,0 +1,51 @@
+---
+import BookCall from './BookCall.astro';
+import { phone } from '../data/site';
+const links = [
+  ['#work', 'Work'], ['#materials', 'Materials'],
+  ['#finish', 'The Finish'], ['#process', 'Process'],
+];
+---
+<header class="fixed inset-x-0 top-0 z-60 flex items-center justify-between gap-4 px-gutter py-4
+               bg-gradient-to-b from-paper/90 to-transparent backdrop-blur-[6px]">
+  <a href="#top" class="block w-[46px] h-[46px] shrink-0 text-ink" aria-label="The Venetian Company, home">
+    <svg viewBox="0 0 48 48" class="block w-full h-full overflow-visible" aria-hidden="true" focusable="false">
+      <circle cx="24" cy="24" r="22.5" fill="rgba(252,253,252,.82)" stroke="currentColor" stroke-width="1"/>
+      <g class="font-display" font-weight="600" font-size="11" font-stretch="125%"
+         fill="currentColor" text-anchor="middle" letter-spacing=".2">
+        <text x="24" y="17.5">T</text><text x="24.8" y="28">V</text><text x="24" y="38.5">C</text>
+      </g>
+    </svg>
+  </a>
+
+  <nav class="hidden lg:flex gap-9" aria-label="Sections">
+    {links.map(([href, text]) => (
+      <a href={href} class="label text-ink-soft no-underline pb-[3px] hover:text-accent transition-colors duration-500">{text}</a>
+    ))}
+  </nav>
+
+  <div class="flex items-center gap-2">
+    <a class="hidden sm:inline-flex label no-underline border border-ink/15 rounded-full px-4 py-2
+              min-h-[44px] items-center whitespace-nowrap hover:border-accent hover:text-accent
+              transition-colors duration-500" href={`tel:${phone.e164}`}>{phone.display}</a>
+    <BookCall variant="solid" class="hidden md:inline-flex" />
+    <button id="navbtn" type="button" aria-expanded="false" aria-controls="navpanel"
+            class="lg:hidden inline-flex items-center gap-2 label text-ink border border-ink/15
+                   rounded-full px-4 min-h-[44px] cursor-pointer bg-transparent">
+      <span class="grid gap-[3px] w-[14px]" aria-hidden="true">
+        <i class="block h-px bg-current"></i><i class="block h-px bg-current"></i><i class="block h-px bg-current"></i>
+      </span>Menu
+    </button>
+  </div>
+</header>
+
+<div id="navpanel" hidden data-open="false"
+     class="fixed inset-0 z-55 flex flex-col justify-center gap-1 px-gutter pt-24 pb-12 bg-paper
+            invisible opacity-0 transition-[opacity,visibility] duration-300 data-[open=true]:visible
+            data-[open=true]:opacity-100 lg:hidden">
+  {links.map(([href, text]) => (
+    <a href={href} class="font-display font-semibold uppercase no-underline text-ink py-1.5
+                          border-b border-ink/10 text-[clamp(1.6rem,8vw,2.6rem)] [font-stretch:125%]">{text}</a>
+  ))}
+  <div class="mt-8"><BookCall variant="solid" /></div>
+</div>

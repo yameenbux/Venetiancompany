@@ -1,0 +1,14 @@
+---
+/** The repeated ask. Same component, same words, placed between sections so
+ *  the single action is never more than a screen away. */
+import BookCall from './BookCall.astro';
+interface Props { line: string }
+const { line } = Astro.props;
+---
+<section class="px-gutter py-[clamp(3.5rem,8vw,6rem)]">
+  <div class="max-w-[1240px] mx-auto flex flex-wrap items-center justify-between gap-6
+              border-t border-ink/15 pt-[clamp(2rem,4vw,3rem)]">
+    <p class="font-read text-lede text-ink-soft max-w-[34ch] m-0">{line}</p>
+    <BookCall variant="bare" />
+  </div>
+</section>

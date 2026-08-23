@@ -1,0 +1,43 @@
+---
+import SectionHead from './SectionHead.astro';
+import { process, terms, bringToCall } from '../data/site';
+---
+<section id="process" class="px-gutter py-section">
+  <div class="max-w-[1240px] mx-auto">
+    <div class="rise">
+      <SectionHead title="How a<br>project runs"
+        lede="It starts with a call. Pricing depends on the size of the area and your desired finish, and nothing begins until the quote is agreed." />
+    </div>
+
+    <div class="rise grid gap-[clamp(1.6rem,4vw,2.6rem)] sm:grid-cols-2 xl:grid-cols-4">
+      {process.map((s) => (
+        <div class="border-t border-ink pt-5">
+          <span class="block font-display font-semibold [font-stretch:125%] text-[1.9rem] leading-none text-accent mb-2">{s.n}</span>
+          <h3 class="font-ui font-normal text-label tracking-label uppercase mb-3 [font-stretch:100%]">{s.title}</h3>
+          <p class="font-read text-ink-soft text-[.98rem] m-0">{s.body}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="rise mt-[clamp(2.5rem,6vw,4rem)] flex flex-wrap gap-x-8 gap-y-3">
+      {terms.map((t) => (
+        <span class="label inline-flex items-center gap-3">
+          <span class="w-[5px] h-[5px] rounded-full bg-accent shrink-0" aria-hidden="true"></span>{t}
+        </span>
+      ))}
+    </div>
+
+    <div class="rise mt-[clamp(3.5rem,8vw,6rem)] pt-[clamp(2rem,4vw,3rem)] border-t border-ink/15">
+      <p class="label mb-8">Worth having ready for the call</p>
+      <div class="grid gap-[clamp(1.2rem,3vw,2rem)] sm:grid-cols-2 xl:grid-cols-4">
+        {bringToCall.map((b) => (
+          <div class="border-t border-accent pt-4">
+            <span class="block label text-accent mb-3">{b.req}</span>
+            <h3 class="text-[clamp(1.1rem,2.1vw,1.5rem)] uppercase leading-[1.08] mb-2">{b.title}</h3>
+            <p class="font-read text-ink-mute text-[.94rem] m-0">{b.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,11 @@
+---
+interface Props { eyebrow?: string; title: string; lede?: string; id?: string }
+const { eyebrow, title, lede, id } = Astro.props;
+---
+<div class="grid gap-6 mb-head md:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] md:items-end">
+  <div>
+    {eyebrow && <p class="label mb-5">{eyebrow}</p>}
+    <h2 id={id} class="text-d2 uppercase" set:html={title} />
+  </div>
+  {lede && <p class="font-read text-lede leading-[1.5] text-ink-soft max-w-[42ch] m-0">{lede}</p>}
+</div>

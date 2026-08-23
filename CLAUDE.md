@@ -162,9 +162,34 @@ width at every viewport (verified 100% at 390/768/1440/1920). It also needs
 `position:relative; z-index:1`: it sits outside `main` and `footer`, and the fixed
 `.ground` is a positioned element, so in normal flow it paints underneath.
 
+## Stack and brief
+
+| | |
+|---|---|
+| Audience | a trader charging upwards of £1,500 a project — the page has to carry that price |
+| The one action | book a call. One CTA, repeated, never a menu of asks |
+| Quality bar | the BAMO and Olivia Harper references: scale, rhythm, motion |
+| Stack | Astro + Tailwind v4, static output, no CMS, Cloudflare Pages |
+| Banned | purple gradients · emoji as icons · Inter as display · stock-photo placeholders · centred-everything |
+
+The ban list was already satisfied when it arrived — fonts are Archivo/Newsreader, every
+image is the client's own, there is no `text-align:center` anywhere, and the only "Inter"
+matches in the source are `IntersectionObserver`. Keep it that way.
+
+**One conflict, reconciled rather than ignored.** Adam's own published intake is
+"direct message or WhatsApp" with address, photographs, measurements and desired finish.
+A call-first CTA cuts across that. So the CTA books a call and opens WhatsApp with the
+request pre-written, and his four items became "worth having ready for the call" —
+step 01 of the process is now the call. Both things stay true.
+
 ## Layout
 
 ```
+site/                the site — Astro + Tailwind, deploys to Cloudflare Pages
+  src/data/site.ts     every client-supplied fact, one file, no CMS
+  src/components/      BookCall.astro is the one CTA, used six times
+  public/assets/       canonical home for the client's photography and film
+  public/_headers      Cloudflare cache policy
 CLAUDE.md            this file
 prompts.py           DISTILLED_AESTHETICS_PROMPT — the system prompt for generation
 helpers.py           Claude client + streaming generation + save/preview helpers
@@ -210,9 +235,13 @@ is available.
 - **Always pass `DISTILLED_AESTHETICS_PROMPT` as the system prompt** when generating a
   page. It exists to keep output off the "AI slop" attractor; skipping it defeats the
   point of the whole repo.
-- **Every page is self-contained.** One `.html` file — inline CSS, inline JS, no build
-  step, no external asset hosts except Google Fonts. It has to open by double-click on a
-  prospect's laptop.
+- **The site is an Astro app** (`site/`), not a single file. The old one-file rule was
+  superseded by an explicit stack directive — Astro + Tailwind, static, no CMS, deployed
+  to Cloudflare Pages. `samples/` keeps the two single-file directions as archives; they
+  still open by double-click and symlink into `site/public/assets` for media.
+- **One action, repeated.** Every call-to-action on the site is
+  `src/components/BookCall.astro` — same words, same destination. Six instances, one
+  href. Do not add a second competing ask.
 - **Never overwrite a previous output.** Outputs are timestamped so we can compare
   directions side by side.
 - **Deploying to Pages.** `python samples/venetian-company/build-site.py` rebuilds

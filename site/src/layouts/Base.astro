@@ -1,0 +1,132 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import { phone, contactName, serviceArea, instagram } from '../data/site';
+
+interface Props { title: string; description: string }
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImage = new URL('/assets/og-image.jpg', Astro.site).toString();
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'HomeAndConstructionBusiness',
+  name: 'The Venetian Company',
+  description: 'Venetian plastering and microcement specialists for homes and commercial spaces.',
+  url: Astro.site?.toString(),
+  image: ogImage,
+  telephone: phone.e164,
+  areaServed: { '@type': 'Country', name: 'United Kingdom' },
+  founder: { '@type': 'Person', name: contactName },
+  sameAs: [instagram],
+  knowsAbout: ['Venetian plaster', 'Microcement', 'Wet rooms', 'Feature walls', 'Microcement floors'],
+};
+---
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+  <meta name="theme-color" content="#E8E9E7" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,300..700&family=Newsreader:ital,opsz,wght@0,6..72,300;1,6..72,400&display=swap" />
+
+  <!-- WhatsApp is the enquiry route, so the link preview matters more than the
+       search snippet. og:image must be absolute or scrapers will not resolve it. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="The Venetian Company" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="en_GB" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content={ogImage} />
+
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</head>
+<body>
+  <div class="ground" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <Nav />
+
+  <main id="top"><slot /></main>
+
+  <div class="endmark" aria-hidden="true"><span>Venetian</span></div>
+
+  <footer class="px-gutter pt-10 pb-14 border-t border-ink/15 flex flex-wrap justify-between
+                 items-center gap-x-8 gap-y-3 label">
+    <span>The Venetian Company — Venetian Plaster &amp; Microcement &middot; {serviceArea}</span>
+    <span>Photography &amp; film: The Venetian Company</span>
+    <span>Designed by <strong class="text-ink font-normal">YSBDesigns</strong> &middot; Design concept, not an official site</span>
+  </footer>
+
+  <script>
+    // Mobile navigation
+    (function () {
+      const btn = document.getElementById('navbtn');
+      const panel = document.getElementById('navpanel');
+      if (!btn || !panel) return;
+      panel.hidden = false;
+      const setOpen = (open: boolean) => {
+        panel.setAttribute('data-open', String(open));
+        btn.setAttribute('aria-expanded', String(open));
+        document.body.style.overflow = open ? 'hidden' : '';
+        // The panel is still visibility:hidden this frame; a hidden element
+        // silently refuses focus, so wait for the transition to make it focusable.
+        if (open) requestAnimationFrame(() => requestAnimationFrame(() => panel.querySelector('a')?.focus()));
+      };
+      btn.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') !== 'true'));
+      panel.addEventListener('click', (e) => {
+        if ((e.target as HTMLElement).tagName === 'A') { setOpen(false); btn.focus(); }
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') { setOpen(false); btn.focus(); }
+      });
+      matchMedia('(min-width:1024px)').addEventListener('change', (m) => { if (m.matches) setOpen(false); });
+    })();
+
+    // Section reveals
+    (function () {
+      const els = document.querySelectorAll('.rise');
+      if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        els.forEach((el) => el.classList.add('in'));
+        return;
+      }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { rootMargin: '0px 0px -12% 0px', threshold: 0.1 });
+      els.forEach((el) => io.observe(el));
+    })();
+
+    // Clips play only while on screen — no point fetching video for a section
+    // nobody scrolled to. Reduced motion gets controls instead.
+    (function () {
+      const vids = Array.from(document.querySelectorAll('video'));
+      if (!vids.length) return;
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        vids.forEach((v) => { v.controls = true; v.preload = 'metadata'; });
+        return;
+      }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          const v = e.target as HTMLVideoElement;
+          if (e.isIntersecting) v.play().catch(() => { v.controls = true; });
+          else v.pause();
+        });
+      }, { threshold: 0.25 });
+      vids.forEach((v) => io.observe(v));
+    })();
+  </script>
+</body>
+</html>
