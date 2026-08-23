@@ -117,7 +117,7 @@ near-neutral greys (h0–60, s7–8, l41–63), and the only chroma anywhere on 
 the **teal in the marbled staircase (h180)**. So:
 
 - Ground `#E8E9E7` cool screed · `#DBDDDB` · `#C7CAC8`, stone `#A8ACAA`
-- Ink `#14181A` blue-black · soft `#333A3D` · muted `#4B5457`
+- Ink `#14181A` blue-black · soft `#333A3D` · muted `#434B4E`
 - Accent `#12504F` petrol on light, `#35948F` on dark — from their own marbled wall
 - Display/UI: **Archivo** variable at `wdth 125` (expanded architectural caps).
   Prose: **Newsreader**. No Didone, no Jost.
@@ -127,8 +127,9 @@ after. **That first pass solved against a flat `--paper-3` and was wrong**: the 
 is not flat. `.ground::before` lays a `rgba(110,117,115,.10)` radial over it and
 `.grain` multiplies at `.30` on top, and measured against the real composite the
 `.label` colour was landing at **4.20:1** in the materials list, 4.23 in the footer
-and 4.43 on the work captions. `--color-ink-mute` is `#454D50`, not `#4B5457` — a ~7%
-luminance move that clears 4.5 everywhere with margin. If you change a token, do not
+and 4.43 on the work captions. `--color-ink-mute` is `#434B4E`, not `#4B5457` — a ~13%
+luminance move that clears 4.5 everywhere with margin (lowest on the page is now
+4.65, the work captions). If you change a token, do not
 compute the pair: render it and sample the pixels, with
 `site/scripts/check-contrast.py` for the hero and the same method for the rest.
 

@@ -67,7 +67,11 @@
   --stone-d:       #6E7573;
   --ink:        #14181A;
   --ink-soft:   #333A3D;
-  --ink-mute:   #4B5457;
+  /* Darkened from #4B5457. That value was solved against a flat --paper-3, but
+     the ground carries a darkening radial and .grain multiplies over it, so
+     measured against the real composite the label colour was landing at
+     4.2-4.4:1 in the materials list, the gallery captions and the footer. */
+  --ink-mute:   #434B4E;
   --accent:   #12504F;
   --accent-lt:#35948F;
 
@@ -467,7 +471,10 @@ body[data-navopen="true"]{ overflow:hidden; }
   position:absolute; left:0; right:0; bottom:0; padding:.7rem .6rem;
   font-family:var(--ui); font-weight:400; font-size:.6rem; letter-spacing:.16em;
   text-transform:uppercase; color:#fff; text-shadow:0 1px 6px rgba(0,0,0,.6);
-  background:linear-gradient(to top, rgba(0,0,0,.45), rgba(0,0,0,0));
+  /* The scrim needs height to fade over: at .45 across a short band the caption
+     sat at ~22% alpha and white on the pale plasters measured 2.73:1. */
+  padding-top:2.2rem;
+  background:linear-gradient(to top, rgba(0,0,0,.80) 0%, rgba(0,0,0,.55) 50%, rgba(0,0,0,0) 100%);
 }
 .swatch-note{ margin-top:1rem; font-family:var(--read); font-style:italic; font-size:.88rem; color:rgba(232,233,231,.62); max-width:40ch; }
 

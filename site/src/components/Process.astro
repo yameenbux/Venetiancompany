@@ -33,7 +33,16 @@ import { process, terms, bringToCall } from '../data/site';
         {bringToCall.map((b) => (
           <div class="border-t border-accent pt-4">
             <span class="block label text-accent mb-3">{b.req}</span>
-            <h3 class="text-h4 uppercase mb-2">{b.title}</h3>
+            <!-- 110%, not the display default of 125%. In a 4-up grid at 1440 the
+                 track is 286px and "MEASUREMENTS" sets 307px expanded, so it ran
+                 into the next column's rule (31px over at 1280). The width axis is
+                 the lever that keeps the size on the scale.
+
+                 It has to be font-variation-settings, not font-stretch: the base
+                 h1-h4 rule pins 'wdth' 125 via font-variation-settings, and that
+                 wins over the high-level font-stretch property, so setting
+                 font-stretch alone did nothing at all. -->
+            <h3 class="text-h4 uppercase mb-2 [font-variation-settings:'wdth'_110] [font-stretch:110%]">{b.title}</h3>
             <p class="font-read text-ink-mute text-caption m-0">{b.body}</p>
           </div>
         ))}
