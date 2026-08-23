@@ -159,13 +159,27 @@
   --spacing-edge:    clamp(7rem, 5.592rem + 6.009vw, 11rem);   /* 112 → 176 */
   --spacing-head:    clamp(2.5rem, 5.5vw, 4.5rem);             /*  40 →  72 */
 
-  /* easeOutCubic — control-point y values are 0.68 and 1, never above 1, so it
-     decelerates into position and cannot overshoot. */
-  --ease-motion: cubic-bezier(0.33, 1, 0.68, 1);
-  --duration-reveal: 480ms;
+  /* ── Motion ──────────────────────────────────────────────────
+     Every curve here is an ease-OUT: both control-point y values are at or
+     below 1, so each one decelerates into position and none can overshoot.
+     Anything with y > 1 — back.out, the spring curves — overshoots and comes
+     back, which is what a bounce is. There are none, and check-motion.py
+     fails the build if one appears.
+
+     Two durations, both inside 200-300ms. Reveal is the slower of the two
+     because it moves a whole block; hover is quicker because it answers a
+     pointer and any lag there reads as the page being slow.
+
+     Two exceptions, neither a reveal nor a hover: the hero cross-fade runs
+     1000ms linear (it is a dissolve between photographs, not a transition
+     between states) and the nav overlay runs 500ms, the reference's own
+     timing for that panel. */
+  --ease-motion: cubic-bezier(0.33, 1, 0.68, 1);   /* easeOutCubic */
+  --duration-reveal: 280ms;
   --duration-hover: 240ms;
-  --ease-slow: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  /* One curve for the whole site. Two more were declared here and used by
+     nothing — a curve that never renders is a curve check-motion.py cannot
+     see, and the next person to reach for one would be picking blind. */
 }
 
 /* Metric-matched fallbacks, so the webfont swap does not reflow line breaks. */
@@ -291,13 +305,21 @@
    move the reference declines: a staggered reveal is the obvious thing to
    reach for and they deliberately didn't, because it keeps the moment quiet
    rather than showy. Everything in a block resolves together. */
-.rise { opacity:0; transition:opacity var(--duration-reveal) var(--ease-motion); }
-.rise.in { opacity:1; }
+/* Opacity and 8px of travel, together, on one ease-out. The travel is small
+   enough that it reads as the block settling rather than sliding in — at 20px
+   and above it starts to announce itself, which is the opposite of subtle.
+   Still no stagger: everything inside a block resolves at once, and the work
+   grid reveals per card because each card answers its own scroll position,
+   which is not the same thing as a queue of delays. */
+.rise { opacity:0; transform:translateY(8px);
+        transition:opacity var(--duration-reveal) var(--ease-motion),
+                   transform var(--duration-reveal) var(--ease-motion); }
+.rise.in { opacity:1; transform:none; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration:.001ms !important; animation-iteration-count:1 !important;
                            transition-duration:.001ms !important; }
-  .rise { opacity:1; }
+  .rise { opacity:1; transform:none; }
   .curtain { display:none; }
   html { scroll-behavior:auto; }
 }

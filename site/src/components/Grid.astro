@@ -40,9 +40,9 @@ const FIRST = 6;
     <!-- items-start, so a taller photograph does not stretch the cards beside
          it. Each figure is exactly as tall as its own image plus its caption. -->
     <div id="grid" class="grid items-start gap-x-[clamp(1rem,2.4vw,2.1rem)] gap-y-[clamp(2.5rem,4vw,3.5rem)]
-                          sm:grid-cols-2 lg:grid-cols-3 rise">
+                          sm:grid-cols-2 lg:grid-cols-3">
       {projects.map((p, i) => (
-        <figure class={`group m-0 ${i >= FIRST ? 'more' : ''}`} hidden={i >= FIRST}>
+        <figure class={`group rise m-0 ${i >= FIRST ? 'more' : ''}`} hidden={i >= FIRST}>
           <!-- The frame takes the image's ratio, so object-cover has nothing to
                cut. It stays object-cover rather than contain because contain
                would letterbox on the rounding, and stays overflow-hidden so the
@@ -50,7 +50,7 @@ const FIRST = 6;
           <div class="overflow-hidden bg-cream-2" style={`aspect-ratio:${p.w}/${p.h}`}>
             <img src={asset(`assets/${p.file}`)} alt={p.title} loading={i < 3 ? 'eager' : 'lazy'}
                  decoding="async" width={p.w} height={p.h}
-                 class="w-full h-full object-cover transition-transform duration-500 ease-motion
+                 class="w-full h-full object-cover transition-transform duration-240 ease-motion
                         group-hover:scale-[1.02]" />
           </div>
           <!-- Hairline rules are the only separator device on this page. No
@@ -58,7 +58,8 @@ const FIRST = 6;
           <hr class="border-0 border-t border-rule mt-4 mb-3" />
           <figcaption>
             <p class="label m-0">{p.cat}</p>
-            <p class="font-display text-h4 text-ink m-0 mt-1">{p.title}</p>
+            <p class="font-display text-h4 text-ink m-0 mt-1 transition-colors duration-240 ease-motion
+                       group-hover:text-clay-ink">{p.title}</p>
           </figcaption>
         </figure>
       ))}
@@ -70,7 +71,8 @@ const FIRST = 6;
     <div class="text-center mt-[clamp(2.5rem,5vw,4rem)]">
       <button id="loadmore" type="button"
               class="label text-clay-ink bg-transparent border-0 cursor-pointer p-2
-                     hover:underline underline-offset-4">Load more</button>
+                     border-b border-transparent hover:border-clay-ink
+                     transition-colors duration-240 ease-motion">Load more</button>
       <p id="count" class="font-read text-caption text-ink-mute m-0 mt-1">{FIRST} of {projects.length}</p>
     </div>
   </div>

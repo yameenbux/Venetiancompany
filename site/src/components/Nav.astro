@@ -16,7 +16,8 @@ const links = [
        close X in the same position when the overlay is open. -->
   <button id="navbtn" type="button" aria-expanded="false" aria-controls="navpanel"
           class="justify-self-start inline-flex items-center justify-center w-11 h-11 -ml-3
-                 cursor-pointer bg-transparent border-0 text-current p-0"
+                 cursor-pointer bg-transparent border-0 text-current p-0
+                 opacity-100 hover:opacity-70 transition-opacity duration-240 ease-motion"
           aria-label="Open menu">
     <span class="nav-ico grid gap-[5px] w-[22px]" aria-hidden="true">
       <i class="block h-px bg-current w-full origin-center transition-transform duration-240 ease-motion"></i>
@@ -30,7 +31,8 @@ const links = [
        leading-none — three off-system values in one element, and the only
        type on the page that answered to nothing. -->
   <a href="#top" class="font-display text-body uppercase tracking-caps leading-[1.3]
-                        no-underline text-current whitespace-nowrap">
+                        no-underline text-current whitespace-nowrap opacity-100 hover:opacity-70
+                        transition-opacity duration-240 ease-motion">
     <span class="hidden sm:inline">The Venetian Company</span>
     <span class="sm:hidden">Venetian</span>
   </a>

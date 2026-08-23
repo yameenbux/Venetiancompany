@@ -66,7 +66,7 @@ const schema = {
   <main><slot /></main>
 
   <footer class="px-gutter pt-edge pb-section border-t border-rule">
-    <div class="max-w-[1240px] mx-auto grid gap-x-10 gap-y-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1.4fr)]">
+    <div class="rise max-w-[1240px] mx-auto grid gap-x-10 gap-y-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1.4fr)]">
       <div>
         <!-- The positioning line, given the most typographic weight down here. -->
         <p class="font-display text-h3 text-ink m-0 max-w-[16ch]">A team of finishing specialists.</p>
@@ -84,7 +84,8 @@ const schema = {
           <a class="font-read text-body text-ink no-underline hover:text-clay-ink
                     transition-colors duration-240 ease-motion block" href={`tel:${phone.e164}`}>{phone.display}</a>
           <p class="font-read text-caption text-ink-mute m-0 mt-1">{contactName}</p>
-          <a class="label text-clay-ink no-underline mt-4 inline-block hover:underline underline-offset-4"
+          <a class="label text-clay-ink no-underline mt-4 inline-block border-b border-transparent
+             hover:border-clay-ink transition-colors duration-240 ease-motion"
              href={whatsappCall} target="_blank" rel="noopener" data-cta="book-call">Book a call</a>
         </div>
         <div>
