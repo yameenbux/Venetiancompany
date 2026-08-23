@@ -262,6 +262,24 @@
   @keyframes curtain { 0%,45% { opacity:1; } 100% { opacity:0; visibility:hidden; } }
 
 
+  /* ── Tap targets ─────────────────────────────────────────────
+     Inline links set at body or label size are 16-26px tall, and at 375 that
+     is what you are actually asked to hit with a thumb: seven of them were
+     under the 44px minimum, including the header's Book a call — the one
+     thing the whole page is for.
+
+     Padding would fix the target and move the layout. This extends the hit
+     area with a pseudo-element instead: centred on the link, full width, 44px
+     tall, painting nothing. The link looks identical and the target is real.
+
+     It needs the parent to allow the overflow, so it is only used on links
+     that are not inside a clipped box, and the elements it is applied to keep
+     enough vertical separation that two areas cannot overlap — checked by
+     scripts/check-tap.py rather than assumed. */
+  .tap { position: relative; }
+  .tap::after { content:''; position:absolute; left:0; right:0; top:50%;
+                transform:translateY(-50%); height:44px; }
+
   /* ── Header states ───────────────────────────────────────────
      Cream over the hero photograph, ink once the page has scrolled past it,
      and always ink while the overlay is open (the panel is clay, and cream on
