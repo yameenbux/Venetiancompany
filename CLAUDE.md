@@ -63,8 +63,15 @@ Everything below is taken from the client's own public Instagram
   The finish is the product, so the page should feel like the surface.
 - **Service area:** nationwide (confirmed).
 - **Studio credit:** pages carry "Designed by YSBDesigns" in the footer.
-- **Existing brand assets:** circular TVC monogram (stacked T/V/C, thin black rule on
-  white). All-caps tracked typography across their story graphics. No website.
+- **Existing brand assets:** the TVC monogram — a thin black ring with the T, V and
+  C **interlocked down a shared axis**, the T's stem running into the V and the V's
+  point into the C. They are not three stacked letters with gaps; the first pass got
+  that wrong and set them as separate `<text>` baselines. Adam supplied the artwork,
+  and `site/src/components/Monogram.astro` is a **trace of it** (upscaled 4x,
+  thresholded, potrace; 98.7% IoU against the original, 9007 ink pixels to 9008).
+  The outlines are drawn, so there is no font dependency and the mark inherits
+  `currentColor`. Do not tidy the curves — the small asymmetries are in his mark.
+  All-caps tracked typography across their story graphics. No website.
 
 ### Written from general knowledge, not from them — needs Adam's sign-off
 

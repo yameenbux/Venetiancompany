@@ -1,5 +1,6 @@
 ---
 import BookCall from './BookCall.astro';
+import Monogram from './Monogram.astro';
 import { phone } from '../data/site';
 const links = [
   ['#work', 'Work'], ['#materials', 'Materials'],
@@ -9,13 +10,7 @@ const links = [
 <header class="fixed inset-x-0 top-0 z-60 flex items-center justify-between gap-4 px-gutter py-4
                bg-gradient-to-b from-paper/90 to-transparent backdrop-blur-[6px]">
   <a href="#top" class="block w-[46px] h-[46px] shrink-0 text-ink" aria-label="The Venetian Company, home">
-    <svg viewBox="0 0 48 48" class="block w-full h-full overflow-visible" aria-hidden="true" focusable="false">
-      <circle cx="24" cy="24" r="22.5" fill="rgba(252,253,252,.82)" stroke="currentColor" stroke-width="1"/>
-      <g class="font-display" font-weight="600" font-size="11" font-stretch="125%"
-         fill="currentColor" text-anchor="middle" letter-spacing=".2">
-        <text x="24" y="17.5">T</text><text x="24.8" y="28">V</text><text x="24" y="38.5">C</text>
-      </g>
-    </svg>
+    <Monogram class="block w-full h-full" disc />
   </a>
 
   <nav class="hidden lg:flex gap-9" aria-label="Sections">
