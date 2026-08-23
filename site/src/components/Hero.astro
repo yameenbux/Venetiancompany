@@ -1,5 +1,6 @@
 ---
 import BookCall from './BookCall.astro';
+import { asset } from '../lib/asset';
 import { serviceArea } from '../data/site';
 ---
 <!-- The plate: the photograph runs full bleed and the wordmark sits inside it.
@@ -10,7 +11,7 @@ import { serviceArea } from '../data/site';
      Scrim stops are solved for contrast, not eyeballed: see .plate-scrim. -->
 <section class="relative flex items-start md:items-center min-h-[100svh] overflow-hidden
                 px-gutter pt-36 md:pt-28 pb-16">
-  <img class="plate-img" src="/assets/hero-courtyard.jpg" width="712" height="612"
+  <img class="plate-img" src={asset("assets/hero-courtyard.jpg")} width="712" height="612"
        fetchpriority="high" decoding="async" alt="" aria-hidden="true" />
   <div class="plate-scrim" aria-hidden="true"></div>
 

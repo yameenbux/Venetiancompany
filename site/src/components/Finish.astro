@@ -1,5 +1,6 @@
 ---
 import { about, finishes } from '../data/site';
+import { asset } from '../lib/asset';
 ---
 <section id="finish" class="relative px-gutter py-section text-paper
   bg-[radial-gradient(90%_70%_at_20%_0%,rgba(18,80,79,.20)_0%,rgba(18,80,79,0)_55%),radial-gradient(80%_60%_at_90%_100%,rgba(168,172,170,.16)_0%,rgba(168,172,170,0)_60%),linear-gradient(172deg,#141A1C_0%,#101416_55%,#0A0D0E_100%)]">
@@ -32,7 +33,7 @@ import { about, finishes } from '../data/site';
       <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-[clamp(.6rem,1.6vw,1.1rem)]">
         {finishes.map((f) => (
           <figure class="group relative aspect-3/4 rounded-sm overflow-hidden bg-[#1B2022]">
-            <img src={`/assets/${f.file}`} width={f.w ?? 600} height={f.h ?? 800}
+            <img src={asset(`assets/${f.file}`)} width={f.w ?? 600} height={f.h ?? 800}
                  loading="lazy" decoding="async" alt={f.alt}
                  class="w-full h-full object-cover transition-transform duration-240 ease-motion
                         group-hover:scale-[1.03]" />

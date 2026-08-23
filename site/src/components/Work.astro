@@ -1,5 +1,6 @@
 ---
 import SectionHead from './SectionHead.astro';
+import { asset } from '../lib/asset';
 import { work } from '../data/site';
 const feature = work[0];
 const rest = work.slice(1);
@@ -16,7 +17,7 @@ const rest = work.slice(1);
         <!-- lazy, not eager: the hero is a full viewport, so this sits below the fold
              and eager loading only made 286KB compete with the LCP image for
              bandwidth. First load went 454KB -> 168KB. -->
-        <img src={`/assets/${feature.file}`} width={1050} height={1400} loading="lazy" decoding="async"
+        <img src={asset(`assets/${feature.file}`)} width={1050} height={1400} loading="lazy" decoding="async"
              alt={feature.alt}
              class="w-full h-full object-cover transition-transform duration-240 ease-motion
                     group-hover:scale-[1.02]" />
@@ -33,14 +34,14 @@ const rest = work.slice(1);
           <div class="relative overflow-hidden rounded-sm bg-paper-3 aspect-3/4
                       shadow-[0_20px_40px_-28px_rgba(20,24,26,.45)]">
             {w.file.endsWith('.mp4') ? (
-              <video poster={`/assets/${w.poster}`} width="720" height="1280" muted loop playsinline
+              <video poster={asset(`assets/${w.poster}`)} width="720" height="1280" muted loop playsinline
                      preload="none" aria-label={w.alt}
                      class="w-full h-full object-cover transition-transform duration-240
                             ease-motion group-hover:scale-[1.02]">
-                <source src={`/assets/${w.file}`} type="video/mp4" />
+                <source src={asset(`assets/${w.file}`)} type="video/mp4" />
               </video>
             ) : (
-              <img src={`/assets/${w.file}`} width={w.w ?? 1050} height={1400} loading="lazy"
+              <img src={asset(`assets/${w.file}`)} width={w.w ?? 1050} height={1400} loading="lazy"
                    decoding="async" alt={w.alt}
                    class="w-full h-full object-cover transition-transform duration-240
                           ease-motion group-hover:scale-[1.02]" />
