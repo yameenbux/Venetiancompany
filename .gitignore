@@ -9,3 +9,6 @@ html_outputs/*
 
 # built from index.html by build-artifact.py
 samples/venetian-company/artifact.html
+
+# built by build-site.py
+dist/

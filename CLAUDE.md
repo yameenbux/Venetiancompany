@@ -80,7 +80,10 @@ generate.py          CLI entry point: python generate.py "<brief>"
 html_outputs/        timestamped generated pages (gitignored except .gitkeep)
 samples/             pages we've kept and are willing to show
   venetian-company/index.html   the current pitch page
-  venetian-company/build-artifact.py  strips the wrapper for Artifact publishing
+  venetian-company/assets/       the client's own photography and film (see CREDITS.md)
+  venetian-company/build-artifact.py  strips the wrapper, inlines media, for Artifacts
+  venetian-company/build-site.py      builds dist/ — a clean standalone site for hosting
+dist/                built site, gitignored
 ```
 
 ## How to generate a page
@@ -114,10 +117,15 @@ is available.
   prospect's laptop.
 - **Never overwrite a previous output.** Outputs are timestamped so we can compare
   directions side by side.
-- **Publish samples as Artifacts, not GitHub Pages.** These pages carry a real
-  business's name and a real person's mobile number. An Artifact is private until
-  we share the link; Pages is public and findable. Run `build-artifact.py` and
-  publish the result — `index.html` stays the source of truth.
+- **Two ways to publish, and they leak different things.** `build-artifact.py` makes
+  a private Artifact — no repo, no history, but a claude.ai URL. `build-site.py` makes
+  `dist/` for GitHub Pages — a neutral URL, but Pages exposes the repo behind it, and
+  **this repo is public and contains CLAUDE.md plus Claude co-author trailers on every
+  commit.** Serving Pages from here hands anyone who reads the URL a route straight to
+  that. For a Pages URL with nothing to trace, push `dist/` to a separate repo with its
+  own clean history. `index.html` stays the source of truth for both.
+- **Client media is the client's.** Anything under `assets/` came off their Instagram
+  and is theirs. Credit it, keep `CREDITS.md` current, and pull it if the pitch dies.
 - **Don't invent facts about the client.** No fake testimonials, fake awards, fake
   addresses, fake founding dates, fake client logos. Use obviously-placeholder copy
   (e.g. "Est. —", lorem-adjacent but on-brand) or leave a `<!-- TODO -->`. This is going
