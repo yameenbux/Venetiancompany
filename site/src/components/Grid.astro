@@ -6,18 +6,22 @@ import { asset } from '../lib/asset';
    with nine projects a filter row would be decoration wearing the costume of
    structure. It earns its place when the archive does.
 
-   Every card carries its photograph's OWN dimensions, and the frame is sized
-   from them. The reference crops to a uniform 4:3 landscape because it
-   commissions its photography and can art-direct the crop. Adam's are phone
-   photographs, all portrait, and forcing them into a landscape box threw away
-   a quarter of each one — the top of a stairwell, the bottom of a bath. Rows
-   no longer align on their lower edge and that is the correct trade: the work
-   is the thing being sold, and the whole frame of it now shows.
+   One frame for all nine: 3:4, the ratio Adam's phone actually shoots.
 
-   The order is by shape, not by preference. Seven of the nine are 3:4 and two
-   are 9:16 phone video stills; scattered, those two left one odd card in three
-   separate rows. Sat together in row two they read as a pair. Row one is three
-   matched 3:4 frames, which is the row that has to look composed.
+   Two earlier passes both got this wrong in opposite directions. A uniform 4:3
+   landscape box threw away 44% of every portrait photograph. Giving each card
+   its own ratio fixed the cropping and broke the grid — seven cards at 3:4
+   beside two at 9:16 left ragged rows that read as a mistake rather than a
+   choice.
+
+   The fix was upstream, in the assets. Seven images are natively 3:4 and are
+   untouched. The two 9:16 cards were video stills, so they were re-cut from the
+   footage at 3:4 — a different frame chosen for the shape rather than a crop
+   forced onto a fixed one. The fireplace lost 43px from each side, 7.6%.
+
+   So the rows align AND nothing is cropped at render. That only works because
+   the library is one orientation; the day Adam sends landscape shots this has
+   to be decided again.
 
    Categories are the client's own service names, verbatim. Titles describe
    what is in the photograph; none of these are project or client names,
@@ -26,10 +30,10 @@ const projects = [
   { file: 'stair-marbled.jpg',  w: 1050, h: 1400, cat: 'Feature walls, Staircases', title: 'Marbled wall behind a floating oak stair' },
   { file: 'stairwell.jpg',      w: 1050, h: 1400, cat: 'Staircases',                title: 'Double-height stairwell, no joins' },
   { file: 'wet-room.jpg',       w: 1050, h: 1400, cat: 'Wet rooms, Microcement',    title: 'Microcement wet room, seamless' },
-  { file: 'grid-bathroom.jpg',  w:  720, h: 1280, cat: 'Bathrooms',                 title: 'Bathroom pigmented to colour' },
-  { file: 'grid-staircase.jpg', w:  720, h: 1280, cat: 'Staircases, Feature walls', title: 'Stair run in polished plaster' },
+  { file: 'grid-bathroom.jpg',  w:  720, h:  960, cat: 'Bathrooms',                 title: 'Bathroom pigmented to colour' },
+  { file: 'grid-staircase.jpg', w:  720, h:  960, cat: 'Staircases, Feature walls', title: 'Stair run in polished plaster' },
   { file: 'bathroom-arch.jpg',  w: 1050, h: 1400, cat: 'Bathrooms',                 title: 'Plaster against marble, arched window' },
-  { file: 'fireplace.jpg',      w: 1136, h: 1400, cat: 'Feature walls',             title: 'Chimney breast worked by hand' },
+  { file: 'fireplace.jpg',      w: 1050, h: 1400, cat: 'Feature walls',             title: 'Chimney breast worked by hand' },
   { file: 'texture-switch.jpg', w: 1050, h: 1400, cat: 'Full house applications',   title: 'Coarse grain against walnut' },
   { file: 'plaster-detail.jpg', w: 1050, h: 1400, cat: 'Feature walls',             title: 'The trowel, up close' },
 ];
@@ -47,7 +51,7 @@ const FIRST = 6;
                cut. It stays object-cover rather than contain because contain
                would letterbox on the rounding, and stays overflow-hidden so the
                hover scale is contained. -->
-          <div class="overflow-hidden bg-cream-2" style={`aspect-ratio:${p.w}/${p.h}`}>
+          <div class="overflow-hidden bg-cream-2 aspect-3/4">
             <img src={asset(`assets/${p.file}`)} alt={p.title} loading={i < 3 ? 'eager' : 'lazy'}
                  decoding="async" width={p.w} height={p.h}
                  class="w-full h-full object-cover transition-transform duration-240 ease-motion

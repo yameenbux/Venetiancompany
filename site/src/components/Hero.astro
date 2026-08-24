@@ -2,11 +2,12 @@
 import { asset } from '../lib/asset';
 import { serviceArea } from '../data/site';
 
-/* Three of Adam's own rooms. They cross-fade; the title layer above them does
-   not move or re-render between slides, so only the photography changes.
+/* Three of Adam's own rooms, cross-fading. The title layer above them does not
+   move or re-render between slides, so only the photography changes.
 
-   Ordered so the first is the darkest — it is the one the title has to sit on
-   while the others are still decoding, and it is the LCP image. */
+   All three are 3:4, which is what makes the split below work: the media panel
+   is sized from the viewport height at exactly that ratio, so the whole frame
+   fills it with nothing cropped and no letterbox bars. */
 const slides = [
   { base: 'hero-stair', w: [700, 1000, 1400], alt: 'Marbled plaster wall in deep teal behind a floating oak staircase' },
   { base: 'hero-well',  w: [700, 1050],       alt: 'Double-height stairwell in polished plaster, lit from a skylight' },
@@ -15,36 +16,49 @@ const slides = [
 const set = (b: string, ws: number[], ext: string) =>
   ws.map((w) => `${asset(`assets/${b}-${w}.${ext}`)} ${w}w`).join(', ');
 ---
-<section class="relative min-h-[100svh] overflow-hidden" id="top">
-  <div class="absolute inset-0" id="slides">
-    {slides.map((s, i) => (
-      <picture>
-        <source type="image/webp" sizes="100vw" srcset={set(s.base, s.w, 'webp')} />
-        <img class="slide" data-on={i === 0 ? 'true' : 'false'} sizes="100vw"
-             srcset={set(s.base, s.w, 'jpg')} src={asset(`assets/${s.base}-${s.w[1]}.jpg`)}
-             width="1400" height="1867" alt={i === 0 ? s.alt : ''} aria-hidden={i !== 0}
-             fetchpriority={i === 0 ? 'high' : 'low'} loading={i === 0 ? 'eager' : 'lazy'}
-             decoding={i === 0 ? 'sync' : 'async'} />
-      </picture>
-    ))}
-    <div class="hero-foot" aria-hidden="true"></div>
-  </div>
+<!-- The photograph is no longer a full-bleed background with type over it.
+     Full bleed means object-cover, and object-cover on a portrait photograph in
+     a landscape viewport shows about a third of it — at 1440x900 the stairwell
+     lost its skylight and the bathroom lost the bath.
 
-  <!-- Bottom-left, generous left margin, and the scroll cue optically centred
-       to its right — the reference's exact anatomy. The title is a scale step,
-       not a lockup measured against the viewport: the previous pass set the
-       name at 134px and it filled the frame, which is the opposite of the
-       restraint this whole direction is built on. -->
-  <div class="relative z-1 min-h-[100svh] flex flex-col justify-end px-gutter pb-[clamp(2.5rem,7vh,5rem)]">
-    <p class="label text-cream mb-4">Venetian plaster &middot; Microcement &middot; {serviceArea}</p>
-    <div class="flex items-end gap-8 flex-wrap">
-      <h1 class="text-h2 text-cream max-w-[15ch]">The Venetian Company</h1>
-      <a href="#work" class="hidden sm:flex items-center gap-3 no-underline text-cream/80 pb-3
-                             hover:text-cream transition-colors duration-240 ease-motion" aria-label="Scroll to the work">
+     So the hero is a split: the photograph gets a panel of its own at its own
+     ratio, and the type gets the cream ground beside it. Every pixel of every
+     slide is visible at every viewport, and the type is ink on cream at 15.9:1
+     rather than white over whatever the photograph happens to be doing.
+
+     It stacks below lg, where a side-by-side leaves neither half enough room. -->
+<section id="top" class="relative flex flex-col lg:flex-row lg:min-h-[100svh]">
+  <!-- Type. Bottom-left on desktop, under the photograph on a phone. -->
+  <div class="order-2 lg:order-1 flex-1 flex flex-col justify-end lg:justify-center
+              px-gutter pt-section pb-section lg:py-band">
+    <p class="label mb-4">Venetian plaster &middot; Microcement &middot; {serviceArea}</p>
+    <h1 class="text-h2 text-ink max-w-[15ch]">The Venetian Company</h1>
+    <!-- Its own line at every width. Beside the title it fitted at 1440 and
+         wrapped at 1280, so the cue moved depending on the window — which is
+         the one thing a fixed landmark should not do. -->
+    <div>
+      <a href="#work" class="hidden sm:inline-flex items-center gap-3 no-underline text-ink-mute mt-8
+                             hover:text-ink transition-colors duration-240 ease-motion tap"
+         aria-label="Scroll to the work">
         <svg width="13" height="42" viewBox="0 0 13 42" fill="none" aria-hidden="true">
           <path d="M6.5 0v40M1 34.5 6.5 41 12 34.5" stroke="currentColor" stroke-width="1"/>
         </svg>
       </a>
     </div>
+  </div>
+
+  <!-- Photograph. The panel takes the image's ratio, so object-cover has
+       nothing to cut — see .hero-media. -->
+  <div id="slides" class="hero-media order-1 lg:order-2 relative bg-cream-2">
+    {slides.map((s, i) => (
+      <picture>
+        <source type="image/webp" sizes="(min-width:1024px) 75vh, 100vw" srcset={set(s.base, s.w, 'webp')} />
+        <img class="slide" data-on={i === 0 ? 'true' : 'false'} sizes="(min-width:1024px) 75vh, 100vw"
+             srcset={set(s.base, s.w, 'jpg')} src={asset(`assets/${s.base}-${s.w[1]}.jpg`)}
+             width="1050" height="1400" alt={i === 0 ? s.alt : ''} aria-hidden={i !== 0}
+             fetchpriority={i === 0 ? 'high' : 'low'} loading={i === 0 ? 'eager' : 'lazy'}
+             decoding={i === 0 ? 'sync' : 'async'} />
+      </picture>
+    ))}
   </div>
 </section>
