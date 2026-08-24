@@ -30,8 +30,9 @@ JS = """()=>{
     const a=getComputedStyle(e,'::after');
     let top=r.top, bot=r.bottom, left=r.left, right=r.right;
     if(a.content && a.content!=='none' && a.position==='absolute'){
-      const h=parseFloat(a.height);
-      if(h && !isNaN(h)){ const mid=(r.top+r.bottom)/2; top=Math.min(top,mid-h/2); bot=Math.max(bot,mid+h/2); }
+      const h=parseFloat(a.height), w=parseFloat(a.width);
+      if(h && !isNaN(h)){ const my=(r.top+r.bottom)/2; top=Math.min(top,my-h/2); bot=Math.max(bot,my+h/2); }
+      if(w && !isNaN(w)){ const mx=(r.left+r.right)/2; left=Math.min(left,mx-w/2); right=Math.max(right,mx+w/2); }
     }
     out.push({label:(e.textContent||e.getAttribute('aria-label')||e.tagName).trim().replace(/\\s+/g,' ').slice(0,30),
       tag:e.tagName.toLowerCase(),

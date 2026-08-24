@@ -44,7 +44,7 @@ PROBE = """()=>{
   out.h4      = read(q('#process h3'));
   out.h3      = read(q('#material h3'));
   out.h2      = read(q('#material h2'));
-  out.wordmark= read(q("header a[href='#top']"));
+  out.wordmark= read(q("header a[href='#top'] span"));
   const mark=q('.endmark span');
   out.endmark = read(mark);
   if(mark){ const r=document.createRange(); r.selectNodeContents(mark);
@@ -127,7 +127,9 @@ async def main():
         if not ok:
             fails.append(f"{name} tracking {v['em']:.4f}, curve wants {want:.4f}")
 
-    # The wordmark is the body step with the one tracked-caps value.
+    # The wordmark is the body step with the tracked-caps value at 1440. Below
+    # sm it drops to the caption step and the tight tracking token; both are on
+    # the ladder / declared, so both settings are allowed in the sweep below.
     wm = wide["wordmark"]
     if abs(wm["px"] - wide["body"]["px"]) > 0.5:
         fails.append(f"wordmark is {wm['px']}px, body step is {wide['body']['px']}px")
@@ -142,8 +144,8 @@ async def main():
             fails.append(f"{label}px: endmark fills {f*100:.1f}%, want 98-100%")
 
     # Nothing sets a one-off leading or tracking.
-    allowed = {(wide[n]["lh"], wide[n]["em"]) for n in LADDER + ["label", "endmark"]}
-    allowed |= {(narrow[n]["lh"], narrow[n]["em"]) for n in LADDER + ["label", "endmark"]}
+    allowed = {(wide[n]["lh"], wide[n]["em"]) for n in LADDER + ["label", "endmark", "wordmark"]}
+    allowed |= {(narrow[n]["lh"], narrow[n]["em"]) for n in LADDER + ["label", "endmark", "wordmark"]}
     allowed = {(round(a, 3), round(b, 4)) for a, b in allowed}
     print("\n=== every rendered (px / leading / tracking) ===")
     for label, d in (("1440", wide), ("375", narrow)):

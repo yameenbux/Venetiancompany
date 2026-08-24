@@ -103,6 +103,11 @@
   /* The one tracked-caps value on the site: the label and the header wordmark
      share it, so tracked lettering is a single decision rather than two. */
   --tracking-caps: 0.18em;
+  /* The second, and there is a reason for it rather than a preference: the
+     wordmark is twenty characters, and .18em over twenty does not fit a 375px
+     header alongside a menu button and a call button. It applies to the
+     wordmark below sm and to nothing else. */
+  --tracking-caps-tight: 0.08em;
 
   --text-label: 0.72rem;
   --text-label--line-height: 1.3;
@@ -277,8 +282,12 @@
      enough vertical separation that two areas cannot overlap — checked by
      scripts/check-tap.py rather than assumed. */
   .tap { position: relative; }
-  .tap::after { content:''; position:absolute; left:0; right:0; top:50%;
-                transform:translateY(-50%); height:44px; }
+  .tap::after { content:''; position:absolute; left:50%; top:50%;
+                transform:translate(-50%,-50%);
+                /* max() rather than a fixed width: a text link keeps its own
+                   width and only a narrow one — the icon-only call button, at
+                   22px — is widened to the minimum. */
+                width:max(100%, 44px); height:44px; }
 
   /* ── Header states ───────────────────────────────────────────
      Cream over the hero photograph, ink once the page has scrolled past it,
