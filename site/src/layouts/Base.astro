@@ -130,6 +130,18 @@ const schema = {
       else second.addEventListener('load', start, { once: true });
     })();
 
+    // ── Header: cream over the hero, ink once past it ──────────────
+    (function () {
+      const hdr = document.getElementById('hdr');
+      const hero = document.querySelector('main section');
+      if (!hdr || !hero) return;
+      const io = new IntersectionObserver(
+        ([e]) => hdr.classList.toggle('solid', !e.isIntersecting),
+        { rootMargin: '-72px 0px 0px 0px', threshold: 0 },
+      );
+      io.observe(hero);
+    })();
+
     // ── Nav overlay ───────────────────────────────────────────────
     (function () {
       const btn = document.getElementById('navbtn');

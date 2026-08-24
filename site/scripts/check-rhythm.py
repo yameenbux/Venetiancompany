@@ -23,11 +23,7 @@ TOL = 3  # px
 # "edge" gaps are 1x (only the quiet side can); "band" boundaries are the
 # band's own padding, which the eye reads as the start of the colour.
 BOUNDARIES = [
-    # The hero's type panel centres itself in a full-height column above lg, so
-    # the air under the title is its own composition rather than a padding pair
-    # the rhythm can govern. Its paddings are still scale tokens; the resulting
-    # gap is reported below and simply not asserted.
-    ("Hero → Intro",        "free"),
+    ("Hero → Intro",        "edge"),
     ("Intro → Work grid",   "section2"),
     ("Work grid → Material","section2"),
     ("Material → Sample",   "section2"),
@@ -80,7 +76,7 @@ async def main():
             rows, tok = d["rows"], d["tokens"]
             want = {"section": tok["section"], "section2": tok["section"] * 2,
                     "band": tok["band"], "edge": tok["edge"],
-                    "section+band": tok["section"] + tok["band"], "free": None}
+                    "section+band": tok["section"] + tok["band"]}
             print(f"\n=== {W}px — section {tok['section']}  band {tok['band']}  edge {tok['edge']} ===")
             print(f"{'boundary':<22} {'kind':<9} {'gap':>6} {'want':>6}")
             for i, (name, kind) in enumerate(BOUNDARIES):
@@ -88,9 +84,6 @@ async def main():
                     break
                 gap = rows[i + 1]["top"] - rows[i]["bot"]
                 w = want[kind]
-                if w is None:
-                    print(f"{name:<22} {kind:<9} {gap:>6}      -  (composition, not asserted)")
-                    continue
                 ok = abs(gap - w) <= TOL
                 print(f"{name:<22} {kind:<9} {gap:>6} {w:>6}  {'' if ok else '<-- OFF'}")
                 if not ok:

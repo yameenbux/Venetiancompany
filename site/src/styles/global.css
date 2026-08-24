@@ -226,30 +226,25 @@
   }
 
   /* ── Hero ────────────────────────────────────────────────────
-     A slideshow, not a single image: the photographs cross-fade into one
-     another, roughly 5s hold and a 1s dissolve. A straight opacity dissolve —
-     no Ken Burns, no slide, no pan. The title layer beside them does not
-     re-render between slides.
+     A slideshow, not a single image: full-bleed photographs cross-fade into
+     one another, roughly 5s hold and a 1s dissolve. A straight opacity
+     dissolve — no Ken Burns, no slide, no pan.
 
-     The media panel is sized so the photograph fits it exactly. All three
-     slides are 3:4, so on a wide screen the panel takes the viewport height
-     and derives its width from that ratio — 0.75 x 100svh — and the image
-     fills it with nothing cropped and no bars. min() caps it at half the
-     viewport so the type never gets squeezed on a short, wide window; when
-     that cap bites, object-contain keeps the whole frame visible and the
-     panel's own ground shows through instead of the picture being cut.
+     The title layer does not move or re-render between slides. It sits above
+     the image stack and only the photography changes.
 
-     Below lg it is a full-width band at the same 3:4, stacked above the type.
-
-     There is no scrim, because there is no type over the photograph any more.
-     That is the whole point of the split. */
-  .hero-media { width:100%; aspect-ratio:3/4; }
-  @media (min-width:1024px) {
-    .hero-media { width:min(calc(100svh * 0.75), 50vw); height:100svh; aspect-ratio:auto; }
-  }
-  .slide { position:absolute; inset:0; width:100%; height:100%; object-fit:contain;
+     No scrim across the whole frame. The reference has none: its images' own
+     dark foregrounds do the contrast work where the title sits. We cannot
+     photo-direct Adam's library that tightly, so there is a gradient — but
+     only in the bottom third, where the title is, rather than a wash over the
+     picture. Solved against measured pixels, see scripts/check-contrast.py. */
+  .slide { position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
            opacity:0; transition:opacity 1000ms linear; }
   .slide[data-on="true"] { opacity:1; }
+  .hero-foot { position:absolute; inset:auto 0 0 0; height:70%; pointer-events:none;
+    background:linear-gradient(180deg,
+      rgba(20,16,13,0) 0%, rgba(20,16,13,.22) 30%,
+      rgba(20,16,13,.55) 56%, rgba(20,16,13,.78) 78%, rgba(20,16,13,.84) 100%); }
 
   /* ── The curtain ─────────────────────────────────────────────
      The most portable idea on the reference page, and the reason nothing ever
@@ -294,9 +289,9 @@
      over the grid's own photographs smeared them, and the header needs to be
      opaque anyway for the link contrast to be a fixed number rather than
      whatever is scrolling under it. */
-  #hdr { color: var(--color-ink); background: var(--color-cream);
-         border-bottom: 1px solid var(--color-rule); }
-  #hdr.over-panel { color: var(--color-ink); }
+  #hdr { color: var(--color-cream); }
+  #hdr.solid { background: var(--color-cream); border-bottom: 1px solid var(--color-rule); }
+  #hdr.solid, #hdr.over-panel { color: var(--color-ink); }
 
   /* The burger becomes the close X in the same position. Middle rule fades,
      outer two rotate to meet — 5px gap plus 1px rules means each travels 6px. */
