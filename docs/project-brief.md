@@ -15,6 +15,22 @@ Nothing here is a live client deliverable yet. Treat every generated page as a p
 asset: it has to look like it was designed on purpose, by a person, for this specific
 business.
 
+## Live site
+
+`https://thevenetiancompany.co.uk` — bought at one.com, DNS pointing at GitHub
+Pages, served from the `gh-pages` branch of this repo.
+
+Publish with `./site/scripts/deploy.sh thevenetiancompany.co.uk`. The domain
+argument is not optional decoration: it switches the base path to `/`, sets the
+canonical and og:image origins, and writes the CNAME file GitHub needs. Running
+it bare reverts the site to the old project-subpath build.
+
+The apex currently has three of GitHub's four A records — 185.199.111.153 is
+missing. Not breaking anything; add it for failover.
+
+The domain must end up in Adam's name. He was told in the pitch that he owns it
+outright.
+
 ## Client brief
 
 Everything below is taken from the client's own public Instagram
