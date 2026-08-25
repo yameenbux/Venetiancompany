@@ -54,60 +54,137 @@
   --font-ui:      'Archivo', 'Archivo-fallback', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-read:    'Archivo', 'Archivo-fallback', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
-  /* Strict modular scale, ratio 1.25 from 18px at the 1440 anchor, compressed
-     to 1.14 from 16px at 360. Each clamp is the straight line between the two.
-     Steps 4, 5, 7 and 8 are unused: the hole is what makes the display read as
-     large rather than merely big.
+  /* ── Scale ───────────────────────────────────────────────────
+     One geometric series, anchored twice: ratio 1.25 from an 18px body at
+     1440, compressed to 1.1417 from 16px at 360 so the display steps still
+     fit a phone. Every clamp is the straight line between those two anchors,
+     so the ladder is a true series at BOTH ends rather than only at the wide
+     one. Verified by scripts/check-type.py, which divides each rendered step
+     by the one below it and fails if any joint drifts past 0.5%.
 
-     label and caption are FIXED, not fluid. Interpolating them produced a clamp
-     whose min exceeded its max — small text wants to be relatively larger on a
-     phone — and CSS resolves that to the min, silently discarding the max.
+     Steps 4, 5, 7 and 8 are deliberately unused. That hole is what makes the
+     display read as large rather than merely big.
+
+       step   name      360px    1440px
+        -1    caption   14.03    14.40
+         0    body      16.00    18.00
+         1    lede      18.27    22.50
+         2    h4        20.85    28.13
+         3    h3        23.81    35.16
+         6    h2        35.51    68.66
+
+     Two things sit OFF this ladder, both by declaration rather than accident:
+
+     `label` is fixed at 11.5px. It is UI chrome — eyebrows, counters, button
+     text — not a step in a reading ramp, and it is the reason the old scale
+     broke: continuing the series below caption wants 12.29px on a phone and
+     11.52px on a desktop, a clamp whose min exceeds its max, which CSS
+     resolves to the min and silently discards the max. Small text wants to be
+     relatively larger on a phone; the ramp cannot express that, so the label
+     steps out of it.
+
+     `.endmark` is measured against the viewport, not the scale. It is a mark,
+     not a heading.
+
+     LEADING is set by measure and role, not by size alone — a 46ch column
+     needs more than a 30ch one at the same size, which is why body sits looser
+     than caption despite being larger. Display steps tighten monotonically as
+     they grow.
+
+     TRACKING is one curve: ls = -0.014193 · ln(px / 18), anchored at body = 0
+     and h2 = -0.019em, evaluated at the 1440 sizes. It decelerates, which is
+     what the eye wants — the optical need for negative tracking flattens as
+     type grows, so a linear-per-step ladder over-tightens the display end.
+     Tracked caps (label, wordmark) are the one exception and share a single
+     value, so the site has exactly one tracked-caps setting.
 
      Size, leading and tracking travel together on each token, so a utility
      cannot pick up one without the other two. */
-  --text-label: 0.72rem;
-  --text-label--line-height: 1.45;
-  --text-label--letter-spacing: 0.18em;
+  /* The one tracked-caps value on the site: the label and the header wordmark
+     share it, so tracked lettering is a single decision rather than two. */
+  --tracking-caps: 0.18em;
+  /* The second, and there is a reason for it rather than a preference: the
+     wordmark is twenty characters, and .18em over twenty does not fit a 375px
+     header alongside a menu button and a call button. It applies to the
+     wordmark below sm and to nothing else. */
+  --tracking-caps-tight: 0.08em;
 
-  --text-caption: 0.9rem;
+  --text-label: 0.72rem;
+  --text-label--line-height: 1.3;
+  --text-label--letter-spacing: var(--tracking-caps);
+
+  --text-caption: clamp(0.877rem, 0.869rem + 0.035vw, 0.9rem);
   --text-caption--line-height: 1.55;
-  --text-caption--letter-spacing: 0.005em;
+  --text-caption--letter-spacing: 0.003em;
 
   --text-body: clamp(1rem, 0.958rem + 0.185vw, 1.125rem);
-  --text-body--line-height: 1.7;
+  --text-body--line-height: 1.65;
   --text-body--letter-spacing: 0em;
 
   --text-lede: clamp(1.14rem, 1.051rem + 0.394vw, 1.406rem);
-  --text-lede--line-height: 1.45;
-  --text-lede--letter-spacing: -0.005em;
+  --text-lede--line-height: 1.4;
+  --text-lede--letter-spacing: -0.003em;
 
   --text-h4: clamp(1.3rem, 1.147rem + 0.679vw, 1.758rem);
   --text-h4--line-height: 1.25;
-  --text-h4--letter-spacing: -0.008em;
+  --text-h4--letter-spacing: -0.006em;
 
   --text-h3: clamp(1.482rem, 1.243rem + 1.06vw, 2.197rem);
-  --text-h3--line-height: 1.18;
+  --text-h3--line-height: 1.16;
   --text-h3--letter-spacing: -0.010em;
 
   --text-h2: clamp(2.195rem, 1.496rem + 3.106vw, 4.292rem);
   --text-h2--line-height: 1.06;
-  --text-h2--letter-spacing: -0.014em;
+  --text-h2--letter-spacing: -0.019em;
 
-  --text-h1: clamp(3.252rem, 1.542rem + 7.6vw, 8.382rem);
-  --text-h1--line-height: 0.94;
-  --text-h1--letter-spacing: -0.018em;
+  /* ── Vertical rhythm ─────────────────────────────────────────
+     Measured before it was changed. The gaps between sections ran 80, 225,
+     112, 193, 168, 168, 113, 97 at 1440 — a range of nearly 3x with no
+     pattern, because --spacing-section was declared and then every section
+     wrote its own clamp instead. Same failure the type scale had.
 
+     Three values now, and which one a boundary uses is decided by what is on
+     each side of it, not by eye:
+
+       section  both sides quiet cream. Each contributes half, so the gap the
+                eye reads is 2 x section: 112 on a phone, 192 at 1440.
+       band     the internal padding of a full-bleed colour or photographic
+                band. It sits INSIDE the band, so it never adds to a gap.
+       edge     a quiet section meeting a band's edge. Only one side can
+                contribute there, so it carries the whole gap alone and is
+                sized to land near 2 x section rather than half of it.
+
+     Each is the straight line between a 375 and a 1440 anchor, like the type.
+     The two boundaries that were cramped — the intro running into the first
+     row of photographs at 80px, and the footer under the CTA band at 97px —
+     land at 192 and 176. Verified by scripts/check-rhythm.py. */
   --spacing-gutter:  clamp(1.25rem, 5vw, 5.5rem);
-  --spacing-section: clamp(5rem, 10vw, 9rem);
-  --spacing-head:    clamp(2.5rem, 5.5vw, 4.5rem);
+  --spacing-section: clamp(3.5rem, 2.62rem + 3.756vw, 6rem);   /*  56 →  96 */
+  --spacing-band:    clamp(4.5rem, 2.916rem + 6.761vw, 9rem);  /*  72 → 144 */
+  --spacing-edge:    clamp(7rem, 5.592rem + 6.009vw, 11rem);   /* 112 → 176 */
+  --spacing-head:    clamp(2.5rem, 5.5vw, 4.5rem);             /*  40 →  72 */
 
-  /* easeOutCubic — control-point y values are 0.68 and 1, never above 1, so it
-     decelerates into position and cannot overshoot. */
-  --ease-motion: cubic-bezier(0.33, 1, 0.68, 1);
-  --duration-reveal: 480ms;
+  /* ── Motion ──────────────────────────────────────────────────
+     Every curve here is an ease-OUT: both control-point y values are at or
+     below 1, so each one decelerates into position and none can overshoot.
+     Anything with y > 1 — back.out, the spring curves — overshoots and comes
+     back, which is what a bounce is. There are none, and check-motion.py
+     fails the build if one appears.
+
+     Two durations, both inside 200-300ms. Reveal is the slower of the two
+     because it moves a whole block; hover is quicker because it answers a
+     pointer and any lag there reads as the page being slow.
+
+     Two exceptions, neither a reveal nor a hover: the hero cross-fade runs
+     1000ms linear (it is a dissolve between photographs, not a transition
+     between states) and the nav overlay runs 500ms, the reference's own
+     timing for that panel. */
+  --ease-motion: cubic-bezier(0.33, 1, 0.68, 1);   /* easeOutCubic */
+  --duration-reveal: 280ms;
   --duration-hover: 240ms;
-  --ease-slow: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  /* One curve for the whole site. Two more were declared here and used by
+     nothing — a curve that never renders is a curve check-motion.py cannot
+     see, and the next person to reach for one would be picking blind. */
 }
 
 /* Metric-matched fallbacks, so the webfont swap does not reflow line breaks. */
@@ -190,6 +267,28 @@
   @keyframes curtain { 0%,45% { opacity:1; } 100% { opacity:0; visibility:hidden; } }
 
 
+  /* ── Tap targets ─────────────────────────────────────────────
+     Inline links set at body or label size are 16-26px tall, and at 375 that
+     is what you are actually asked to hit with a thumb: seven of them were
+     under the 44px minimum, including the header's Book a call — the one
+     thing the whole page is for.
+
+     Padding would fix the target and move the layout. This extends the hit
+     area with a pseudo-element instead: centred on the link, full width, 44px
+     tall, painting nothing. The link looks identical and the target is real.
+
+     It needs the parent to allow the overflow, so it is only used on links
+     that are not inside a clipped box, and the elements it is applied to keep
+     enough vertical separation that two areas cannot overlap — checked by
+     scripts/check-tap.py rather than assumed. */
+  .tap { position: relative; }
+  .tap::after { content:''; position:absolute; left:50%; top:50%;
+                transform:translate(-50%,-50%);
+                /* max() rather than a fixed width: a text link keeps its own
+                   width and only a narrow one — the icon-only call button, at
+                   22px — is widened to the minimum. */
+                width:max(100%, 44px); height:44px; }
+
   /* ── Header states ───────────────────────────────────────────
      Cream over the hero photograph, ink once the page has scrolled past it,
      and always ink while the overlay is open (the panel is clay, and cream on
@@ -215,11 +314,14 @@
      edge, the way the reference crops its own. */
   .endmark { overflow:hidden; padding:0; pointer-events:none; user-select:none; }
   .endmark span { display:block; font-family:var(--font-display); font-weight:400;
-    /* Measured, not guessed: "VENETIAN" in Newsreader at -.02em sets 4.894x its
-       own font-size, so 100vw / 4.894 = 20.43vw fills the viewport exactly.
-       20.3 leaves a hair of margin — at 16.4vw it was filling 80% of the width
-       and reading as a large heading rather than a graphic device. */
-    font-size:20.3vw; line-height:.78; letter-spacing:-.02em; text-transform:uppercase;
+    /* Off the scale by declaration: this is a mark measured against the
+       viewport, not a heading. Its TRACKING is not exempt — it continues the
+       same curve, ls = -0.014193 · ln(px/18), which at ~292px gives -.040em.
+       At -.02em a 292px serif read loose.
+       Tighter tracking makes it narrower, so the fill divisor is re-measured
+       rather than carried over: see scripts/check-type.py, which asserts the
+       rendered mark fills 98-100% of the viewport. */
+    font-size:20.97vw; line-height:.78; letter-spacing:-.040em; text-transform:uppercase;
     color:var(--color-ink); white-space:nowrap; margin-bottom:-.19em; }
 }
 
@@ -230,13 +332,21 @@
    move the reference declines: a staggered reveal is the obvious thing to
    reach for and they deliberately didn't, because it keeps the moment quiet
    rather than showy. Everything in a block resolves together. */
-.rise { opacity:0; transition:opacity var(--duration-reveal) var(--ease-motion); }
-.rise.in { opacity:1; }
+/* Opacity and 8px of travel, together, on one ease-out. The travel is small
+   enough that it reads as the block settling rather than sliding in — at 20px
+   and above it starts to announce itself, which is the opposite of subtle.
+   Still no stagger: everything inside a block resolves at once, and the work
+   grid reveals per card because each card answers its own scroll position,
+   which is not the same thing as a queue of delays. */
+.rise { opacity:0; transform:translateY(8px);
+        transition:opacity var(--duration-reveal) var(--ease-motion),
+                   transform var(--duration-reveal) var(--ease-motion); }
+.rise.in { opacity:1; transform:none; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration:.001ms !important; animation-iteration-count:1 !important;
                            transition-duration:.001ms !important; }
-  .rise { opacity:1; }
+  .rise { opacity:1; transform:none; }
   .curtain { display:none; }
   html { scroll-behavior:auto; }
 }

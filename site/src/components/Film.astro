@@ -3,19 +3,24 @@ import { asset } from '../lib/asset';
 ---
 <!-- The one moving image on the page, and it sits between the process and the
      money — the last look at the work before the buyer is asked to think about
-     cost. Full bleed, no caption burned into it, no controls chrome: it behaves
-     like the photographs, which is the only reason it belongs in a layout this
-     quiet. The poster carries it if the clip cannot decode. -->
-<section class="relative">
-  <video class="w-full h-[clamp(22rem,62vh,40rem)] object-cover"
-         poster={asset('assets/staircase-poster.jpg')}
-         muted playsinline loop preload="none"
-         aria-label="A stair run finished in polished plaster, filmed on site">
-    <source src={asset('assets/staircase.mp4')} type="video/mp4" />
-  </video>
+     cost.
+
+     Shown at its own 9:16, not stretched across a full-bleed band. It was
+     filmed on a phone in portrait; running it edge to edge in a landscape strip
+     kept about a fifth of the frame and cut the top and bottom off the stair.
+     Same rule as the grid: the work is what is being sold, so the whole frame
+     shows. The cream around it is the page, not a letterbox. -->
+<section class="px-gutter py-section">
+  <div class="max-w-[1240px] mx-auto">
+    <figure class="rise m-0 max-w-[24rem] mx-auto">
+      <video class="w-full h-auto bg-cream-2" width="720" height="1280"
+             poster={asset('assets/staircase-poster.jpg')}
+             muted playsinline loop preload="none"
+             aria-label="A stair run finished in polished plaster, filmed on site">
+        <source src={asset('assets/staircase.mp4')} type="video/mp4" />
+      </video>
+      <hr class="border-0 border-t border-rule mt-4 mb-3" />
+      <figcaption class="label m-0">Filmed on site &middot; Every wall mixed, laid and finished by hand</figcaption>
+    </figure>
+  </div>
 </section>
-<div class="px-gutter">
-  <p class="max-w-[1240px] mx-auto font-read text-caption text-ink-mute mt-4 mb-0">
-    Filmed on site. Every wall is mixed, laid and finished by hand.
-  </p>
-</div>

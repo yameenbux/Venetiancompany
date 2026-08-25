@@ -19,7 +19,7 @@ import tailwind from '@tailwindcss/vite';
 // to match the URL the page is actually served at or the WhatsApp link preview
 // will not resolve.
 export default defineConfig({
-  site: process.env.SITE_URL ?? 'https://venetiancompany.pages.dev',
+  site: process.env.SITE_URL ?? 'https://thevenetiancompany.co.uk',
   base: process.env.BASE_PATH ?? '/',
   output: 'static',
   build: { inlineStylesheets: 'always' },

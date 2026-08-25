@@ -19,14 +19,15 @@ const panels = [
     items: process.slice(1).map((p) => p.body) },
 ];
 ---
-<section id="terms" class="bg-clay text-ink px-gutter py-[clamp(4rem,8vw,7rem)]">
+<section id="terms" class="bg-clay text-ink px-gutter py-band">
   <div class="max-w-[1240px] mx-auto">
-    <h2 class="text-h2 text-center text-ink">What it costs</h2>
-    <div class="mt-head">
+    <h2 class="text-h2 text-center text-ink rise">What it costs</h2>
+    <div class="mt-head rise">
       {panels.map((p) => (
         <details name="terms" open={p.open} class="group border-t border-ink/25 last:border-b">
           <summary class="flex items-center justify-between gap-6 cursor-pointer list-none
                           py-[clamp(1rem,2.4vw,1.5rem)] font-display text-h3 text-ink
+                          transition-opacity duration-240 ease-motion hover:opacity-70
                           [&::-webkit-details-marker]:hidden">
             {p.title}
             <span class="relative shrink-0 w-4 h-4 mr-1" aria-hidden="true">

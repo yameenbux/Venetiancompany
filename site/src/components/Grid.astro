@@ -6,32 +6,55 @@ import { asset } from '../lib/asset';
    with nine projects a filter row would be decoration wearing the costume of
    structure. It earns its place when the archive does.
 
+   One frame for all nine: 3:4, the ratio Adam's phone actually shoots.
+
+   Two earlier passes both got this wrong in opposite directions. A uniform 4:3
+   landscape box threw away 44% of every portrait photograph. Giving each card
+   its own ratio fixed the cropping and broke the grid — seven cards at 3:4
+   beside two at 9:16 left ragged rows that read as a mistake rather than a
+   choice.
+
+   The fix was upstream, in the assets. Seven images are natively 3:4 and are
+   untouched. The two 9:16 cards were video stills, so they were re-cut from the
+   footage at 3:4 — a different frame chosen for the shape rather than a crop
+   forced onto a fixed one. The fireplace lost 43px from each side, 7.6%.
+
+   So the rows align AND nothing is cropped at render. That only works because
+   the library is one orientation; the day Adam sends landscape shots this has
+   to be decided again.
+
    Categories are the client's own service names, verbatim. Titles describe
    what is in the photograph; none of these are project or client names,
    because we have not been given any. */
 const projects = [
-  { file: 'stair-marbled.jpg',  cat: 'Feature walls, Staircases', title: 'Marbled wall behind a floating oak stair', pos: '50% 50%' },
-  { file: 'grid-bathroom.jpg',  cat: 'Bathrooms',                 title: 'Bathroom pigmented to colour',             pos: '50% 42%' },
-  { file: 'stairwell.jpg',      cat: 'Staircases',                title: 'Double-height stairwell, no joins',        pos: '50% 72%' },
-  { file: 'wet-room.jpg',       cat: 'Wet rooms, Microcement',    title: 'Microcement wet room, seamless',           pos: '50% 50%' },
-  { file: 'bathroom-arch.jpg',  cat: 'Bathrooms',                 title: 'Plaster against marble, arched window',    pos: '50% 55%' },
-  { file: 'fireplace.jpg',      cat: 'Feature walls',             title: 'Chimney breast worked by hand',            pos: '50% 46%' },
-  { file: 'grid-staircase.jpg', cat: 'Staircases, Feature walls', title: 'Stair run in polished plaster',            pos: '50% 50%' },
-  { file: 'texture-switch.jpg', cat: 'Full house applications',   title: 'Coarse grain against walnut',              pos: '50% 50%' },
-  { file: 'plaster-detail.jpg', cat: 'Feature walls',             title: 'The trowel, up close',                     pos: '50% 50%' },
+  { file: 'stair-marbled.jpg',  w: 1050, h: 1400, cat: 'Feature walls, Staircases', title: 'Marbled wall behind a floating oak stair' },
+  { file: 'stairwell.jpg',      w: 1050, h: 1400, cat: 'Staircases',                title: 'Double-height stairwell, no joins' },
+  { file: 'wet-room.jpg',       w: 1050, h: 1400, cat: 'Wet rooms, Microcement',    title: 'Microcement wet room, seamless' },
+  { file: 'grid-bathroom.jpg',  w:  720, h:  960, cat: 'Bathrooms',                 title: 'Bathroom pigmented to colour' },
+  { file: 'grid-staircase.jpg', w:  720, h:  960, cat: 'Staircases, Feature walls', title: 'Stair run in polished plaster' },
+  { file: 'bathroom-arch.jpg',  w: 1050, h: 1400, cat: 'Bathrooms',                 title: 'Plaster against marble, arched window' },
+  { file: 'fireplace.jpg',      w: 1050, h: 1400, cat: 'Feature walls',             title: 'Chimney breast worked by hand' },
+  { file: 'texture-switch.jpg', w: 1050, h: 1400, cat: 'Full house applications',   title: 'Coarse grain against walnut' },
+  { file: 'plaster-detail.jpg', w: 1050, h: 1400, cat: 'Feature walls',             title: 'The trowel, up close' },
 ];
 const FIRST = 6;
 ---
-<section id="work" class="px-gutter pb-[clamp(4rem,8vw,7rem)]">
+<section id="work" class="px-gutter pt-section pb-section">
   <div class="max-w-[1240px] mx-auto">
-    <div id="grid" class="grid gap-x-[clamp(1rem,2.4vw,2.1rem)] gap-y-[clamp(2.5rem,4vw,3.5rem)]
-                          sm:grid-cols-2 lg:grid-cols-3 rise">
+    <!-- items-start, so a taller photograph does not stretch the cards beside
+         it. Each figure is exactly as tall as its own image plus its caption. -->
+    <div id="grid" class="grid items-start gap-x-[clamp(1rem,2.4vw,2.1rem)] gap-y-[clamp(2.5rem,4vw,3.5rem)]
+                          sm:grid-cols-2 lg:grid-cols-3">
       {projects.map((p, i) => (
-        <figure class={`group m-0 ${i >= FIRST ? 'more' : ''}`} hidden={i >= FIRST}>
-          <div class="overflow-hidden aspect-4/3 bg-cream-2">
+        <figure class={`group rise m-0 ${i >= FIRST ? 'more' : ''}`} hidden={i >= FIRST}>
+          <!-- The frame takes the image's ratio, so object-cover has nothing to
+               cut. It stays object-cover rather than contain because contain
+               would letterbox on the rounding, and stays overflow-hidden so the
+               hover scale is contained. -->
+          <div class="overflow-hidden bg-cream-2 aspect-3/4">
             <img src={asset(`assets/${p.file}`)} alt={p.title} loading={i < 3 ? 'eager' : 'lazy'}
-                 decoding="async" width="1050" height="788" style={`object-position:${p.pos}`}
-                 class="w-full h-full object-cover transition-transform duration-500 ease-motion
+                 decoding="async" width={p.w} height={p.h}
+                 class="w-full h-full object-cover transition-transform duration-240 ease-motion
                         group-hover:scale-[1.02]" />
           </div>
           <!-- Hairline rules are the only separator device on this page. No
@@ -39,7 +62,8 @@ const FIRST = 6;
           <hr class="border-0 border-t border-rule mt-4 mb-3" />
           <figcaption>
             <p class="label m-0">{p.cat}</p>
-            <p class="font-display text-h4 text-ink m-0 mt-1">{p.title}</p>
+            <p class="font-display text-h4 text-ink m-0 mt-1 transition-colors duration-240 ease-motion
+                       group-hover:text-clay-ink">{p.title}</p>
           </figcaption>
         </figure>
       ))}
@@ -51,7 +75,8 @@ const FIRST = 6;
     <div class="text-center mt-[clamp(2.5rem,5vw,4rem)]">
       <button id="loadmore" type="button"
               class="label text-clay-ink bg-transparent border-0 cursor-pointer p-2
-                     hover:underline underline-offset-4">Load more</button>
+                     border-b border-transparent hover:border-clay-ink
+                     transition-colors duration-240 ease-motion">Load more</button>
       <p id="count" class="font-read text-caption text-ink-mute m-0 mt-1">{FIRST} of {projects.length}</p>
     </div>
   </div>
