@@ -12,3 +12,19 @@ samples/venetian-company/artifact.html
 
 # built by build-site.py
 dist/
+
+# MCP server config — written by `claude mcp add -s project` and by the
+# 21st.dev CLI, and can carry an API key in a plaintext header
+.mcp.json
+
+# other credential shapes, for the same reason as .env above
+.env.*
+*.pem
+*.key
+secrets.json
+
+# local Claude Code state, specific to one machine
+.claude/settings.local.json
+
+# OS noise
+.DS_Store
